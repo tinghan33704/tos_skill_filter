@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!-- Last modified : 2019.2.12 03:49 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -13,8 +14,11 @@
     body {
         font-family: Microsoft JhengHei;
     }
+    .filter {
+        width: 80%;
+    }
     hr {
-        width: 90%;
+        width: 100%;
     }
     input[type=range]{
         width: 60%;
@@ -36,7 +40,6 @@
     }
     .genre_label {
         font-size: 2.5vw;
-        margin: 10px 0;
     }
     .filter-btn, .attr-btn, .race-btn, .star-btn {
         font-size: 1.8vw;
@@ -48,7 +51,11 @@
         cursor: pointer;
         padding: 5px 0;
     }
-    .start-btn, .and_or_mode {
+    .skill-group {
+        width: 100%;
+        margin: 30px 0;
+    }
+    .start-btn, .and_or_mode, .reset {
         width: 100%;
         font-size: 1.8vw;
     }
@@ -73,7 +80,16 @@
 </style>
 
 <script type="text/javascript" charset="UTF-8">
-    var skill_type_string = ["符石轉水", "符石轉火", "符石轉木", "符石轉光", "符石轉暗", "符石轉心", "符石兼具水", "符石兼具火", "符石兼具木", "符石兼具光", "符石兼具暗", "符石兼具心", "水屬追打", "火屬追打", "木屬追打", "光屬追打", "暗屬追打", "無屬追打", "符石強化", "種族符石製造", "減傷", "意志", "破防", "炸版", "直傷", "回血", "無法行動", "轉屬", "排珠", "延長轉珠時間", "增傷", "增回", "大幅轉版", "固定轉版", "攻擊力吸收", "共鳴", "我方傷害吸收", "敵方傷害吸收", "禁珠", "改變掉落機率", "強制掉落", "解鎖", "防鎖", "防毒", "防爆", "防燒", "黑白還原", "增加Combo", "延遲", "迴避", "附加消除", "敵方減攻", "還原版面", "障礙珠處理", "行動值提升"];
+    var skill_type_string = [
+    ["符石轉水", "符石轉火", "符石轉木", "符石轉光", "符石轉暗", "符石轉心"],
+    ["符石兼具水", "符石兼具火", "符石兼具木", "符石兼具光", "符石兼具暗", "符石兼具心"],
+    ["水屬追打", "火屬追打", "木屬追打", "光屬追打", "暗屬追打", "無屬追打"],
+    ["符石強化", "種族符石製造", "炸版", "大幅轉版", "固定轉版", "還原版面", "障礙珠處理", "禁珠", "改變掉落機率", "強制掉落"],
+    ["減傷", "意志", "敵方減攻", "迴避", "回血", "我方傷害吸收", "敵方傷害吸收"],
+    ["破防", "直傷", "無法行動", "轉屬", "排珠", "延長轉珠時間"],
+    ["增傷", "增回", "攻擊力吸收", "共鳴"],
+    ["解鎖", "防鎖", "防毒", "防爆", "防燒", "黑白還原", "增加Combo", "延遲", "附加消除", "行動值提升"]
+    ];
     var skill_list = {
         "符石轉水": [21, 22, 23, 24, 57, 146, 147, 148, 221, 222, 320, 377, 378, 432, 433, 451, 511, 522, 542, 591, 611, 661, 666, 676, 677, 691, 716, 721, 746, 747, 827, 832, 856, 891, 892, 947, 956, 961, 977, 980, 981, 986, 987, 1006, 1007, 1022, 1032, 1051, 1057, 1081, 1082, 1091, 1136, 1137, 1147, 1166, 1167, 1181, 1189, 1201, 1239, 1256, 1261, 1264, 1277, 1287, 1301, 1311, 1316, 1336, 1357, 1371, 1375, 1381, 1406, 1416, 1437, 1438, 1491, 1498, 1506, 1514, 1515, 1516, 1526, 1531, 1564, 1585, 1591, 1612, 1655, 1661, 1666, 1687, 1690, 1701, 1716, 1719, 1726, 1739, 1741, 1753, 1774, 1786, 1787, 1809, 1816, 1831, 1882, 1889, 1952, 1960, 1963, 1983, 7016, 8016],
         "符石轉火": [59, 149, 150, 151, 179, 180, 181, 223, 224, 322, 415, 416, 434, 435, 452, 524, 592, 612, 662, 667, 678, 679, 692, 705, 717, 722, 768, 834, 852, 857, 883, 884, 891, 892, 893, 894, 903, 904, 929, 938, 949, 957, 962, 982, 983, 1008, 1024, 1032, 1050, 1052, 1067, 1083, 1084, 1138, 1149, 1168, 1169, 1209, 1215, 1224, 1239, 1257, 1262, 1267, 1277, 1279, 1302, 1307, 1308, 1317, 1359, 1383, 1391, 1406, 1418, 1433, 1449, 1463, 1484, 1492, 1502, 1507, 1514, 1515, 1516, 1527, 1532, 1539, 1553, 1564, 1576, 1590, 1604, 1659, 1662, 1667, 1684, 1706, 1716, 1719, 1721, 1727, 1739, 1778, 1788, 1789, 1793, 1794, 1882, 1883, 1888, 1889, 1904, 1924, 1963, 1983, 7001, 7015, 8017],
@@ -174,6 +190,10 @@
         init();
         $("#start_filter").on("click", startFilter);
         $("#and_or_filter").on("click", andOrChange);
+        $("#reset_skill").on("click", resetSkill);
+        $("#reset_attr").on("click", resetAttr);
+        $("#reset_race").on("click", resetRace);
+        $("#reset_star").on("click", resetStar);
     });
     
     function init()
@@ -183,8 +203,13 @@
             var str = $(".filter-row").html();
             for(var x of skill_type_string)
             {
-                str += "<div class=\"col-sm-2 filter-btn\"\">";
-                str += x;
+                str += "<div class=\"row skill-group\">";
+                for(var s of x)
+                {
+                    str += "<div class=\"col-sm-2 filter-btn\"\">";
+                    str += s;
+                    str += "</div>";
+                }
                 str += "</div>";
             }
             return str;
@@ -201,12 +226,14 @@
         $(".attr-row").html(function()
         {
             var str = $(".attr-row").html();
+            str += "<div class=\"row skill-group\">";
             for(var x of attr_type_string)
             {
                 str += "<div class=\"col-sm-2 attr-btn\"\">";
                 str += x;
                 str += "</div>";
             }
+            str += "</div>";
             return str;
         });
         $(".attr-btn").each(function(){
@@ -221,12 +248,14 @@
         $(".race-row").html(function()
         {
             var str = $(".race-row").html();
+            str += "<div class=\"row skill-group\">";
             for(var x of race_type_string)
             {
                 str += "<div class=\"col-sm-2 race-btn\"\">";
                 str += x;
                 str += "</div>";
             }
+            str += "</div>";
             return str;
         });
         $(".race-btn").each(function(){
@@ -241,12 +270,14 @@
         $(".star-row").html(function()
         {
             var str = $(".star-row").html();
+            str += "<div class=\"row skill-group\">";
             for(var x of star_type_string)
             {
                 str += "<div class=\"col-sm-2 star-btn\"\">";
                 str += x+" ★";
                 str += "</div>";
             }
+            str += "</div>";
             return str;
         });
         $(".star-btn").each(function(){
@@ -268,6 +299,9 @@
         var skill_set = new Set();
         var monster_set = new Set();
         var skill_select = false;
+        
+        skill_set.clear();
+        monster_set.clear();
         
         $(".filter-btn").each(function(){
             if($(this).css("background-color") != white_str)
@@ -386,7 +420,7 @@
             {
                 monster_array.sort((a, b) => a - b);
                 monster_array.forEach(function(x) {
-                    str += "<div class=\"col-sm-1 result\"><a href=\"https://tos.fandom.com/zh/wiki/"+x+"\" target=\"_blank\"><img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname.png'\"></img></a><div class=\"monsterId\">"+x+"</div></div>";
+                    str += "<div class=\"col-sm-1 result\"><a href=\"https://tos.fandom.com/zh/wiki/"+x+"\" target=\"_blank\"><img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname.png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
                 });
             }
             else
@@ -395,6 +429,18 @@
             }
             return str;
         });
+    }
+    
+    function paddingZeros(x, num)
+    {
+        if(x.toString().length < num)
+        {
+            return "0".repeat(num-x.toString().length)+x.toString();
+        }
+        else
+        {
+            return x.toString();
+        }
     }
     
     function andOrChange()
@@ -414,28 +460,54 @@
         }
     }
     
+    function resetSkill()
+    {
+        $(".filter-btn").each(function(){
+            $(this).css("background-color", white_str);
+            $(this).css("color", black_str);
+            $(this).css("font-weight", "normal");
+        });
+        filter_set.clear();
+    }
+    
+    function resetAttr()
+    {
+        $(".attr-btn").each(function(){
+            $(this).css("background-color", white_str);
+            $(this).css("color", black_str);
+            $(this).css("font-weight", "normal");
+        });
+        filter_set.clear();
+    }
+    
+    function resetRace()
+    {
+        $(".race-btn").each(function(){
+            $(this).css("background-color", white_str);
+            $(this).css("color", black_str);
+            $(this).css("font-weight", "normal");
+        });
+        filter_set.clear();
+    }
+    
+    function resetStar()
+    {
+        $(".star-btn").each(function(){
+            $(this).css("background-color", white_str);
+            $(this).css("color", black_str);
+            $(this).css("font-weight", "normal");
+        });
+        filter_set.clear();
+    }
+    
 </script>
     
 <body>
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">主動技搜尋器</a>
+                <a class="navbar-brand" href="#">神魔之塔主動技搜尋器</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">使用說明</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1
-                    <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Page 1-1</a></li>
-                        <li><a href="#">Page 1-2</a></li>
-                        <li><a href="#">Page 1-3</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
-            </ul>
         </div>
     </nav>
     <div class="filter container">
@@ -449,41 +521,75 @@
                 </button>
             </div>
             <div class="col-sm-3 row_title">
-                <button class="btn btn-success start-btn" id="start_filter"><i class="fa fa-play-circle"></i>
+                <button class="btn btn-success start-btn" id="start_filter">
+                    <i class="fa fa-play-circle"></i>
                     &nbsp;&nbsp;搜尋
                 </button>
             </div>
             <div class="col-sm-12">
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="row filter-row">
-                    <div class="genre_label col-sm-12">
-                        功能
+                    <div class="row">
+                        <div class="genre_label col-sm-3">
+                            功能
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary reset" id="reset_skill">
+                                <i class="fa fa-undo"></i>
+                                &nbsp;&nbsp;重置
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="row attr-row">
-                    <div class="genre_label col-sm-12">
-                        召喚獸屬性
+                    <div class="row">
+                        <div class="genre_label col-sm-3">
+                            召喚獸屬性
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary reset" id="reset_attr">
+                                <i class="fa fa-undo"></i>
+                                &nbsp;&nbsp;重置
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="row race-row">
-                    <div class="genre_label col-sm-12">
-                        召喚獸種族
+                    <div class="row">
+                        <div class="genre_label col-sm-3">
+                            召喚獸種族
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary reset" id="reset_race">
+                                <i class="fa fa-undo"></i>
+                                &nbsp;&nbsp;重置
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="row star-row">
-                    <div class="genre_label col-sm-12">
-                        召喚獸稀有度
+                    <div class="row">
+                        <div class="genre_label col-sm-3">
+                            召喚獸稀有度
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary reset" id="reset_star">
+                                <i class="fa fa-undo"></i>
+                                &nbsp;&nbsp;重置
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-9"></div>
-            <div class="col-sm-3 row_title">
-                <button class="btn btn-success start-btn" id="start_filter"><i class="fa fa-play-circle"></i>&nbsp;&nbsp;搜尋</button>
             </div>
             <div class="col-sm-12">
                 <hr>
