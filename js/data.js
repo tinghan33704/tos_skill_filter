@@ -2502,4 +2502,203 @@ var monster_data = [
 {'id': 2500, 'attribute': '', 'race': '', 'star': '', 'skill': []},
 
 
+
+
+
+{'id': 7001, 'attribute': '火', 'race': '龍類', 'star': '7', 'skill': ['符石轉火', ]},
+{'id': 7002, 'attribute': '水', 'race': '人類', 'star': '7', 'skill': ['增傷', '界王拳', ]},
+{'id': 7003, 'attribute': '木', 'race': '魔族', 'star': '7', 'skill': ['排珠', '增傷', ]},
+{'id': 7004, 'attribute': '光', 'race': '人類', 'star': '7', 'skill': ['符石兼具水', '符石兼具火', '符石兼具木', '符石兼具光', '符石兼具暗', ]},
+{'id': 7005, 'attribute': '暗', 'race': '神族', 'star': '7', 'skill': ['增加Combo', ]},
+{'id': 7006, 'attribute': '火', 'race': '獸類', 'star': '7', 'skill': ['符石強化', ]},
+{'id': 7007, 'attribute': '水', 'race': '妖精類', 'star': '7', 'skill': ['增傷', ]},
+{'id': 7008, 'attribute': '火', 'race': '龍類', 'star': '7', 'skill': ['增傷', ]},
+{'id': 7009, 'attribute': '水', 'race': '人類', 'star': '7', 'skill': ['增傷', '迴避', ]},
+{'id': 7010, 'attribute': '暗', 'race': '妖精類', 'star': '7', 'skill': ['增傷', ]},
+{'id': 7011, 'attribute': '暗', 'race': '神族', 'star': '7', 'skill': ['增傷', ]},
+{'id': 7012, 'attribute': '木', 'race': '獸類', 'star': '7', 'skill': ['符石兼具水', '符石兼具火', '符石兼具木', '符石兼具光', '符石兼具暗', '增傷', ]},
+{'id': 7013, 'attribute': '光', 'race': '神族', 'star': '7', 'skill': ['符石轉光', '減傷', '增傷', ]},
+{'id': 7014, 'attribute': '木', 'race': '人類', 'star': '7', 'skill': ['自身追打', '火屬追打', '光屬追打', '增傷', '界王拳', ]},
+{'id': 7015, 'attribute': '火', 'race': '獸類', 'star': '7', 'skill': ['符石轉火', '自身追打', '火屬追打', ]},
+{'id': 7016, 'attribute': '水', 'race': '妖精類', 'star': '7', 'skill': ['符石轉水', '符石轉心', '固定轉版', '種族符石製造', ]},
+{'id': 7017, 'attribute': '暗', 'race': '魔族', 'star': '7', 'skill': ['增傷', '我方傷害吸收', ]},
+{'id': 7018, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7019, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7020, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7021, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7022, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7023, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7024, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7025, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7026, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7027, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7028, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7029, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7030, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7031, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7032, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7033, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7034, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7035, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7036, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7037, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7038, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7039, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7040, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7041, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7042, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7043, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7044, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7045, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7046, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7047, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7048, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7049, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 7050, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+
+
+
+
+
+{'id': 8001, 'attribute': '水', 'race': '妖精類', 'star': '5', 'skill': ['減傷', '迴避', ]},
+{'id': 8002, 'attribute': '水', 'race': '妖精類', 'star': '6', 'skill': ['減傷', '迴避', ]},
+{'id': 8003, 'attribute': '火', 'race': '妖精類', 'star': '5', 'skill': ['直傷', '附加消除', ]},
+{'id': 8004, 'attribute': '火', 'race': '妖精類', 'star': '6', 'skill': ['直傷', '附加消除', ]},
+{'id': 8005, 'attribute': '木', 'race': '魔族', 'star': '5', 'skill': ['符石轉心', ]},
+{'id': 8006, 'attribute': '木', 'race': '魔族', 'star': '6', 'skill': ['符石轉心', ]},
+{'id': 8007, 'attribute': '光', 'race': '人類', 'star': '5', 'skill': ['強制掉落', ]},
+{'id': 8008, 'attribute': '光', 'race': '人類', 'star': '6', 'skill': ['強制掉落', ]},
+{'id': 8009, 'attribute': '暗', 'race': '妖精類', 'star': '5', 'skill': ['自身追打', '暗屬追打', ]},
+{'id': 8010, 'attribute': '暗', 'race': '妖精類', 'star': '6', 'skill': ['自身追打', '暗屬追打', ]},
+{'id': 8011, 'attribute': '光', 'race': '人類', 'star': '5', 'skill': ['排珠', ]},
+{'id': 8012, 'attribute': '光', 'race': '人類', 'star': '6', 'skill': ['排珠', ]},
+{'id': 8013, 'attribute': '暗', 'race': '魔族', 'star': '5', 'skill': ['排珠', ]},
+{'id': 8014, 'attribute': '暗', 'race': '魔族', 'star': '6', 'skill': ['排珠', ]},
+{'id': 8015, 'attribute': '暗', 'race': '獸類', 'star': '6', 'skill': ['符石轉暗', ]},
+{'id': 8016, 'attribute': '水', 'race': '神族', 'star': '5', 'skill': ['符石轉水', ]},
+{'id': 8017, 'attribute': '火', 'race': '人類', 'star': '5', 'skill': ['符石轉火', ]},
+{'id': 8018, 'attribute': '木', 'race': '人類', 'star': '5', 'skill': ['符石轉木', ]},
+{'id': 8019, 'attribute': '光', 'race': '獸類', 'star': '5', 'skill': ['符石轉光', ]},
+{'id': 8020, 'attribute': '暗', 'race': '人類', 'star': '5', 'skill': ['符石轉暗', ]},
+{'id': 8021, 'attribute': '水', 'race': '龍類', 'star': '6', 'skill': ['增傷', ]},
+{'id': 8022, 'attribute': '火', 'race': '魔族', 'star': '6', 'skill': ['增傷', ]},
+{'id': 8023, 'attribute': '木', 'race': '龍類', 'star': '6', 'skill': ['符石轉木', ]},
+{'id': 8024, 'attribute': '光', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8025, 'attribute': '暗', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8026, 'attribute': '水', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8027, 'attribute': '火', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8028, 'attribute': '木', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8029, 'attribute': '光', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8030, 'attribute': '暗', 'race': '進化素材', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8031, 'attribute': '水', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8032, 'attribute': '水', 'race': '妖精類', 'star': '4', 'skill': ['直傷', ]},
+{'id': 8033, 'attribute': '火', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8034, 'attribute': '火', 'race': '妖精類', 'star': '4', 'skill': ['直傷', ]},
+{'id': 8035, 'attribute': '木', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8036, 'attribute': '木', 'race': '妖精類', 'star': '4', 'skill': ['直傷', ]},
+{'id': 8037, 'attribute': '光', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8038, 'attribute': '光', 'race': '妖精類', 'star': '4', 'skill': ['直傷', ]},
+{'id': 8039, 'attribute': '暗', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8040, 'attribute': '暗', 'race': '妖精類', 'star': '4', 'skill': ['直傷', ]},
+{'id': 8041, 'attribute': '光', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8042, 'attribute': '光', 'race': '妖精類', 'star': '4', 'skill': ['排珠', ]},
+{'id': 8043, 'attribute': '暗', 'race': '妖精類', 'star': '3', 'skill': ['直傷', ]},
+{'id': 8044, 'attribute': '暗', 'race': '妖精類', 'star': '4', 'skill': ['排珠', ]},
+{'id': 8045, 'attribute': '木', 'race': '魔族', 'star': '6', 'skill': ['符石兼具木', ]},
+{'id': 8046, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 8047, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 8048, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 8049, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 8050, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+
+
+
+
+
+{'id': 9001, 'attribute': '水', 'race': '妖精類', 'star': '5', 'skill': ['減傷', '迴避', ]},
+{'id': 9002, 'attribute': '水', 'race': '妖精類', 'star': '6', 'skill': ['減傷', '迴避', ]},
+{'id': 9003, 'attribute': '火', 'race': '妖精類', 'star': '5', 'skill': ['直傷', '附加消除', ]},
+{'id': 9004, 'attribute': '火', 'race': '妖精類', 'star': '6', 'skill': ['直傷', '附加消除', ]},
+{'id': 9005, 'attribute': '木', 'race': '魔族', 'star': '5', 'skill': ['符石轉心', ]},
+{'id': 9006, 'attribute': '木', 'race': '魔族', 'star': '6', 'skill': ['符石轉心', ]},
+{'id': 9007, 'attribute': '光', 'race': '人類', 'star': '5', 'skill': ['強制掉落', ]},
+{'id': 9008, 'attribute': '光', 'race': '人類', 'star': '6', 'skill': ['強制掉落', ]},
+{'id': 9009, 'attribute': '暗', 'race': '妖精類', 'star': '5', 'skill': ['自身追打', '暗屬追打', ]},
+{'id': 9010, 'attribute': '暗', 'race': '妖精類', 'star': '6', 'skill': ['自身追打', '暗屬追打', ]},
+{'id': 9011, 'attribute': '光', 'race': '人類', 'star': '5', 'skill': ['排珠', ]},
+{'id': 9012, 'attribute': '光', 'race': '人類', 'star': '6', 'skill': ['排珠', ]},
+{'id': 9013, 'attribute': '暗', 'race': '魔族', 'star': '5', 'skill': ['排珠', ]},
+{'id': 9014, 'attribute': '暗', 'race': '魔族', 'star': '6', 'skill': ['排珠', ]},
+{'id': 9015, 'attribute': '木', 'race': '魔族', 'star': '6', 'skill': ['符石兼具木', ]},
+{'id': 9016, 'attribute': '火', 'race': '魔族', 'star': '6', 'skill': ['增傷', ]},
+{'id': 9017, 'attribute': '暗', 'race': '神族', 'star': '6', 'skill': ['回血', '意志', ]},
+{'id': 9018, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9019, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9020, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9021, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9022, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9023, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9024, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9025, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9026, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9027, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9028, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9029, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9030, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9031, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9032, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9033, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9034, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9035, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9036, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9037, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9038, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9039, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9040, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9041, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9042, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9043, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9044, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9045, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9046, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9047, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9048, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9049, 'attribute': '', 'race': '', 'star': '', 'skill': []},
+{'id': 9050, 'attribute': '', 'race': '', 'star': '', 'skill': []},
 ];
+
+/*
+function createData()
+{
+    str = '';
+    for(let i=9001; i<=9050; i++)
+    {
+        attr = '';
+        for(var key in attr_list)
+        {
+            if(attr_list[key].includes(i)) attr = key;
+        }
+        
+        race = '';
+        for(var key in race_list)
+        {
+            if(race_list[key].includes(i)) race = key;
+        }
+        
+        star = '';
+        for(var key in star_list)
+        {
+            if(star_list[key].includes(i)) star = key;
+        }
+        
+        skill = '';
+        for(var key in skill_list)
+        {
+            if(skill_list[key].includes(i)) skill += "'"+key+"', ";
+        }
+        
+        str += "{'id': "+i+", 'attribute': '"+attr+"', 'race': '"+race+"', 'star': '"+star+"', 'skill': ["+skill+"]},\n"
+    }
+    console.log(str);
+}
+*/
