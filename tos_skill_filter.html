@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.06.07 15:23 -->
+<!-- Last modified : 2019.06.12 23:05 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -51,7 +51,7 @@
     .genre_label {
         font-size: 2.5vw;
     }
-    .filter-btn, .attr-btn, .race-btn, .star-btn {
+    .filter-btn, .attr-btn, .race-btn, .star-btn, .recover-btn {
         font-size: 1.8vw;
         font-weight: normal;
         color: black;
@@ -108,6 +108,8 @@
 
     var star_type_string = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
+    var recover_type_string = ["CD", "EP"];
+
     
     var filter_set = new Set();
     var blue_str = "rgb(100, 100, 255)";
@@ -120,6 +122,7 @@
     const attr_num = attr_type_string.length;
     const race_num = race_type_string.length;
     const star_num = star_type_string.length;
+    const recover_num = recover_type_string.length;
     
     const encode_chart = [
         "0","1","2","3","4","5","6","7","8","9",
@@ -142,6 +145,7 @@
         $("#reset_attr").on("click", resetAttr);
         $("#reset_race").on("click", resetRace);
         $("#reset_star").on("click", resetStar);
+        $("#reset_recover").on("click", resetRecover);
         
         if(location.search) readUrl();
     });
@@ -252,6 +256,28 @@
             });
         });
         
+        $(".recover-row").html(function()
+        {
+            var str = $(".recover-row").html();
+            str += "<div class=\"row skill-group\">";
+            for(var x of recover_type_string)
+            {
+                str += "<div class=\"col-sm-2 recover-btn\"\">";
+                str += x;
+                str += "</div>";
+            }
+            str += "</div>";
+            return str;
+        });
+        $(".recover-btn").each(function(){
+            $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
+            $(this).on("click", function(){
+                $(this).css("background-color", ($(this).css("background-color") != green_str)?green_str:white_str);
+                $(this).css("color", ($(this).css("color") != black_str)?black_str:white_str);
+                $(this).css("font-weight", ($(this).css("background-color") != green_str)?"normal":"bold");
+            });
+        });
+        
         or_filter = true;
     }
     
@@ -318,6 +344,17 @@
             }
         });
         
+        var recover_set = new Set();
+        var recover_intersect = false;
+        
+        $(".recover-btn").each(function(){
+            if($(this).css("background-color") != white_str)
+            {
+                recover_set.add($(this).text());
+                recover_intersect = true;
+            }
+        });
+        
         for(var x of monster_data)
         {
             if(attr_intersect)
@@ -331,6 +368,19 @@
             if(star_intersect)
             {
                 if(!star_set.has(x.star)) continue;
+            }
+            if(recover_intersect)
+            {
+                var non = true;
+                for(var k of x.recover)
+                {
+                    if(recover_set.has(k))
+                    {
+                        non = false;
+                        break;
+                    }
+                }
+                if(non) continue;
             }
             
             if(or_filter)
@@ -454,12 +504,23 @@
         filter_set.clear();
     }
     
+    function resetRecover()
+    {
+        $(".recover-btn").each(function(){
+            $(this).css("background-color", white_str);
+            $(this).css("color", black_str);
+            $(this).css("font-weight", "normal");
+        });
+        filter_set.clear();
+    }
+    
     function resetAll()
     {
         resetSkill();
         resetAttr();
         resetRace();
         resetStar();
+        resetRecover();
     }
     
     function changeUrl()
@@ -470,6 +531,7 @@
         str += "&attr=" + encode(".attr-btn", attr_num);
         str += "&race=" + encode(".race-btn", race_num);
         str += "&star=" + encode(".star-btn", star_num);
+        str += "&recv=" + encode(".recover-btn", recover_num);
         str += "&or=" + (or_filter?"1":"0");
         
         window.history.pushState(null, null, "?"+str);
@@ -480,12 +542,12 @@
         var code_array = location.search.split("&").map(x => x.split("=")[1]);
         var code_name_array = location.search.split("?")[1].split("&").map(x => x.split("=")[0]);
         
-        if(code_array.length != 5)
+        if(code_array.length != 6)
         {
             errorAlert(1);
             return;
         }
-        var code_name = ["search", "attr", "race", "star", "or"];
+        var code_name = ["search", "attr", "race", "star", "recv", "or"];
         for(var i in code_name_array)
         {
             if(code_name_array[i] !== code_name[i])
@@ -507,7 +569,10 @@
         var star_code = decode(code_array[3]);
         setButtonFromUrl(".star-btn", star_code, resetStar);
         
-        var and_or_code = code_array[4];
+        var recv_code = decode(code_array[4]);
+        setButtonFromUrl(".recover-btn", recv_code, resetRecover);
+        
+        var and_or_code = code_array[5];
         if(and_or_code[0] == "0") andOrChange();
         
         startFilter();
@@ -707,6 +772,21 @@
                         </div>
                         <div class="col-sm-2">
                             <button class="btn btn-primary reset" id="reset_star">
+                                <i class="fa fa-undo"></i>
+                                &nbsp;&nbsp;重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="row recover-row">
+                    <div class="row">
+                        <div class="genre_label col-sm-3">
+                            技能累積方式
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary reset" id="reset_recover">
                                 <i class="fa fa-undo"></i>
                                 &nbsp;&nbsp;重置
                             </button>
