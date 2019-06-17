@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.06.17 02:32 -->
+<!-- Last modified : 2019.06.17 15:18 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -425,7 +425,7 @@
                 monster_array.forEach(function(x) {
                     var monster_attr = monster_data.find(function(element){
                         return element.id == x;
-                    }).attibute;
+                    }).attribute;
                     str += "<div class=\"col-sm-1 result\"><a href=\"https://tos.fandom.com/zh/wiki/"+x+"\" target=\"_blank\"><img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img></a><div class=\"monsterId\">"+paddingZeros(x, 3)+"</div></div>";
                 });
             }
