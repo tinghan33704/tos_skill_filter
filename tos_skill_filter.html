@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.06.17 15:18 -->
+<!-- Last modified : 2019.06.20 17:21 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -302,7 +302,7 @@
         
         if(skill_select == false)
         {
-            alert("請先選擇功能");
+            errorAlert(2);
             return ;
         }
         
@@ -671,7 +671,7 @@
                 alert("[Error Code 01] 請檢查網址是否正確");
             break;
             case 2:
-                
+                alert("[Error Code 02] 請先選擇功能");
             break;
             default:
                 
