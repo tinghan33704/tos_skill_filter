@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.07.18 17:18 -->
+<!-- Last modified : 2019.07.23 18:06 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -72,6 +72,24 @@
     .result {
         margin: 8px 0;
     }
+    .tag_wrapper {
+        padding: 5px;
+    }
+    .skill_tag, .genre_tag {
+        font-size: 1.3vw;
+        font-weight: bold;
+        border-radius: 5px;
+        color: white;
+        text-align: center;
+        padding: 5px;
+        cursor: default;
+    }
+    .skill_tag {
+        background-color: rgb(100, 100, 255);
+    }
+    .genre_tag {
+        background-color: rgb(50, 155, 50);
+    }
     .monster_img {
         width: 100%;
     }
@@ -84,6 +102,7 @@
     }
     #result_title {
         display: none;
+        margin: 4px 0;
     }
     
     
@@ -435,6 +454,26 @@
                 str = "<h1 style=\"text-align: center; color: #888888;\">查無結果</h1>";
             }
             return str;
+        });
+        
+        $(".search_tag").html(function(){
+            var tag_html = "";
+            skill_set.forEach(function(element){
+                tag_html += '<div class="col-sm-2 tag_wrapper"><div class="skill_tag" title="'+element+'">'+element+'</div></div>';
+            });
+            attr_set.forEach(function(element){
+                tag_html += '<div class="col-sm-2 tag_wrapper"><div class="genre_tag" title="'+element+'">'+element+'</div></div>';
+            });
+            race_set.forEach(function(element){
+                tag_html += '<div class="col-sm-2 tag_wrapper"><div class="genre_tag" title="'+element+'">'+element+'</div></div>';
+            });
+            star_set.forEach(function(element){
+                tag_html += '<div class="col-sm-2 tag_wrapper"><div class="genre_tag" title="'+element+' ★">'+element+" ★"+'</div></div>';
+            });
+            recover_set.forEach(function(element){
+                tag_html += '<div class="col-sm-2 tag_wrapper"><div class="genre_tag" title="'+element+'">'+element+'</div></div>';
+            });
+            return tag_html;
         });
         
         jumpTo("result_title");
@@ -802,7 +841,8 @@
             <div class="col-sm-3 row_title" id="result_title">
                 搜尋結果
             </div>
-            <div class="col-sm-9 search_tag">
+            <div class="col-sm-9"></div>
+            <div class="col-sm-12 search_tag">
                 
             </div>
             <div class="col-sm-12">
