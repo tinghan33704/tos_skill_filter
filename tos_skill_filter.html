@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.07.23 18:06 -->
+<!-- Last modified : 2019.07.29 22:21 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -441,7 +441,7 @@
             var str = "";
             if(monster_array.length != 0)
             {
-                monster_array.sort((a, b) => a - b);
+                //monster_array.sort((a, b) => a - b);
                 monster_array.forEach(function(x) {
                     var monster_attr = monster_data.find(function(element){
                         return element.id == x;
