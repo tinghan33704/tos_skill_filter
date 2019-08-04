@@ -2174,7 +2174,7 @@ var monster_data = [
 {'id': 2169, 'attribute': '暗', 'race': '神族', 'star': '6', 'recover': ['CD'], 'skill': ['符石轉暗', '種族符石製造', '大幅轉版', '固定轉版']},
 {'id': 60010, 'attribute': '水', 'race': '神族', 'star': '6', 'recover': ['CD'], 'skill': ['符石轉水', '種族符石製造', '大幅轉版', '固定轉版']},
 {'id': 2170, 'attribute': '木', 'race': '強化素材', 'star': '4', 'recover': ['CD'], 'skill': []},
-{'id': 2171, 'attribute': '暗', 'race': '獸類', 'star': '6', 'recover': ['CD'], 'skill': ['增傷', '界王拳', '破防']},
+{'id': 2171, 'attribute': '暗', 'race': '獸類', 'star': '5', 'recover': ['CD'], 'skill': ['增傷', '界王拳', '破防']},
 {'id': 2172, 'attribute': '', 'race': '', 'star': '', 'recover': ['CD'], 'skill': []},
 {'id': 2173, 'attribute': '', 'race': '', 'star': '', 'recover': ['CD'], 'skill': []},
 {'id': 2174, 'attribute': '', 'race': '', 'star': '', 'recover': ['CD'], 'skill': []},
