@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.08.15 23:28 -->
+<!-- Last modified : 2019.08.21 18:03 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -51,7 +51,7 @@
     .genre_label {
         font-size: 2.5vw;
     }
-    .filter-btn, .attr-btn, .race-btn, .star-btn, .recover-btn {
+    .filter-btn, .attr-btn, .race-btn, .star-btn, .charge-btn {
         font-size: 1.8vw;
         font-weight: normal;
         color: black;
@@ -119,7 +119,8 @@
     ['減傷', '意志', '敵方減攻', '迴避', '回血', '自身扣血', '我方傷害吸收', '敵方傷害吸收'],
     ['破防', '直傷', '無法行動', '敵方轉屬', '屬性剋制改變', '排珠', '延長轉珠時間'],
     ['增傷', '界王拳', '攻擊轉屬', '增回', '攻擊力吸收', '共鳴'],
-    ['解鎖', '防鎖', '防毒', '防爆', '無視燃燒', '無視黏腐', '黑白還原', '增加Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升']
+    ['增加Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升'],
+    ['解鎖', '防鎖', '防毒', '防爆', '無視燃燒', '無視黏腐', '黑白還原', '無視拼圖盾', '無視攻前盾', '無視五屬盾']
     ];
 
     var attr_type_string = ['水', '火', '木', '光', '暗'];
@@ -128,7 +129,7 @@
 
     var star_type_string = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
-    var recover_type_string = ['CD', 'EP'];
+    var charge_type_string = ['CD', 'EP'];
 
     
     var filter_set = new Set();
@@ -142,7 +143,7 @@
     const attr_num = attr_type_string.length;
     const race_num = race_type_string.length;
     const star_num = star_type_string.length;
-    const recover_num = recover_type_string.length;
+    const charge_num = charge_type_string.length;
     
     const encode_chart = [
         "0","1","2","3","4","5","6","7","8","9",
@@ -165,7 +166,7 @@
         $("#reset_attr").on("click", resetAttr);
         $("#reset_race").on("click", resetRace);
         $("#reset_star").on("click", resetStar);
-        $("#reset_recover").on("click", resetRecover);
+        $("#reset_charge").on("click", resetCharge);
         
         if(location.search) readUrl();
     });
@@ -276,20 +277,20 @@
             });
         });
         
-        $(".recover-row").html(function()
+        $(".charge-row").html(function()
         {
-            var str = $(".recover-row").html();
+            var str = $(".charge-row").html();
             str += "<div class=\"row skill-group\">";
-            for(var x of recover_type_string)
+            for(var x of charge_type_string)
             {
-                str += "<div class=\"col-sm-2 recover-btn\"\">";
+                str += "<div class=\"col-sm-2 charge-btn\"\">";
                 str += x;
                 str += "</div>";
             }
             str += "</div>";
             return str;
         });
-        $(".recover-btn").each(function(){
+        $(".charge-btn").each(function(){
             $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
             $(this).on("click", function(){
                 $(this).css("background-color", ($(this).css("background-color") != green_str)?green_str:white_str);
@@ -364,14 +365,14 @@
             }
         });
         
-        var recover_set = new Set();
-        var recover_intersect = false;
+        var charge_set = new Set();
+        var charge_intersect = false;
         
-        $(".recover-btn").each(function(){
+        $(".charge-btn").each(function(){
             if($(this).css("background-color") != white_str)
             {
-                recover_set.add($(this).text());
-                recover_intersect = true;
+                charge_set.add($(this).text());
+                charge_intersect = true;
             }
         });
         
@@ -389,12 +390,12 @@
             {
                 if(!star_set.has(x.star)) continue;
             }
-            if(recover_intersect)
+            if(charge_intersect)
             {
                 var non = true;
-                for(var k of x.recover)
+                for(var k of x.charge)
                 {
-                    if(recover_set.has(k))
+                    if(charge_set.has(k))
                     {
                         non = false;
                         break;
@@ -470,7 +471,7 @@
             star_set.forEach(function(element){
                 tag_html += '<div class="col-sm-2 tag_wrapper"><div class="genre_tag" title="'+element+' ★">'+element+" ★"+'</div></div>';
             });
-            recover_set.forEach(function(element){
+            charge_set.forEach(function(element){
                 tag_html += '<div class="col-sm-2 tag_wrapper"><div class="genre_tag" title="'+element+'">'+element+'</div></div>';
             });
             return tag_html;
@@ -544,9 +545,9 @@
         filter_set.clear();
     }
     
-    function resetRecover()
+    function resetCharge()
     {
-        $(".recover-btn").each(function(){
+        $(".charge-btn").each(function(){
             $(this).css("background-color", white_str);
             $(this).css("color", black_str);
             $(this).css("font-weight", "normal");
@@ -560,7 +561,7 @@
         resetAttr();
         resetRace();
         resetStar();
-        resetRecover();
+        resetCharge();
     }
     
     function changeUrl()
@@ -571,7 +572,7 @@
         str += "&attr=" + encode(".attr-btn", attr_num);
         str += "&race=" + encode(".race-btn", race_num);
         str += "&star=" + encode(".star-btn", star_num);
-        str += "&recv=" + encode(".recover-btn", recover_num);
+        str += "&chrg=" + encode(".charge-btn", charge_num);
         str += "&or=" + (or_filter?"1":"0");
         
         window.history.pushState(null, null, "?"+str);
@@ -587,7 +588,7 @@
             errorAlert(1);
             return;
         }
-        var code_name = ["search", "attr", "race", "star", "recv", "or"];
+        var code_name = ["search", "attr", "race", "star", "chrg", "or"];
         for(var i in code_name_array)
         {
             if(code_name_array[i] !== code_name[i])
@@ -609,8 +610,8 @@
         var star_code = decode(code_array[3]);
         setButtonFromUrl(".star-btn", star_code, resetStar);
         
-        var recv_code = decode(code_array[4]);
-        setButtonFromUrl(".recover-btn", recv_code, resetRecover);
+        var chrg_code = decode(code_array[4]);
+        setButtonFromUrl(".charge-btn", chrg_code, resetCharge);
         
         var and_or_code = code_array[5];
         if(and_or_code[0] == "0") andOrChange();
@@ -821,13 +822,13 @@
                 </div>
             </div>
             <div class="col-sm-12">
-                <div class="row recover-row">
+                <div class="row charge-row">
                     <div class="row">
                         <div class="genre_label col-sm-3">
                             技能累積方式
                         </div>
                         <div class="col-sm-2">
-                            <button class="btn btn-primary reset" id="reset_recover">
+                            <button class="btn btn-primary reset" id="reset_charge">
                                 <i class="fa fa-undo"></i>
                                 &nbsp;&nbsp;重置
                             </button>
