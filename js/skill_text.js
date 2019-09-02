@@ -2500,3 +2500,10 @@ function createData(obj)
     console.log(str);
 }
 */
+
+function skillNumber()
+{
+    skill_text.forEach(function(element){
+        if(element.text.length > 1) console.log(element.id+' '+element.text.length);
+    });
+}
