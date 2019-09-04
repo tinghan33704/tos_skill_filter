@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.09.02 19:58 -->
+<!-- Last modified : 2019.09.04 23:40 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -11,7 +11,6 @@
     <script src="./js/popper.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/data.js"></script>
-    <script src="./js/skill_text.js"></script>
 </head>
 <style type="text/css">
     body {
@@ -67,7 +66,7 @@
         width: 100%;
         margin: 30px 0;
     }
-    .start-btn, .and_or_mode, .reset {
+    .start-btn, .and_or_mode, .sort_by, .reset {
         width: 100%;
         font-size: 1.5vw;
     }
@@ -173,6 +172,7 @@
     var white_str = "rgb(255, 255, 255)";
     var black_str = "rgb(0, 0, 0)";
     var or_filter = true;
+    var sort_by = 'id';
     
     const skill_num = skill_type_string.length;
     const attr_num = attr_type_string.length;
@@ -196,6 +196,7 @@
         init();
         $("#start_filter").on("click", startFilter);
         $("#and_or_filter").on("click", andOrChange);
+        $("#sort_by_result").on("click", sortByChange);
         $("#reset_skill").on("click", resetSkill);
         $("#reset_all").on("click", resetAll);
         $("#reset_attr").on("click", resetAttr);
@@ -344,6 +345,8 @@
         changeUrl();
         
         filter_set.clear();
+        
+        var filter_charge_set = new Set();
     
         var skill_set = new Set();
         var skill_select = false;
@@ -397,7 +400,7 @@
         $(".star-btn").each(function(){
             if($(this).css("background-color") != white_str)
             {
-                star_set.add($(this).text()[0]);
+                star_set.add(parseInt($(this).text()[0]));
                 star_intersect = true;
             }
         });
@@ -427,114 +430,183 @@
             {
                 if(!star_set.has(x.star)) continue;
             }
-            if(charge_intersect)
-            {
-                var non = true;
-                for(var k of x.charge)
-                {
-                    if(charge_set.has(k))
-                    {
-                        non = false;
-                        break;
-                    }
-                }
-                if(non) continue;
-            }
             
-            if(or_filter)
+            var skill_num_array = [];
+            for(var ch = 0; ch < x.skill.length; ch ++)
             {
-                var check = false;
-                for(var k of skill_set)
+                if(charge_intersect)
                 {
-                    if(x.skill.includes(k))
-                    {
-                        check = true;
-                        break;
-                    }
+                    var non = true;
+                    if(charge_set.has(x.skill[ch].charge)) non = false;
+                    if(non) continue;
                 }
                 
-                if(!check) continue;
-            }
-            else
-            {
-                var check = true;
-                for(var k of skill_set)
+                if(or_filter)
                 {
-                    if(!x.skill.includes(k))
+                    var check = false;
+                    for(var k of skill_set)
                     {
-                        check = false;
-                        break;
+                        if(x.skill[ch].tag.includes(k))
+                        {
+                            check = true;
+                            break;
+                        }
                     }
+                    
+                    if(!check) continue;
+                }
+                else
+                {
+                    var check = true;
+                    for(var k of skill_set)
+                    {
+                        if(!x.skill[ch].tag.includes(k))
+                        {
+                            check = false;
+                            break;
+                        }
+                    }
+                    
+                    if(!check) continue;
                 }
                 
-                if(!check) continue;
+                var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
+                
+                skill_num_array.push(ch);
+                filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
             }
-            
-            filter_set.add(x.id);
+            if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
         }
         
         var monster_array = Array.from(filter_set);
+        var monster_charge_array = Array.from(filter_charge_set);
+        
+        console.log(monster_charge_array);
+        
         $(".result-row").html(function()
         {
-            var str = "";
-            if(monster_array.length != 0)
+            if(sort_by == 'id')
             {
-                //monster_array.sort((a, b) => a - b);
-                monster_array.forEach(function(x) {
-                    var monster_attr = monster_data.find(function(element){
-                        return element.id == x;
-                    }).attribute;
-                    
-                    var skill = skill_text.find(function(element){
-                        return element.id == x;
-                    }).text;
-                    
-                    var sk_str = "";
-                    var skill_cnt = 0;
-                    skill.forEach(function(element){
-                        if(skill_cnt > 0) sk_str += "<hr style='margin: 5px 0;'>";
+                var str = "";
+                if(monster_array.length != 0)
+                {
+                    //monster_array.sort((a, b) => a - b);
+                    monster_array.forEach(function(x) {
+                        var monster_attr = monster_data.find(function(element){
+                            return element.id == x.id;
+                        }).attribute;
                         
-                        if(element.type == 'normal')
+                        var sk_str = "";
+                        var skill_cnt = 0;
+                        for(s in x.nums)
                         {
-                            sk_str += "<div class='skill_tooltip skill_name'>"+element.name+"</div>";
-                        }
-                        else if(element.type == 'refine')
-                        {
-                            sk_str += "<div class='skill_tooltip skill_name_refine'><img src='./img/refine_"+element.refine+".png' />&nbsp;"+element.name+"</div>";
-                        }
-                        else if(element.type == 'recall')
-                        {
-                            sk_str += "<div class='skill_tooltip skill_name_recall'><img src='./img/recall.png' />&nbsp;"+element.name+"</div>";
+                            var skill = monster_data.find(function(element){
+                                return element.id == x.id;
+                            }).skill[s];
+
+                            
+                            if(skill_cnt > 0) sk_str += "<hr style='margin: 5px 0;'>";
+                            
+                            if(skill.type == 'normal')
+                            {
+                                sk_str += "<div class='skill_tooltip skill_name'>"+skill.name+"</div>";
+                            }
+                            else if(skill.type == 'refine')
+                            {
+                                sk_str += "<div class='skill_tooltip skill_name_refine'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
+                            }
+                            else if(skill.type == 'recall')
+                            {
+                                sk_str += "<div class='skill_tooltip skill_name_recall'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
+                            }
+                            
+                            if('reduce' in skill)
+                            {
+                                sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
+                            }
+                            else
+                            {
+                                sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
+                            }
+                            
+                            sk_str += "<hr style='margin: 5px 0;'>";
+                            sk_str += "<div class='skill_tooltip skill_description'>"+skill.description+"</div>";
+                            
+                            skill_cnt ++;
                         }
                         
-                        if('reduce' in element)
+                        str += "<div class=\"col-sm-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
+                                    "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
+                                        "<img class=\"monster_img\" src=\"./img/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
+                                    "</a>"+
+                                    "<div class=\"monsterId\">"+paddingZeros(x.id, 3)+"</div>"+
+                                "</div>";
+                    });
+                }
+                else
+                {
+                    str = "<h1 style=\"text-align: center; color: #888888;\">查無結果</h1>";
+                }
+                return str;
+            }
+            else if(sort_by == 'charge')
+            {
+                monster_charge_array.sort(function(a, b) { 
+                    return a.charge - b.charge;
+                });
+                
+                var str = "";
+                if(monster_charge_array.length != 0)
+                {
+                    monster_charge_array.forEach(function(x) {
+                        var monster_attr = monster_data.find(function(element){
+                            return element.id == x.id;
+                        }).attribute;
+                        
+                        var sk_str = "";
+                        var skill = monster_data.find(function(element){
+                            return element.id == x.id;
+                        }).skill[x.num];
+                            
+                        if(skill.type == 'normal')
                         {
-                            sk_str += "<div class='skill_tooltip skill_charge'>"+element.charge+"&nbsp;"+element.num+" → "+(element.num-element.reduce)+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_name'>"+skill.name+"</div>";
+                        }
+                        else if(skill.type == 'refine')
+                        {
+                            sk_str += "<div class='skill_tooltip skill_name_refine'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
+                        }
+                        else if(skill.type == 'recall')
+                        {
+                            sk_str += "<div class='skill_tooltip skill_name_recall'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
+                        }
+                        
+                        if('reduce' in skill)
+                        {
+                            sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
                         }
                         else
                         {
-                            sk_str += "<div class='skill_tooltip skill_charge'>"+element.charge+"&nbsp;"+element.num+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                         }
                         
                         sk_str += "<hr style='margin: 5px 0;'>";
-                        sk_str += "<div class='skill_tooltip skill_description'>"+element.description+"</div>";
-                        
-                        skill_cnt ++;
+                        sk_str += "<div class='skill_tooltip skill_description'>"+skill.description+"</div>";
+                            
+                        str += "<div class=\"col-sm-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
+                                    "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
+                                        "<img class=\"monster_img\" src=\"./img/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
+                                    "</a>"+
+                                    "<div class=\"monsterId\">"+paddingZeros(x.id, 3)+"</div>"+
+                                "</div>";
                     });
-                    
-                    str += "<div class=\"col-sm-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
-                                "<a href=\"https://tos.fandom.com/zh/wiki/"+x+"\" target=\"_blank\">"+
-                                    "<img class=\"monster_img\" src=\"./img/"+x+".png\" title=\""+x+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
-                                "</a>"+
-                                "<div class=\"monsterId\">"+paddingZeros(x, 3)+"</div>"+
-                            "</div>";
-                });
+                }
+                else
+                {
+                    str = "<h1 style=\"text-align: center; color: #888888;\">查無結果</h1>";
+                }
+                return str;
             }
-            else
-            {
-                str = "<h1 style=\"text-align: center; color: #888888;\">查無結果</h1>";
-            }
-            return str;
         });
         $('.result').tooltip({ boundary: 'scrollParent', placement: 'auto', container: 'body'});
         
@@ -583,6 +655,20 @@
         else
         {
             $("#and_or_filter").removeClass("btn-danger").addClass("btn-warning").text("OR 搜尋");
+        }
+    }
+    
+    function sortByChange()
+    {
+        if(sort_by == 'charge')
+        {
+            sort_by = 'id';
+            $("#sort_by_result").text("依編號排序");
+        }
+        else if(sort_by == 'id')
+        {
+            sort_by = 'charge';
+            $("#sort_by_result").text("依 CD/EP 排序");
         }
     }
     
@@ -811,18 +897,23 @@
                     <a class="navbar-brand" target="_blank" href="https://forum.gamer.com.tw/Co.php?bsn=23805&sn=3619702"><i class="fa fa-question-circle"></i></a>
                 </div>
                 <div class="col-sm-8">
-                    <div class="col-sm-4 navbar-btn">
+                    <div class="col-sm-3 navbar-btn">
                         <button type="button" class="btn btn-primary reset" id="reset_all">
                             <i class="fa fa-undo"></i>
                             &nbsp;&nbsp;全部重置
                         </button>
                     </div>
-                    <div class="col-sm-4 navbar-btn">
+                    <div class="col-sm-3 navbar-btn">
+                        <button type="button" class="btn btn-light sort_by" id="sort_by_result">
+                            依編號排序
+                        </button>
+                    </div>
+                    <div class="col-sm-3 navbar-btn">
                         <button type="button" class="btn btn-warning and_or_mode" id="and_or_filter">
                             OR 搜尋
                         </button>
                     </div>
-                    <div class="col-sm-4 navbar-btn">
+                    <div class="col-sm-3 navbar-btn">
                         <button type="button" class="btn btn-success start-btn" id="start_filter">
                             <i class="fa fa-play-circle"></i>
                             &nbsp;&nbsp;搜尋
