@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.09.05 13:53 -->
+<!-- Last modified : 2019.09.05 18:09 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -105,6 +105,25 @@
     #result_title {
         display: none;
         margin: 4px 0;
+    }
+    .charge_num_div {
+        font-size: 1.7em;
+        font-weight: bold;
+        color: #5A01C5;
+    }
+    .charge_num_hr_top {
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0,0,0,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+        margin: 10px 0;
+    }
+    .charge_num_hr_bottom {
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0,0,0,0.4);
+        border-bottom: 1px solid rgba(255,255,255,0.8);
+        margin: 10px 0;
     }
     
     .tooltip-inner {
@@ -556,6 +575,7 @@
                 });
                 
                 var str = "";
+                var now_cd = 0;
                 if(monster_charge_array.length != 0)
                 {
                     monster_charge_array.forEach(function(x) {
@@ -567,6 +587,14 @@
                         var skill = monster_data.find(function(element){
                             return element.id == x.id;
                         }).skill[x.num];
+                        
+                        if(x.charge != now_cd)
+                        {
+                            now_cd = x.charge;
+                            str += "<div class='col-sm-12'><hr class='charge_num_hr_bottom'></div>"
+                            str += "<div class='col-sm-12 charge_num_div'>&nbsp;"+now_cd+"</div>"
+                            str += "<div class='col-sm-12'><hr class='charge_num_hr_top'></div>"
+                        }
                             
                         if(skill.type == 'normal')
                         {
