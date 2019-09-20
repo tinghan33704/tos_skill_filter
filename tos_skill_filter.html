@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2019.09.19 21:11 -->
+<!-- Last modified : 2019.09.20 21:35 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -520,12 +520,12 @@
                         
                         var sk_str = "";
                         var skill_cnt = 0;
-                        for(s in x.nums)
+                        
+                        for(s of x.nums)
                         {
                             var skill = monster_data.find(function(element){
                                 return element.id == x.id;
                             }).skill[s];
-
                             
                             if(skill_cnt > 0) sk_str += "<hr style='margin: 5px 0;'>";
                             
