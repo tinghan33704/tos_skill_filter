@@ -315,10 +315,10 @@
         
         skill_set.clear();
         
-        $(".filter-btn").each(function(){
-            if($(this).css("background-color") != white_str)
+        $(".filter-row .filter").each(function(){
+            if($(this).prop('checked'))
             {
-                skill_set.add($(this).text());
+                skill_set.add($(this).next("label").text());
                 skill_select = true;
             }
         });
@@ -337,10 +337,10 @@
         var attr_set = new Set();
         var attr_intersect = false;
         
-        $(".attr-btn").each(function(){
-            if($(this).css("background-color") != white_str)
+        $(".attr-row .filter").each(function(){
+            if($(this).prop('checked'))
             {
-                attr_set.add($(this).text());
+                attr_set.add($(this).next("label").text());
                 attr_intersect = true;
             }
         });
@@ -348,10 +348,10 @@
         var race_set = new Set();
         var race_intersect = false;
         
-        $(".race-btn").each(function(){
-            if($(this).css("background-color") != white_str)
+        $(".race-row .filter").each(function(){
+            if($(this).prop('checked'))
             {
-                race_set.add($(this).text());
+                race_set.add($(this).next("label").text());
                 race_intersect = true;
             }
         });
@@ -360,9 +360,9 @@
         var star_intersect = false;
         
         $(".star-btn").each(function(){
-            if($(this).css("background-color") != white_str)
+            if($(this).prop('checked'))
             {
-                star_set.add(parseInt($(this).text()[0]));
+                star_set.add(parseInt($(this).next("label").text()[0]));
                 star_intersect = true;
             }
         });
@@ -371,9 +371,9 @@
         var charge_intersect = false;
         
         $(".charge-btn").each(function(){
-            if($(this).css("background-color") != white_str)
+            if($(this).prop('checked'))
             {
-                charge_set.add($(this).text());
+                charge_set.add($(this).next("label").text());
                 charge_intersect = true;
             }
         });
@@ -638,7 +638,7 @@
         else if(sort_by == 'id')
         {
             sort_by = 'charge';
-            $("#sort_by_result").text("依 CD/EP 排序");
+            $("#sort_by_result").text("依 CD 排序");
         }
     }
     
@@ -685,11 +685,11 @@
     {
         var str = "";
         
-        str += "search=" + encode(".filter-btn", skill_num);
-        str += "&attr=" + encode(".attr-btn", attr_num);
-        str += "&race=" + encode(".race-btn", race_num);
-        str += "&star=" + encode(".star-btn", star_num);
-        str += "&chrg=" + encode(".charge-btn", charge_num);
+        str += "search=" + encode(".filter-row", skill_num);
+        str += "&attr=" + encode(".attr-row", attr_num);
+        str += "&race=" + encode(".race-row", race_num);
+        str += "&star=" + encode(".star-row", star_num);
+        str += "&chrg=" + encode(".charge-row", charge_num);
         str += "&or=" + (or_filter?"1":"0");
         
         window.history.pushState(null, null, "?"+str);
@@ -716,19 +716,19 @@
         }
         
         var skill_code = decode(code_array[0]);
-        setButtonFromUrl(".filter-btn", skill_code, resetSkill);
+        setButtonFromUrl(".filter-row", skill_code, resetSkill);
         
         var attr_code = decode(code_array[1]);
-        setButtonFromUrl(".attr-btn", attr_code, resetAttr);
+        setButtonFromUrl(".attr-row", attr_code, resetAttr);
         
         var race_code = decode(code_array[2]);
-        setButtonFromUrl(".race-btn", race_code, resetRace);
+        setButtonFromUrl(".race-row", race_code, resetRace);
         
         var star_code = decode(code_array[3]);
-        setButtonFromUrl(".star-btn", star_code, resetStar);
+        setButtonFromUrl(".star-row", star_code, resetStar);
         
         var chrg_code = decode(code_array[4]);
-        setButtonFromUrl(".charge-btn", chrg_code, resetCharge);
+        setButtonFromUrl(".charge-row", chrg_code, resetCharge);
         
         var and_or_code = code_array[5];
         if(and_or_code[0] == "0") andOrChange();
@@ -743,8 +743,8 @@
         var cnt = 1, enc_bin = 0;
         var str = "";
         
-        $(type).each(function(){
-            enc_bin = enc_bin * 2 + (($(this).css("background-color") != white_str)?1:0);
+        $(type+' .filter').each(function(){
+            enc_bin = enc_bin * 2 + ($(this).prop('checked')?1:0);
             if(cnt % 6 == 0)
             {
                 str += encode_chart[enc_bin];
@@ -763,7 +763,7 @@
             }
             cnt ++;
         }
-        
+
         return str;
     }
     
@@ -786,7 +786,7 @@
                 }
             }
         }
-        
+
         return bin_str;
     }
     
@@ -795,7 +795,7 @@
         callback();
         
         var cnt = 0;
-        $(type).each(function(){
+        $(type+' .filter').each(function(){
             if(data[cnt] == '1') $(this).click();
             cnt ++;
         });
