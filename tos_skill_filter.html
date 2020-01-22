@@ -15,7 +15,23 @@
 <style type="text/css">
     body {
         font-family: Microsoft JhengHei;
-        padding-top: 90px;
+    }
+    .filter[type=checkbox] {
+        display: none;
+    }
+    .filter[type=checkbox]:checked + label {
+        background-color: rgb(100, 100, 255); 
+        color: rgb(255, 255, 255); 
+        font-weight: bold;
+    }
+    .filter[type=checkbox] + label {
+        transition: 0.5s;
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 5px;
+    }
+    .navbar-brand {
+        color: #d6d6d6;
     }
     .filter {
         width: 80%;
@@ -33,19 +49,7 @@
         width: 100%;
         border-radius: 5px;
     }
-    
-    #navtitle {
-        font-size: 2.4vw;
-    }
-    
-    .navbar-btn {
-        margin: 0px;
-    }
-    
-    .row {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
+
     .row_title {
         font-size: 3vw;
     }
@@ -66,10 +70,7 @@
         width: 100%;
         margin: 30px 0;
     }
-    .start-btn, .and_or_mode, .sort_by, .reset {
-        width: 100%;
-        font-size: 1.5vw;
-    }
+    
     .sort_by {
         background-color: #EEEEEE;
     }
@@ -232,137 +233,73 @@
         if(location.search) readUrl();
     });
     
-    $(window).resize(function(){
-        if(window.matchMedia("(min-width: 768px)").matches)
-        {
-            $(".navbar-btn").css({"margin-top": ($(".navrow").height()-$(".navbar-btn").height())/2});
-        }
-        else
-        {
-            $(".navbar-btn").css({"margin-top": 0});
-        }
-    });
-    
     function init()
     {
-        $(".navbar-btn").css({"margin-top": ($(".navrow").height()-$(".navbar-btn").height())/2});
-    
+        var i = 0;    
         $(".filter-row").html(function()
         {
             var str = $(".filter-row").html();
             for(var x of skill_type_string)
             {
-                str += "<div class=\"row skill-group\">";
+                str += "<div class='col-12 my-2'></div>";
                 for(var s of x)
-                {
-                    str += "<div class=\"col-sm-2 filter-btn\"\">";
-                    str += s;
-                    str += "</div>";
+                {   
+                    str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+s+"</label></div>";
+                    i ++;
                 }
-                str += "</div>";
             }
             return str;
-        });
-        $(".filter-btn").each(function(){
-            $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
-            $(this).on("click", function(){
-                $(this).css("background-color", ($(this).css("background-color") != blue_str)?blue_str:white_str);
-                $(this).css("color", ($(this).css("color") != black_str)?black_str:white_str);
-                $(this).css("font-weight", ($(this).css("background-color") != blue_str)?"normal":"bold");
-            });
         });
         
         $(".attr-row").html(function()
         {
             var str = $(".attr-row").html();
-            str += "<div class=\"row skill-group\">";
+            str += "<div class='col-12 my-2'></div>";
             for(var x of attr_type_string)
             {
-                str += "<div class=\"col-sm-2 attr-btn\"\">";
-                str += x;
-                str += "</div>";
+                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+"</label></div>";
+                i ++;
             }
-            str += "</div>";
             return str;
-        });
-        $(".attr-btn").each(function(){
-            $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
-            $(this).on("click", function(){
-                $(this).css("background-color", ($(this).css("background-color") != green_str)?green_str:white_str);
-                $(this).css("color", ($(this).css("color") != black_str)?black_str:white_str);
-                $(this).css("font-weight", ($(this).css("background-color") != green_str)?"normal":"bold");
-            });
         });
         
         $(".race-row").html(function()
         {
             var str = $(".race-row").html();
-            str += "<div class=\"row skill-group\">";
+            str += "<div class='col-12 my-2'></div>";
             for(var x of race_type_string)
             {
-                str += "<div class=\"col-sm-2 race-btn\"\">";
-                str += x;
-                str += "</div>";
+                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+"</label></div>";
+                i ++;
             }
-            str += "</div>";
             return str;
-        });
-        $(".race-btn").each(function(){
-            $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
-            $(this).on("click", function(){
-                $(this).css("background-color", ($(this).css("background-color") != green_str)?green_str:white_str);
-                $(this).css("color", ($(this).css("color") != black_str)?black_str:white_str);
-                $(this).css("font-weight", ($(this).css("background-color") != green_str)?"normal":"bold");
-            });
         });
         
         $(".star-row").html(function()
         {
             var str = $(".star-row").html();
-            str += "<div class=\"row skill-group\">";
+            str += "<div class='col-12 my-2'></div>";
             for(var x of star_type_string)
             {
-                str += "<div class=\"col-sm-2 star-btn\"\">";
-                str += x+" ★";
-                str += "</div>";
+                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+" ★</label></div>";
+                i ++;
             }
-            str += "</div>";
             return str;
-        });
-        $(".star-btn").each(function(){
-            $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
-            $(this).on("click", function(){
-                $(this).css("background-color", ($(this).css("background-color") != green_str)?green_str:white_str);
-                $(this).css("color", ($(this).css("color") != black_str)?black_str:white_str);
-                $(this).css("font-weight", ($(this).css("background-color") != green_str)?"normal":"bold");
-            });
         });
         
         $(".charge-row").html(function()
         {
             var str = $(".charge-row").html();
-            str += "<div class=\"row skill-group\">";
+            str += "<div class='col-12 my-2'></div>";
             for(var x of charge_type_string)
             {
-                str += "<div class=\"col-sm-2 charge-btn\"\">";
-                str += x;
-                str += "</div>";
+                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+"</label></div>";
+                i ++;
             }
-            str += "</div>";
             return str;
-        });
-        $(".charge-btn").each(function(){
-            $(this).css({"background-color":white_str}, {"color":black_str}, {"font-weight":"normal"});
-            $(this).on("click", function(){
-                $(this).css("background-color", ($(this).css("background-color") != green_str)?green_str:white_str);
-                $(this).css("color", ($(this).css("color") != black_str)?black_str:white_str);
-                $(this).css("font-weight", ($(this).css("background-color") != green_str)?"normal":"bold");
-            });
         });
         
         or_filter = true;
-        
-        //$('[data-toggle="tooltip"]').tooltip();
     }
     
     function startFilter()
@@ -922,32 +859,32 @@
 </script>
     
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="row navrow">
-                <div class="col-sm-4">
-                    <a class="navbar-brand" id="navtitle" href="#">神魔之塔主動技搜尋器</a>
-                    <a class="navbar-brand" target="_blank" href="https://forum.gamer.com.tw/Co.php?bsn=23805&sn=3619702"><i class="fa fa-question-circle"></i></a>
-                </div>
-                <div class="col-sm-8">
-                    <div class="col-sm-3 navbar-btn">
-                        <button type="button" class="btn btn-primary reset" id="reset_all">
+    <div class="container-fluid sticky-top bg-dark py-1">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <a class="navbar-brand" id="navtitle" href="#">神魔之塔主動技搜尋器</a>
+                <a class="navbar-brand" target="_blank" href="https://forum.gamer.com.tw/Co.php?bsn=23805&sn=3619702"><i class="fa fa-question-circle"></i></a>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="row">
+                    <div class="col-12 col-sm-3 mb-1">
+                        <button type="button" class="btn btn-primary btn-block reset" id="reset_all">
                             <i class="fa fa-undo"></i>
-                            &nbsp;&nbsp;全部重置
+                            &nbsp;全部重置
                         </button>
                     </div>
-                    <div class="col-sm-3 navbar-btn">
-                        <button type="button" class="btn sort_by" id="sort_by_result">
+                    <div class="col-12 col-sm-3 mb-1">
+                        <button type="button" class="btn btn-block sort_by" id="sort_by_result">
                             依編號排序
                         </button>
                     </div>
-                    <div class="col-sm-3 navbar-btn">
-                        <button type="button" class="btn btn-warning and_or_mode" id="and_or_filter">
+                    <div class="col-12 col-sm-3 mb-1">
+                        <button type="button" class="btn btn-warning btn-block and_or_mode" id="and_or_filter">
                             OR 搜尋
                         </button>
                     </div>
-                    <div class="col-sm-3 navbar-btn">
-                        <button type="button" class="btn btn-success start-btn" id="start_filter">
+                    <div class="col-12 col-sm-3 mb-1">
+                        <button type="button" class="btn btn-success btn-block start-btn" id="start_filter">
                             <i class="fa fa-play-circle"></i>
                             &nbsp;&nbsp;搜尋
                         </button>
@@ -955,92 +892,81 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
     <div class="filter container">
         <div class="row">
-            <div class="col-sm-12 row_title">
-                搜尋條件
+            <div class="col-12 mt-5">
+                <h1>搜尋條件</h1>
             </div>
-            <div class="col-sm-12">
+            <div class="col-12">
                 <hr>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <div class="row filter-row">
-                    <div class="row">
-                        <div class="genre_label col-sm-3">
-                            功能
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-primary reset" id="reset_skill">
-                                <i class="fa fa-undo"></i>
-                                &nbsp;&nbsp;重置
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12">
+                <h3>主動技</h3>
             </div>
-            <div class="col-sm-12">
-                <div class="row attr-row">
-                    <div class="row">
-                        <div class="genre_label col-sm-3">
-                            召喚獸屬性
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-primary reset" id="reset_attr">
-                                <i class="fa fa-undo"></i>
-                                &nbsp;&nbsp;重置
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-block reset" id="reset_skill">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
             </div>
-            <div class="col-sm-12">
-                <div class="row race-row">
-                    <div class="row">
-                        <div class="genre_label col-sm-3">
-                            召喚獸種族
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-primary reset" id="reset_race">
-                                <i class="fa fa-undo"></i>
-                                &nbsp;&nbsp;重置
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div class="row filter-row"></div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+                <h3>召喚獸屬性</h3>
             </div>
-            <div class="col-sm-12">
-                <div class="row star-row">
-                    <div class="row">
-                        <div class="genre_label col-sm-3">
-                            召喚獸稀有度
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-primary reset" id="reset_star">
-                                <i class="fa fa-undo"></i>
-                                &nbsp;&nbsp;重置
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-block reset" id="reset_attr">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
             </div>
-            <div class="col-sm-12">
-                <div class="row charge-row">
-                    <div class="row">
-                        <div class="genre_label col-sm-3">
-                            技能累積方式
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-primary reset" id="reset_charge">
-                                <i class="fa fa-undo"></i>
-                                &nbsp;&nbsp;重置
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div class="row attr-row"></div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+                <h3>召喚獸種族</h3>
             </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-block reset" id="reset_race">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
+            </div>
+        </div>
+        <div class="row race-row"></div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+                <h3>召喚獸稀有度</h3>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-block reset" id="reset_star">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
+            </div>
+        </div>
+        <div class="row star-row"></div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+                <h3>技能累積方式</h3>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary btn-block reset" id="reset_star">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
+            </div>
+        </div>
+        <div class="row charge-row"></div>
+        <div class="row">
             <div class="col-sm-12">
                 <hr>
             </div>
