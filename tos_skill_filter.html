@@ -644,51 +644,31 @@
     
     function resetSkill()
     {
-        $(".filter-btn").each(function(){
-            $(this).css("background-color", white_str);
-            $(this).css("color", black_str);
-            $(this).css("font-weight", "normal");
-        });
+        $(".filter").prop('checked', false);
         filter_set.clear();
     }
     
     function resetAttr()
     {
-        $(".attr-btn").each(function(){
-            $(this).css("background-color", white_str);
-            $(this).css("color", black_str);
-            $(this).css("font-weight", "normal");
-        });
+        $(".attr-row .filter").prop('checked', false);
         filter_set.clear();
     }
     
     function resetRace()
     {
-        $(".race-btn").each(function(){
-            $(this).css("background-color", white_str);
-            $(this).css("color", black_str);
-            $(this).css("font-weight", "normal");
-        });
+        $(".race-row .filter").prop('checked', false);
         filter_set.clear();
     }
     
     function resetStar()
     {
-        $(".star-btn").each(function(){
-            $(this).css("background-color", white_str);
-            $(this).css("color", black_str);
-            $(this).css("font-weight", "normal");
-        });
+        $(".star-row .filter").prop('checked', false);
         filter_set.clear();
     }
     
     function resetCharge()
     {
-        $(".charge-btn").each(function(){
-            $(this).css("background-color", white_str);
-            $(this).css("color", black_str);
-            $(this).css("font-weight", "normal");
-        });
+        $(".charge-row .filter").prop('checked', false);
         filter_set.clear();
     }
     
@@ -959,7 +939,7 @@
                 <h3>技能累積方式</h3>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary btn-block reset" id="reset_star">
+                <button class="btn btn-primary btn-block reset" id="reset_charge">
                     <i class="fa fa-undo"></i>
                     &nbsp;&nbsp;重置
                 </button>
