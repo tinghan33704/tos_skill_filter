@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.02.01 12:59 -->
+<!-- Last modified : 2020.02.05 01:16 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -30,8 +30,10 @@
         border: 1px solid black;
         border-radius: 5px;
     }
-    .navbar-brand {
+    .navbar-brand, .navbar-brand:hover {
+        font-size: 1.6vw;
         color: #d6d6d6;
+        text-decoration: none;
     }
     .filter {
         width: 80%;
@@ -56,8 +58,11 @@
     .genre_label {
         font-size: 2.5vw;
     }
+    .btn-shell {
+        padding: 3px;
+    }
     .filter-btn, .attr-btn, .race-btn, .star-btn, .charge-btn {
-        font-size: 1.8vw;
+        font-size: 1.6vw;
         font-weight: normal;
         color: black;
         text-align: center;
@@ -71,6 +76,9 @@
         margin: 30px 0;
     }
     
+    .top-btn {
+        font-size: 1.5vw;
+    }
     .sort_by {
         background-color: #EEEEEE;
     }
@@ -135,7 +143,7 @@
     }
     .skill_tooltip {
         font-family: Microsoft JhengHei;
-        /*margin: 5px;*/
+        margin: auto;
     }
     .skill_name {
         color: yellow;
@@ -241,7 +249,7 @@
                 str += "<div class='col-12 my-2'></div>";
                 for(var s of x)
                 {   
-                    str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+s+"</label></div>";
+                    str += "<div class='col-6 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center filter-btn' for='filter-"+i+"'>"+s+"</label></div>";
                     i ++;
                 }
             }
@@ -254,7 +262,7 @@
             str += "<div class='col-12 my-2'></div>";
             for(var x of attr_type_string)
             {
-                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+"</label></div>";
+                str += "<div class='col-6 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center attr-btn' for='filter-"+i+"'>"+x+"</label></div>";
                 i ++;
             }
             return str;
@@ -266,7 +274,7 @@
             str += "<div class='col-12 my-2'></div>";
             for(var x of race_type_string)
             {
-                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+"</label></div>";
+                str += "<div class='col-6 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center race-btn' for='filter-"+i+"'>"+x+"</label></div>";
                 i ++;
             }
             return str;
@@ -278,7 +286,7 @@
             str += "<div class='col-12 my-2'></div>";
             for(var x of star_type_string)
             {
-                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+" ★</label></div>";
+                str += "<div class='col-6 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center star-btn' for='filter-"+i+"'>"+x+" ★</label></div>";
                 i ++;
             }
             return str;
@@ -290,7 +298,7 @@
             str += "<div class='col-12 my-2'></div>";
             for(var x of charge_type_string)
             {
-                str += "<div class='col-6 col-md-4 col-lg-3'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center' for='filter-"+i+"'>"+x+"</label></div>";
+                str += "<div class='col-6 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='filter-"+i+"'><label class='p-1 w-100 text-center charge-btn' for='filter-"+i+"'>"+x+"</label></div>";
                 i ++;
             }
             return str;
@@ -457,7 +465,7 @@
                                 return element.id == x.id;
                             }).skill[s];
                             
-                            if(skill_cnt > 0) sk_str += "<hr style='margin: 5px 0;'>";
+                            //if(skill_cnt > 0) sk_str += "<hr style='border-top: 1px dotted red;'>";
                             
                             if(skill.type == 'normal')
                             {
@@ -481,13 +489,13 @@
                                 sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                             }
                             
-                            sk_str += "<hr style='margin: 5px 0;'>";
+                            sk_str += "<hr style='border-top: 1px dotted red;'>";
                             sk_str += "<div class='skill_tooltip skill_description'>"+skill.description+"</div>";
                             
                             skill_cnt ++;
                         }
                         
-                        str += "<div class=\"col-3 col-md-2 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
+                        str += "<div class=\"col-3 col-md-2 col-lg-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
                                     "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
                                         "<img class=\"monster_img\" src=\"./img/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
                                     "</a>"+
@@ -551,10 +559,10 @@
                             sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                         }
                         
-                        sk_str += "<hr style='margin: 5px 0;'>";
+                        sk_str += "<hr style='margin: 5px 0;' size='30px'>";
                         sk_str += "<div class='skill_tooltip skill_description'>"+skill.description+"</div>";
                             
-                        str += "<div class=\"col-sm-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
+                        str += "<div class=\"col-3 col-md-1 col-lg-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
                                     "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
                                         "<img class=\"monster_img\" src=\"./img/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
                                     "</a>"+
@@ -629,7 +637,7 @@
         else if(sort_by == 'id')
         {
             sort_by = 'charge';
-            $("#sort_by_result").text("依 CD 排序");
+            $("#sort_by_result").text("依 CD/EP 排序");
         }
     }
     
@@ -839,23 +847,23 @@
             <div class="col-12 col-lg-8">
                 <div class="row">
                     <div class="col-12 col-sm-3 mb-1">
-                        <button type="button" class="btn btn-primary btn-block reset" id="reset_all">
+                        <button type="button" class="btn btn-primary btn-block top-btn reset" id="reset_all">
                             <i class="fa fa-undo"></i>
                             &nbsp;全部重置
                         </button>
                     </div>
                     <div class="col-12 col-sm-3 mb-1">
-                        <button type="button" class="btn btn-block sort_by" id="sort_by_result">
+                        <button type="button" class="btn btn-block top-btn sort_by" id="sort_by_result">
                             依編號排序
                         </button>
                     </div>
                     <div class="col-12 col-sm-3 mb-1">
-                        <button type="button" class="btn btn-warning btn-block and_or_mode" id="and_or_filter">
+                        <button type="button" class="btn btn-warning btn-block top-btn and_or_mode" id="and_or_filter">
                             OR 搜尋
                         </button>
                     </div>
                     <div class="col-12 col-sm-3 mb-1">
-                        <button type="button" class="btn btn-success btn-block start-btn" id="start_filter">
+                        <button type="button" class="btn btn-success btn-block top-btn start-btn" id="start_filter">
                             <i class="fa fa-play-circle"></i>
                             &nbsp;&nbsp;搜尋
                         </button>
@@ -875,10 +883,10 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <h3>主動技</h3>
+                <h3>功能</h3>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary btn-block reset" id="reset_skill">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_skill">
                     <i class="fa fa-undo"></i>
                     &nbsp;&nbsp;重置
                 </button>
@@ -891,7 +899,7 @@
                 <h3>召喚獸屬性</h3>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary btn-block reset" id="reset_attr">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_attr">
                     <i class="fa fa-undo"></i>
                     &nbsp;&nbsp;重置
                 </button>
@@ -904,7 +912,7 @@
                 <h3>召喚獸種族</h3>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary btn-block reset" id="reset_race">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_race">
                     <i class="fa fa-undo"></i>
                     &nbsp;&nbsp;重置
                 </button>
@@ -917,7 +925,7 @@
                 <h3>召喚獸稀有度</h3>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary btn-block reset" id="reset_star">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_star">
                     <i class="fa fa-undo"></i>
                     &nbsp;&nbsp;重置
                 </button>
@@ -930,7 +938,7 @@
                 <h3>技能累積方式</h3>
             </div>
             <div class="col-12">
-                <button class="btn btn-primary btn-block reset" id="reset_charge">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_charge">
                     <i class="fa fa-undo"></i>
                     &nbsp;&nbsp;重置
                 </button>
@@ -942,7 +950,7 @@
                 <hr>
             </div>
             <div class="col-12" id="result_title">
-                <h3>搜尋結果</h3>
+                <h1>搜尋結果</h1>
             </div>
             <div class="col-12 search_tag d-flex flex-wrap">
                 
