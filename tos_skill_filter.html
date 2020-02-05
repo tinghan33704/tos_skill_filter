@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.02.05 17:25 -->
+<!-- Last modified : 2020.02.05 22:00 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -360,7 +360,7 @@
         var star_set = new Set();
         var star_intersect = false;
         
-        $(".star-btn").each(function(){
+        $(".star-row .filter").each(function(){
             if($(this).prop('checked'))
             {
                 star_set.add(parseInt($(this).next("label").text()[0]));
@@ -371,7 +371,7 @@
         var charge_set = new Set();
         var charge_intersect = false;
         
-        $(".charge-btn").each(function(){
+        $(".charge-row .filter").each(function(){
             if($(this).prop('checked'))
             {
                 charge_set.add($(this).next("label").text());
