@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.02.05 22:00 -->
+<!-- Last modified : 2020.02.10 02:24 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -168,6 +168,41 @@
         font-weight: bold;
         float: right;
     }
+    
+    .toTop {
+        width: 3rem;
+        height: 3rem;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 20%;
+        opacity: 0.6;
+        background: #000;
+        cursor: pointer;
+        position:fixed;
+        right: 1rem;
+        bottom: 1rem;
+        display: none;
+    }
+    .toTop::before, .toTop::after {
+        width: 25px;
+        height: 6px;
+        border-radius: 3px;
+        background: #FFF;
+        position: absolute;
+        content: "";
+    }
+    .toTop::before {
+        transform: rotate(-45deg) translate(0, -50%);
+        left: 0.42rem;
+    }
+    .toTop::after {
+        transform: rotate(45deg) translate(0, -50%);
+        right: 0.42rem;
+    }
+    .toTop:focus {
+        outline: none;
+    }
 </style>
 
 <script type="text/javascript" charset="UTF-8">
@@ -182,7 +217,7 @@
     ['減傷', '意志', '敵方減攻', '迴避', '回血', '自身扣血', '我方傷害吸收', '敵方傷害吸收'],
     ['破防', '直傷', '屬性剋制改變', '排珠', '延長轉珠時間'],
     ['增傷', '界王拳', '攻擊轉屬', '增回', '攻擊力吸收', '限制成員攻擊', '共鳴'],
-    ['增加Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升'],
+    ['增加Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升', '隨時關閉'],
     ['無法行動', '敵方轉屬', '凍結敵方', '點燃敵方', '石化敵方', '電擊敵方', '寄生敵方', '敵方中毒', '魅惑敵方', '暈擊敵方'],
     ['解鎖', '防鎖', '防毒', '防爆', '防反擊', '無視燃燒', '無視黏腐', '黑白還原', '無視拼圖盾', '無視攻前盾', '無視五屬盾', '無視固定連擊盾'],
     ['風化符石處理', '凍結符石處理', '弱化符石處理', '電擊符石處理', '石化符石處理', '化血符石處理']
@@ -241,7 +276,19 @@
     function init()
     {
         $(".row.result-row").hide();
-        var i = 0;    
+        
+        $('#toTop-btn').click(function(){ 
+            $('html,body').animate({scrollTop:0}, 333);
+        });
+        $(window).scroll(function() {
+            if ( $(this).scrollTop() > 300 ){
+                $('#toTop-btn').fadeIn(222);
+            } else {
+                $('#toTop-btn').stop().fadeOut(222);
+            }
+        }).scroll();
+        
+        var i = 0;
         $(".filter-row").html(function()
         {
             var str = $(".filter-row").html();
@@ -836,6 +883,10 @@
         }
     }
     
+    $(function(){
+        
+    });
+    
 </script>
     
 <body>
@@ -964,6 +1015,7 @@
         </div>
         <div class="row my-5"></div>
     </div>
+    <button type="button" id="toTop-btn" class="toTop"></button>
     
 </body>
 </html>
