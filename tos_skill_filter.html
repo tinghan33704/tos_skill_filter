@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.02.10 02:24 -->
+<!-- Last modified : 2020.02.14 21:43 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -277,15 +277,14 @@
     {
         $(".row.result-row").hide();
         
-        $('#toTop-btn').click(function(){ 
-            $('html,body').animate({scrollTop:0}, 333);
+        $('#toTop-btn').click(function()
+        { 
+            $('html,body').animate({scrollTop:0}, 300);
         });
-        $(window).scroll(function() {
-            if ( $(this).scrollTop() > 300 ){
-                $('#toTop-btn').fadeIn(222);
-            } else {
-                $('#toTop-btn').stop().fadeOut(222);
-            }
+        $(window).scroll(function()
+        {
+            if ($(this).scrollTop() > 300) $('#toTop-btn').fadeIn(200);
+            else $('#toTop-btn').stop().fadeOut(200);
         }).scroll();
         
         var i = 0;
