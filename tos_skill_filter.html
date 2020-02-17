@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.02.14 21:43 -->
+<!-- Last modified : 2020.02.17 15:00 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -19,8 +19,18 @@
     .filter[type=checkbox] {
         display: none;
     }
-    .filter[type=checkbox]:checked + label {
+    .filter[type=checkbox]:checked + label.filter-btn {
         background-color: rgb(100, 100, 255); 
+        color: rgb(255, 255, 255); 
+        font-weight: bold;
+    }
+    .filter[type=checkbox]:checked + label.keyword-btn {
+        background-color: rgb(107, 0, 152); 
+        color: rgb(255, 255, 255); 
+        font-weight: bold;
+    }
+    .filter[type=checkbox]:checked + label:not(.filter-btn):not(.keyword-btn) {
+        background-color: rgb(50, 155, 50); 
         color: rgb(255, 255, 255); 
         font-weight: bold;
     }
@@ -61,7 +71,7 @@
     .btn-shell {
         padding: 3px;
     }
-    .filter-btn, .attr-btn, .race-btn, .star-btn, .charge-btn {
+    .filter-btn, .attr-btn, .race-btn, .star-btn, .charge-btn, .keyword-btn {
         font-size: 1.6vw;
         font-weight: normal;
         color: black;
@@ -203,6 +213,18 @@
     .toTop:focus {
         outline: none;
     }
+    
+    
+    
+    .keyword-input {
+        font-size: 1.3vw;
+        font-weight: normal;
+        color: black;
+        text-align: center;
+        border: 1px solid #AAAAAA;
+        border-radius: 5px;
+    }
+    
 </style>
 
 <script type="text/javascript" charset="UTF-8">
@@ -239,6 +261,8 @@
     var black_str = "rgb(0, 0, 0)";
     var or_filter = true;
     var sort_by = 'id';
+    var keyword_search = false;
+    var input_maxlength = 50;
     
     const skill_num = skill_type_string.length;
     const attr_num = attr_type_string.length;
@@ -269,6 +293,8 @@
         $("#reset_race").on("click", resetRace);
         $("#reset_star").on("click", resetStar);
         $("#reset_charge").on("click", resetCharge);
+        $("#reset_keyword").on("click", resetKeyword);
+        $("#keyword-switch").on("click", keywordSwitch);
         
         if(location.search) readUrl();
     });
@@ -300,6 +326,15 @@
                     i ++;
                 }
             }
+            return str;
+        });
+        
+        $(".keyword-row").html(function()
+        {
+            var str = $(".keyword-row").html();
+            str += "<div class='col-12 my-2'></div>";
+            str += "<div class='col-12 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='keyword-switch'><label class='p-1 w-100 text-center keyword-btn' for='keyword-switch'>關鍵字搜尋</label></div>";
+            str += "<div class='col-12 col-md-8 col-lg-10 btn-shell'><input type='text' class='form-control keyword-input' id='keyword-input' placeholder='輸入技能關鍵字' maxlength="+input_maxlength+" disabled></div>";
             return str;
         });
         
@@ -352,140 +387,325 @@
         });
         
         or_filter = true;
+        keyword_search = false;
+    }
+    
+    function keywordSwitch()
+    {
+        if($("#keyword-switch").prop('checked'))
+        {
+            $('#keyword-input').attr('disabled', false);
+            $('#keyword-input').css('border', '1px solid #000000');
+            keyword_search = true;
+            
+            $(".filter-row .filter").each(function(){
+                $(this).attr('disabled', true);
+                $(this).next().css({
+                    'border': '1px solid #AAAAAA', 
+                    'color': '#AAAAAA', 
+                    'background-color': '#E9ECEF', 
+                    'cursor': 'default', 
+                    'font-weight': 'normal'
+                });
+            });
+        }
+        else
+        {
+            $('#keyword-input').attr('disabled', true);
+            $('#keyword-input').css('border', '1px solid #AAAAAA');
+            keyword_search = false;
+            
+            $(".filter-row .filter").each(function(){
+                $(this).attr('disabled', false);
+                $(this).next().removeAttr('style');
+            });
+        }
     }
     
     function startFilter()
     {
         changeUrl();
         $(".row.result-row").show();
-        filter_set.clear();
         
-        var filter_charge_set = new Set();
-    
-        var skill_set = new Set();
-        var skill_select = false;
-        
-        skill_set.clear();
-        
-        $(".filter-row .filter").each(function(){
-            if($(this).prop('checked'))
-            {
-                skill_set.add($(this).next("label").text());
-                skill_select = true;
-            }
-        });
-        
-        if(skill_select == false)
+        if(keyword_search == false)
         {
-            errorAlert(2);
-            return ;
-        }
+            filter_set.clear();
         
-        var attr_set = new Set();
-        var attr_intersect = false;
+            var filter_charge_set = new Set();
         
-        $(".attr-row .filter").each(function(){
-            if($(this).prop('checked'))
+            var skill_set = new Set();
+            var skill_select = false;
+            
+            skill_set.clear();
+            
+            $(".filter-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    skill_set.add($(this).next("label").text());
+                    skill_select = true;
+                }
+            });
+            
+            if(keyword_search == false && skill_select == false)
             {
-                attr_set.add($(this).next("label").text());
-                attr_intersect = true;
-            }
-        });
-        
-        var race_set = new Set();
-        var race_intersect = false;
-        
-        $(".race-row .filter").each(function(){
-            if($(this).prop('checked'))
-            {
-                race_set.add($(this).next("label").text());
-                race_intersect = true;
-            }
-        });
-        
-        var star_set = new Set();
-        var star_intersect = false;
-        
-        $(".star-row .filter").each(function(){
-            if($(this).prop('checked'))
-            {
-                star_set.add(parseInt($(this).next("label").text()[0]));
-                star_intersect = true;
-            }
-        });
-        
-        var charge_set = new Set();
-        var charge_intersect = false;
-        
-        $(".charge-row .filter").each(function(){
-            if($(this).prop('checked'))
-            {
-                charge_set.add($(this).next("label").text());
-                charge_intersect = true;
-            }
-        });
-        
-        for(var x of monster_data)
-        {
-            if(attr_intersect)
-            {
-                if(!(attr_set.has(x.attribute))) continue;
-            }
-            if(race_intersect)
-            {
-                if(!race_set.has(x.race)) continue;
-            }
-            if(star_intersect)
-            {
-                if(!star_set.has(x.star)) continue;
+                errorAlert(2);
+                return ;
             }
             
-            var skill_num_array = [];
-            for(var ch = 0; ch < x.skill.length; ch ++)
+            var attr_set = new Set();
+            var attr_intersect = false;
+            
+            $(".attr-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    attr_set.add($(this).next("label").text());
+                    attr_intersect = true;
+                }
+            });
+            
+            var race_set = new Set();
+            var race_intersect = false;
+            
+            $(".race-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    race_set.add($(this).next("label").text());
+                    race_intersect = true;
+                }
+            });
+            
+            var star_set = new Set();
+            var star_intersect = false;
+            
+            $(".star-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    star_set.add(parseInt($(this).next("label").text()[0]));
+                    star_intersect = true;
+                }
+            });
+            
+            var charge_set = new Set();
+            var charge_intersect = false;
+            
+            $(".charge-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    charge_set.add($(this).next("label").text());
+                    charge_intersect = true;
+                }
+            });
+            
+            for(var x of monster_data)
             {
-                if(charge_intersect)
+                if(attr_intersect)
                 {
-                    var non = true;
-                    if(charge_set.has(x.skill[ch].charge)) non = false;
-                    if(non) continue;
+                    if(!(attr_set.has(x.attribute))) continue;
+                }
+                if(race_intersect)
+                {
+                    if(!race_set.has(x.race)) continue;
+                }
+                if(star_intersect)
+                {
+                    if(!star_set.has(x.star)) continue;
                 }
                 
-                if(or_filter)
+                var skill_num_array = [];
+                for(var ch = 0; ch < x.skill.length; ch ++)
                 {
-                    var check = false;
-                    for(var k of skill_set)
+                    if(charge_intersect)
                     {
-                        if(x.skill[ch].tag.includes(k))
-                        {
-                            check = true;
-                            break;
-                        }
+                        var non = true;
+                        if(charge_set.has(x.skill[ch].charge)) non = false;
+                        if(non) continue;
                     }
                     
-                    if(!check) continue;
-                }
-                else
-                {
-                    var check = true;
-                    for(var k of skill_set)
+                    if(or_filter)
                     {
-                        if(!x.skill[ch].tag.includes(k))
+                        var check = false;
+                        for(var k of skill_set)
                         {
-                            check = false;
-                            break;
+                            if(x.skill[ch].tag.includes(k))
+                            {
+                                check = true;
+                                break;
+                            }
                         }
+                        
+                        if(!check) continue;
+                    }
+                    else
+                    {
+                        var check = true;
+                        for(var k of skill_set)
+                        {
+                            if(!x.skill[ch].tag.includes(k))
+                            {
+                                check = false;
+                                break;
+                            }
+                        }
+                        
+                        if(!check) continue;
                     }
                     
-                    if(!check) continue;
+                    var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
+                    
+                    skill_num_array.push(ch);
+                    filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
                 }
-                
-                var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
-                
-                skill_num_array.push(ch);
-                filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
+                if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
             }
-            if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
         }
+        else        // keyword search mode
+        {
+            filter_set.clear();
+        
+            var filter_charge_set = new Set();
+        
+            /* keyword input check */
+            var keyword = textSanitizer($('#keyword-input').val());
+            if(keyword.length <= 0)
+            {
+                errorAlert(3);
+                return;
+            }
+            else if(keyword.length > input_maxlength)
+            {
+                errorAlert(4);
+                return;
+            }
+            
+            /* keyword input split */
+            var keyword_set = new Set();
+            var keyword_select = false;
+            
+            keyword_set.clear();
+            
+            var keywords = keyword.split(',');
+            keywords.forEach(function(element){
+                if(element.length > 0 && element.length <= 50) keyword_set.add(element);
+            });
+            
+            if(keyword_set.size <= 0)
+            {
+                errorAlert(3);
+                return;
+            }
+            
+            
+            var attr_set = new Set();
+            var attr_intersect = false;
+            
+            $(".attr-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    attr_set.add($(this).next("label").text());
+                    attr_intersect = true;
+                }
+            });
+            
+            var race_set = new Set();
+            var race_intersect = false;
+            
+            $(".race-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    race_set.add($(this).next("label").text());
+                    race_intersect = true;
+                }
+            });
+            
+            var star_set = new Set();
+            var star_intersect = false;
+            
+            $(".star-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    star_set.add(parseInt($(this).next("label").text()[0]));
+                    star_intersect = true;
+                }
+            });
+            
+            var charge_set = new Set();
+            var charge_intersect = false;
+            
+            $(".charge-row .filter").each(function(){
+                if($(this).prop('checked'))
+                {
+                    charge_set.add($(this).next("label").text());
+                    charge_intersect = true;
+                }
+            });
+            
+            for(var x of monster_data)
+            {
+                if(attr_intersect)
+                {
+                    if(!(attr_set.has(x.attribute))) continue;
+                }
+                if(race_intersect)
+                {
+                    if(!race_set.has(x.race)) continue;
+                }
+                if(star_intersect)
+                {
+                    if(!star_set.has(x.star)) continue;
+                }
+                
+                var skill_num_array = [];
+                for(var ch = 0; ch < x.skill.length; ch ++)
+                {
+                    if(charge_intersect)
+                    {
+                        var non = true;
+                        if(charge_set.has(x.skill[ch].charge)) non = false;
+                    }
+                    if(non) continue;
+                    
+                    
+                    if(or_filter)
+                    {
+                        var check = false;
+                        var skill_desc = textSanitizer(x.skill[ch].description); 
+                        for(var k of keyword_set)
+                        {
+                            if(skill_desc.includes(k))
+                            {
+                                check = true;
+                                break;
+                            }
+                        }
+                        
+                        if(!check) continue;
+                    }
+                    else
+                    {
+                        var check = true;
+                        var skill_desc = textSanitizer(x.skill[ch].description); 
+                        for(var k of keyword_set)
+                        {
+                            if(!skill_desc.includes(k))
+                            {
+                                check = false;
+                                break;
+                            }
+                        }
+                        
+                        if(!check) continue;
+                    }
+                    
+                    
+                    var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
+                    
+                    skill_num_array.push(ch);
+                    filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
+                }
+                if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
+            }
+        }
+        
         
         var monster_array = Array.from(filter_set);
         var monster_charge_array = Array.from(filter_charge_set);
@@ -628,9 +848,13 @@
         
         $(".search_tag").html(function(){
             var tag_html = "";
-            skill_set.forEach(function(element){
-                tag_html += '<div class="tag_wrapper"><div class="skill_tag" title="'+element+'">'+element+'</div></div>';
-            });
+            
+            if(!keyword_search)
+            {
+                skill_set.forEach(function(element){
+                    tag_html += '<div class="tag_wrapper"><div class="skill_tag" title="'+element+'">'+element+'</div></div>';
+                });
+            }
             attr_set.forEach(function(element){
                 tag_html += '<div class="tag_wrapper"><div class="genre_tag" title="'+element+'">'+element+'</div></div>';
             });
@@ -690,7 +914,7 @@
     
     function resetSkill()
     {
-        $(".filter").prop('checked', false);
+        $(".filter-row .filter").prop('checked', false);
         filter_set.clear();
     }
     
@@ -718,6 +942,11 @@
         filter_set.clear();
     }
     
+    function resetKeyword()
+    {
+        $("#keyword-input").val('');
+    }
+    
     function resetAll()
     {
         resetSkill();
@@ -725,13 +954,15 @@
         resetRace();
         resetStar();
         resetCharge();
+        resetKeyword();
     }
     
     function changeUrl()
     {
         var str = "";
         
-        str += "search=" + encode(".filter-row", skill_num);
+        if(!keyword_search) str += "search=" + encode(".filter-row", skill_num);
+        else str += "keyword=" + escape(textSanitizer($('#keyword-input').val()));
         str += "&attr=" + encode(".attr-row", attr_num);
         str += "&race=" + encode(".race-row", race_num);
         str += "&star=" + encode(".star-row", star_num);
@@ -751,18 +982,32 @@
             errorAlert(1);
             return;
         }
-        var code_name = ["search", "attr", "race", "star", "chrg", "or"];
+        var code_name_1 = ["search", "attr", "race", "star", "chrg", "or"];
+        var code_name_2 = ["keyword", "attr", "race", "star", "chrg", "or"];
+        
+        
         for(var i in code_name_array)
         {
-            if(code_name_array[i] !== code_name[i])
+            if(code_name_array[i] !== code_name_1[i] && code_name_array[i] !== code_name_2[i])
             {
                 errorAlert(1);
                 return;
             }
         }
         
-        var skill_code = decode(code_array[0]);
-        setButtonFromUrl(".filter-row", skill_code, resetSkill);
+        if(code_name_array[0] == code_name_1[0])
+        {
+            var skill_code = decode(code_array[0]);
+            setButtonFromUrl(".filter-row", skill_code, resetSkill);
+        }
+        else
+        {
+            var skill_keyword = code_array[0];
+            setInputFromUrl(".keyword-input", unescape(skill_keyword));
+            
+            $("#keyword-switch").click();
+            keywordSwitch();
+        }
         
         var attr_code = decode(code_array[1]);
         setButtonFromUrl(".attr-row", attr_code, resetAttr);
@@ -778,6 +1023,7 @@
         
         var and_or_code = code_array[5];
         if(and_or_code[0] == "0") andOrChange();
+        
         
         startFilter();
         
@@ -847,6 +1093,11 @@
         });
     }
     
+    function setInputFromUrl(element, data)
+    {
+        $(element).val(data);
+    }
+    
     function getPosition(element)
     {
         var e = document.getElementById(element);
@@ -872,19 +1123,27 @@
     {
         switch(index) {
             case 1:
-                alert("[Error Code 01] 請檢查網址是否正確");
+                alert("[Error Code "+paddingZeros(index, 2)+"] 請檢查網址是否正確");
             break;
             case 2:
-                alert("[Error Code 02] 請先選擇功能");
+                alert("[Error Code "+paddingZeros(index, 2)+"] 請先選擇功能或輸入技能關鍵字");
+            break;
+            case 3:
+                alert("[Error Code "+paddingZeros(index, 2)+"] 請輸入技能關鍵字");
+            break;
+            case 4:
+                alert("[Error Code "+paddingZeros(index, 2)+"] 技能關鍵字數量不得超過 "+input_maxlength);
             break;
             default:
                 
         }
     }
     
-    $(function(){
-        
-    });
+    function textSanitizer(text)
+    {
+        return text.replace(/<br>/g,'').replace(/\s/g,'').toLowerCase();
+    }
+    
     
 </script>
     
@@ -944,6 +1203,19 @@
             </div>
         </div>
         <div class="row filter-row"></div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+                <h3>關鍵字搜尋</h3>
+            </div>
+            <div class="col-12 btn-shell">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_keyword">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
+            </div>
+        </div>
+        <div class="row keyword-row"></div>
         <div class="row">
             <div class="col-12">
                 <hr>
