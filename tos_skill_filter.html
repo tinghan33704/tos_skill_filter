@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.02.17 15:00 -->
+<!-- Last modified : 2020.02.19 15:48 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -425,7 +425,6 @@
     function startFilter()
     {
         changeUrl();
-        $(".row.result-row").show();
         
         if(keyword_search == false)
         {
@@ -706,6 +705,7 @@
             }
         }
         
+        $(".row.result-row").show();
         
         var monster_array = Array.from(filter_set);
         var monster_charge_array = Array.from(filter_charge_set);
