@@ -2364,7 +2364,7 @@ var monster_data=[
 {'id': 2357, 'attribute': '水', 'race': '魔族', 'star': 5, 'skill': [{'name': '最強之矛', 'type': 'normal', 'charge': 'CD', 'num': 6, 'description': '1 回合<br>I. 將移動符石時所觸碰的符石<br>⇒ 轉化為強化符石<br>II. 自身攻擊力 3.5 倍<br>III. 自身攻擊無視敵人的防禦力', 'tag': ['符石強化', '增傷', '界王拳', '破防']}, ]}, 
 {'id': 2358, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2359, 'attribute': '水', 'race': '人類', 'star': 5, 'skill': [{'name': '機械 ‧ 最佳狀態', 'type': 'normal', 'charge': 'CD', 'num': 7, 'description': 'I. 完全回復生命力<br>II. 若隊伍中只有人類及機械族：<br>下回合開始時<br>⓵ 機械族成員的行動值提升至 100%<br>⓶ 完全回復生命力', 'tag': ['回血', '行動值提升']}, ]}, 
-{'id': 2360, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]},  
+{'id': 2360, 'attribute': '火', 'race': '強化素材', 'star': 5, 'skill': [{'name': '沒有技能', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '沒有技能', 'tag': []}, ]},  
 {'id': 2361, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2362, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2363, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
