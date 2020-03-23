@@ -927,6 +927,7 @@ function changeTheme()
         '--text_refine_tooltip_color', 
         '--text_recall_tooltip_color', 
         '--text_charge_tooltip_color',
+        '--text_charge_sort_color',
     ];
     
     theme = (theme == 'normal')?'dark':'normal';

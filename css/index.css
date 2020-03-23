@@ -25,6 +25,7 @@
     --text_refine_tooltip_color_normal: orange;
     --text_recall_tooltip_color_normal: #91DFF3;
     --text_charge_tooltip_color_normal: #FF6666;
+    --text_charge_sort_color_normal: #5A01C5;
     
     
     /* dark theme */
@@ -53,6 +54,7 @@
     --text_refine_tooltip_color_dark: #CC8300;
     --text_recall_tooltip_color_dark: #70ADD1;
     --text_charge_tooltip_color_dark: #AA4444;
+    --text_charge_sort_color_dark: #B088FF;
 
     
     /* theme replacing */
@@ -81,6 +83,7 @@
     --text_refine_tooltip_color: var(--text_refine_tooltip_color_normal);
     --text_recall_tooltip_color: var(--text_recall_tooltip_color_normal);
     --text_charge_tooltip_color: var(--text_charge_tooltip_color_normal);
+    --text_charge_sort_color: var(--text_charge_sort_color_normal);
 }
 
 body {
@@ -231,7 +234,7 @@ select {
 .charge_num_div {
     font-size: 1.7em;
     font-weight: bold;
-    color: #5A01C5;
+    color: var(--text_charge_sort_color);
 }
 .charge_num_hr_top {
     border: 0;
