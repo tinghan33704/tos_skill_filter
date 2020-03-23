@@ -229,6 +229,7 @@ select {
     background-color: var(--monsterid_color);
     color: var(--text_monsterid_color);
     font-weight: bold;
+    font-size: 1em;
 }
 
 .charge_num_div {
@@ -259,6 +260,10 @@ select {
     background-color: var(--tooltip_color);
     color: var(--text_tooltip_color);
 }
+.tooltip-inner hr {
+    margin: 3px 0;
+    border: 1px solid #eeeeee;
+}
 .skill_tooltip {
     font-family: Microsoft JhengHei;
     margin: auto;
@@ -266,25 +271,25 @@ select {
 .skill_name {
     color: var(--text_name_tooltip_color);
     font-weight: bold;
-    float: left;
+    text-align: left;
 }
 .skill_name_refine {
     color: var(--text_refine_tooltip_color);
     font-weight: bold;
-    float: left;
+    text-align: left;
 }
 .skill_name_recall {
     color: var(--text_recall_tooltip_color);
     font-weight: bold;
-    float: left;
+    text-align: left;
 }
 .skill_description {
-    
+    margin-bottom: 10px;
 }
 .skill_charge {
     color: var(--text_charge_tooltip_color);
     font-weight: bold;
-    float: right;
+    text-align: right;
 }
 
 .toTop {

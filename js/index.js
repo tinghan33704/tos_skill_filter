@@ -514,30 +514,37 @@ function startFilter()
                         
                         //if(skill_cnt > 0) sk_str += "<hr style='border-top: 1px dotted red;'>";
                         
+                        sk_str += "<div class='row'>";
+                        
                         if(skill.type == 'normal')
                         {
-                            sk_str += "<div class='skill_tooltip skill_name'>"+skill.name+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_name col-6 col-sm-6 mb-1'>"+skill.name+"</div>";
                         }
                         else if(skill.type == 'refine')
                         {
-                            sk_str += "<div class='skill_tooltip skill_name_refine'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_name_refine col-6 col-sm-6 mb-1'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
                         }
                         else if(skill.type == 'recall')
                         {
-                            sk_str += "<div class='skill_tooltip skill_name_recall'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_name_recall col-6 col-sm-6 mb-1'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
                         }
                         
                         if('reduce' in skill)
                         {
-                            sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
                         }
                         else
                         {
-                            sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                         }
+                        sk_str += "</div>";
                         
-                        sk_str += "<hr style='border-top: 1px dotted red;'>";
-                        sk_str += "<div class='skill_tooltip skill_description'>"+skill.description+"</div>";
+                        sk_str += "<div class='row'>";
+                        sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
+                        sk_str += "</div>";
+                        sk_str += "<div class='row'>";
+                        sk_str += "   <div class='skill_tooltip skill_description col-sm-12'>"+skill.description+"</div>";
+                        sk_str += "</div>";
                         
                         skill_cnt ++;
                     }
