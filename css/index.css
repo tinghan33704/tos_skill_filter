@@ -272,6 +272,7 @@ select {
     color: var(--text_name_tooltip_color);
     font-weight: bold;
     text-align: left;
+    white-space: nowrap;
 }
 .skill_name_refine {
     color: var(--text_refine_tooltip_color);
@@ -285,6 +286,7 @@ select {
 }
 .skill_description {
     margin-bottom: 10px;
+    min-width: 300px;
 }
 .skill_charge {
     color: var(--text_charge_tooltip_color);
@@ -345,6 +347,9 @@ select {
     left: 1rem;
     bottom: 1rem;
     display: inline-block;
+}
+.changeTheme:focus {
+    outline: none;
 }
 
 #keyword-input {
