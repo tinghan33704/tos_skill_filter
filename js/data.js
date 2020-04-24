@@ -2382,7 +2382,7 @@ const monster_data=[
 {'id': 2375, 'attribute': '光', 'race': '獸類', 'star': 6, 'skill': [{'name': '透心涼', 'type': 'normal', 'charge': 'CD', 'num': 5, 'description': 'I. 將場上外側的符石<br>⇒ 轉化為強化符石<br>1 回合內<br>II. 心符石兼具 50% 屬性符石效果', 'tag': ['符石強化', '符石兼具水', '符石兼具火', '符石兼具木', '符石兼具光', '符石兼具暗']}, ]}, 
 {'id': 2376, 'attribute': '火', 'race': '人類', 'star': 6, 'skill': [{'name': '戀之界', 'type': 'normal', 'charge': 'CD', 'num': 5, 'description': '1 回合內，延長移動符石時間至 15 秒；消除 1 組 6 粒或以上的火符石，火屬性攻擊力 2 倍', 'tag': ['延長轉珠時間', '增傷']}, ]}, 
 {'id': 2377, 'attribute': '水', 'race': '龍類', 'star': 0, 'skill': [{'name': '不撓宏志 ‧ 龍', 'type': 'normal', 'charge': 'EP', 'num': 6, 'description': 'I. 無視「黏腐」敵技<br>II. 每次觸碰「黏腐」位置<brIII. 每個成員追打 1 次<br>上述效果會在進入下一層數 (Wave) 時消失<br><br>IV. 解除「風化符石」狀態<br>V. 將所有符石轉化為強化符石<br>VI.「卿雲護庇 ‧ 蒼璧」以外龍類、神族、獸類 CD 減少 2', 'tag': ['無視黏腐', '回血', '水屬追打', '火屬追打', '木屬追打', '光屬追打', '暗屬追打', '全隊追打', '風化符石處理', '符石強化', '減CD']}, {'name': '碧穹殺機', 'type': 'normal', 'charge': 'EP', 'num': 4, 'description': '1 回合內I. 自身攻擊力 3 倍<br>II. 回合結束時<br>⇒ 將心符石轉化為水強化符石<br>III. 發動技能時，若隊長及戰友為「卿雲護庇 ‧ 蒼璧」或「豁達浪息 ‧ 蒼璧」<br>⓵「龍鱗值」減少 50 點<br>⓶ 將心符石轉化為<br>⇒ 水龍族強化符石', 'tag': ['增傷', '界王拳', '符石轉水', '符石轉水強化', '心轉其他', '龍族符石製造']}, ]}, 
-{'id': 2378, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
+{'id': 2378, 'attribute': '木', 'race': '機械族', 'star': 5, 'skill': [{'name': '玄冥絕塵 ‧ 攻', 'type': 'normal', 'charge': 'CD', 'num': 6, 'description': 'I. 引爆場上的光、暗符石<br>⇒ 掉落水、火、木、心符石<br>1 回合內<br>II. 首批消除相同組數的水、火、木符石<br>⇒ 無視「固定連擊盾」<br>III. 若發動技能時所有機械族成員的行動值達至 100%<br>⇒ 所有成員額外追打 1 次', 'tag': ['引爆', '光符石引爆', '暗符石引爆', '強制掉落', '無視固定連擊盾', '木屬追打', '全隊追打']}, ]}, 
 {'id': 2379, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2380, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2381, 'attribute': '水', 'race': '人類', 'star': 6, 'skill': [{'name': '水淹木林', 'type': 'normal', 'charge': 'CD', 'num': 7, 'description': 'I. 將所有符石轉化為強化符石<br>1 回合內<br>II. 連擊 (Combo) 數目增加 6<br>III. 水屬性傷害可克制木屬性目標<br>IV. 若隊長及戰友均為「代偶規條」成員<br>⇒ 則連擊 (Combo) 數目增加 15', 'tag': ['符石強化', '增加Combo', '屬性剋制改變']}, ]}, 
@@ -2397,7 +2397,7 @@ const monster_data=[
 {'id': 2390, 'attribute': '木', 'race': '神族', 'star': 6, 'skill': [{'name': '符文遊戲', 'type': 'normal', 'charge': 'CD', 'num': 7, 'description': 'I. 將所有符石轉化為<br>⇒ 強化符石<br>II. 將五屬及心符石分直行按序排列<br>＊同類符石超過 5 粒後會隨機編排<br>1 回合內<br>III. 所有屬性符石兼具<br>⇒ 50% 其他屬性符石效果', 'tag': ['符石強化', '符石兼具水', '符石兼具火', '符石兼具木', '符石兼具光', '符石兼具暗']}, ]}, 
 {'id': 2391, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2392, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
-{'id': 2393, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
+{'id': 2393, 'attribute': '水', 'race': '魔族', 'star': 7, 'skill': [{'name': '魔流之暴', 'type': 'normal', 'charge': 'CD', 'num': 6, 'description': '1 回合內<br>I. 自身對獸類、妖精類、龍類目標<br>⇒ 攻擊力 4 倍<br>II. 回合完結時<br>⇒ 將火符石轉化為水魔族符石<br>III. 若有擊斃敵人<br>⇒ 該回合不會扣減技能持續回合', 'tag': ['增傷', '界王拳', '對獸類增傷', '對妖精類增傷', '對龍類增傷', '符石轉水', '魔族符石製造', '火轉其他']}, ]}, 
 {'id': 2394, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2395, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2396, 'attribute': '木', 'race': '人類', 'star': 6, 'skill': [{'name': '營運法則', 'type': 'normal', 'charge': 'CD', 'num': 7, 'description': 'I. 解除自身及身旁成員被封鎖的技能<br>(此技能無視封鎖技能)<br>1 回合內<br>II. 增加 5 連擊 (Combo)<br>III. 所有成員的攻擊無視「三屬盾」敵技', 'tag': ['解鎖', '增加Combo', '無視三屬盾']}, ]}, 
@@ -2405,7 +2405,7 @@ const monster_data=[
 {'id': 2398, 'attribute': '光', 'race': '妖精類', 'star': 7, 'skill': [{'name': '沒有技能', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '沒有技能', 'tag': []}, ]}, 
 {'id': 2399, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
 {'id': 2400, 'attribute': '', 'race': '', 'star': 0, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
-{'id': 2401, 'attribute': '水', 'race': '妖精類', 'star': 5, 'skill': [{'name': '', 'type': 'normal', 'charge': 'CD', 'num': 0, 'description': '', 'tag': []}, ]}, 
+{'id': 2401, 'attribute': '水', 'race': '妖精類', 'star': 5, 'skill': [{'name': '水色塗抹', 'type': 'normal', 'charge': 'CD', 'num': 6, 'description': '1 回合內<br>I. 將移動符石時觸碰的首 6 粒符石<br>⇒ 轉化為水妖族符石<br>II. 將移動符石時觸碰的水符石<br>⇒ 轉化為水強化符石', 'tag': ['符石轉水', '符石強化', '符石轉水強化', '妖族符石製造']}, ]}, 
 
 
 
