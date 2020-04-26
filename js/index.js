@@ -11,7 +11,7 @@ const skill_type_string = [
 ['破防', '直傷', '屬性剋制改變', '排珠', '延長轉珠時間'],
 ['增傷', '界王拳', '攻擊轉屬', '增回', '攻擊力吸收', '共鳴'],
 ['對人類增傷', '對獸類增傷', '對妖精類增傷', '對龍類增傷', '對神族增傷', '對魔族增傷', '對機械族增傷'],
-['增加Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升', '隨時關閉', '變身'],
+['增加Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升', '隨時關閉', '變身', '合體'],
 ['無法行動', '敵方轉屬', '凍結敵方', '點燃敵方', '石化敵方', '電擊敵方', '寄生敵方', '敵方中毒', '魅惑敵方', '暈擊敵方'],
 ['解鎖', '防鎖', '防毒', '防爆', '防反擊', '無視燃燒', '無視黏腐', '黑白還原', '無視拼圖盾', '無視攻前盾', '無視三屬盾', '無視五屬盾', '無視固定連擊盾'],
 ['風化符石處理', '凍結符石處理', '弱化符石處理', '電擊符石處理', '石化符石處理', '化血符石處理'],
@@ -536,11 +536,33 @@ function startFilter()
                         {
                             sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
                         }
+                        else if(skill.num == -1)
+                        {
+                            sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+"-</div>";
+                        }
                         else
                         {
                             sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                         }
                         sk_str += "</div>";
+                        
+                        if('combine' in skill)
+                        {
+                            combine_str = ''
+                            skill.combine.member.forEach(function(x, index, arr) {
+                                console.log(combine_str)
+                                combine_str += "<img src=\'./img/"+x+".png\'\>" + (index !== arr.length-1 ? " + " : "");
+                            });
+                            
+                            combine_str += " → <img src=\'./img/"+skill.combine.out+".png\'\>";
+                            
+                            sk_str += "<div class='row'>";
+                            sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
+                            sk_str += "</div>";
+                            sk_str += "<div class='row'>";
+                            sk_str += "   <div class='skill_tooltip skill_combine col-sm-12'>"+combine_str+"</div>";
+                            sk_str += "</div>";
+                        }
                         
                         sk_str += "<div class='row'>";
                         sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
@@ -586,38 +608,50 @@ function startFilter()
                         return element.id == x.id;
                     }).skill[x.num];
                     
-                    if(x.charge != now_cd)
+                    if(x.charge != now_cd && x.charge > 0)
                     {
                         now_cd = x.charge;
                         str += "<div class='col-sm-12'><hr class='charge_num_hr_bottom'></div>"
                         str += "<div class='col-sm-12 charge_num_div'>&nbsp;"+now_cd+"</div>"
                         str += "<div class='col-sm-12'><hr class='charge_num_hr_top'></div>"
                     }
+                    
+                    sk_str += "<div class='row'>";
                         
                     if(skill.type == 'normal')
                     {
-                        sk_str += "<div class='skill_tooltip skill_name'>"+skill.name+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_name col-6 col-sm-6 mb-1'>"+skill.name+"</div>";
                     }
                     else if(skill.type == 'refine')
                     {
-                        sk_str += "<div class='skill_tooltip skill_name_refine'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_name_refine col-6 col-sm-6 mb-1'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
                     }
                     else if(skill.type == 'recall')
                     {
-                        sk_str += "<div class='skill_tooltip skill_name_recall'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_name_recall col-6 col-sm-6 mb-1'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
                     }
                     
                     if('reduce' in skill)
                     {
-                        sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
+                    }
+                    else if(skill.num == -1)
+                    {
+                        sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+"-</div>";
                     }
                     else
                     {
-                        sk_str += "<div class='skill_tooltip skill_charge'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_charge col-6 col-sm-6 mb-1'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                     }
+                    sk_str += "</div>";
                     
-                    sk_str += "<hr style='margin: 5px 0;' size='30px'>";
-                    sk_str += "<div class='skill_tooltip skill_description'>"+skill.description+"</div>";
+                    sk_str += "<div class='row'>";
+                    sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
+                    sk_str += "</div>";
+                    sk_str += "<div class='row'>";
+                    sk_str += "   <div class='skill_tooltip skill_description col-sm-12'>"+skill.description+"</div>";
+                    sk_str += "</div>";
+                    
                         
                     str += "<div class=\"col-3 col-md-1 col-lg-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
                                 "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
