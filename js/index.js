@@ -525,11 +525,11 @@ function startFilter()
                         }
                         else if(skill.type == 'refine')
                         {
-                            sk_str += "<div class='skill_tooltip skill_name_refine col-6 col-sm-6 mb-1'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_name_refine col-6 col-sm-6 mb-1'><img src='../tos_tool_data/img/monster/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
                         }
                         else if(skill.type == 'recall')
                         {
-                            sk_str += "<div class='skill_tooltip skill_name_recall col-6 col-sm-6 mb-1'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
+                            sk_str += "<div class='skill_tooltip skill_name_recall col-6 col-sm-6 mb-1'><img src='../tos_tool_data/img/monster/recall.png' />&nbsp;"+skill.name+"</div>";
                         }
                         
                         if('reduce' in skill)
@@ -551,10 +551,10 @@ function startFilter()
                             combine_str = ''
                             skill.combine.member.forEach(function(x, index, arr) {
                                 console.log(combine_str)
-                                combine_str += "<img src=\'./img/"+x+".png\'\>" + (index !== arr.length-1 ? " + " : "");
+                                combine_str += "<img src=\'../tos_tool_data/img/monster/"+x+".png\'\>" + (index !== arr.length-1 ? " + " : "");
                             });
                             
-                            combine_str += " → <img src=\'./img/"+skill.combine.out+".png\'\>";
+                            combine_str += " → <img src=\'../tos_tool_data/img/monster/"+skill.combine.out+".png\'\>";
                             
                             sk_str += "<div class='row'>";
                             sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
@@ -576,7 +576,7 @@ function startFilter()
                     
                     str += "<div class=\"col-3 col-md-2 col-lg-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
                                 "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
-                                    "<img class=\"monster_img\" src=\"./img/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
+                                    "<img class=\"monster_img\" src=\"../tos_tool_data/img/monster/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='../tos_tool_data/img/monster/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
                                 "</a>"+
                                 "<div class=\"monsterId\">"+paddingZeros(x.id, 3)+"</div>"+
                             "</div>";
@@ -624,11 +624,11 @@ function startFilter()
                     }
                     else if(skill.type == 'refine')
                     {
-                        sk_str += "<div class='skill_tooltip skill_name_refine col-6 col-sm-6 mb-1'><img src='./img/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_name_refine col-6 col-sm-6 mb-1'><img src='../tos_tool_data/img/monster/refine_"+skill.refine+".png' />&nbsp;"+skill.name+"</div>";
                     }
                     else if(skill.type == 'recall')
                     {
-                        sk_str += "<div class='skill_tooltip skill_name_recall col-6 col-sm-6 mb-1'><img src='./img/recall.png' />&nbsp;"+skill.name+"</div>";
+                        sk_str += "<div class='skill_tooltip skill_name_recall col-6 col-sm-6 mb-1'><img src='../tos_tool_data/img/monster/recall.png' />&nbsp;"+skill.name+"</div>";
                     }
                     
                     if('reduce' in skill)
@@ -655,7 +655,7 @@ function startFilter()
                         
                     str += "<div class=\"col-3 col-md-1 col-lg-1 result\" data-toggle=\"tooltip\" data-html=\"true\" title=\""+sk_str+"\">"+
                                 "<a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+
-                                    "<img class=\"monster_img\" src=\"./img/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='./img/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
+                                    "<img class=\"monster_img\" src=\"../tos_tool_data/img/monster/"+x.id+".png\" title=\""+x.id+"\" onerror=\"this.src='../tos_tool_data/img/monster/noname_"+attr_zh_to_en[monster_attr]+".png'\"></img>"+
                                 "</a>"+
                                 "<div class=\"monsterId\">"+paddingZeros(x.id, 3)+"</div>"+
                             "</div>";
