@@ -222,6 +222,10 @@ select {
 }
 .monster_img {
     width: 100%;
+    cursor: pointer;
+}
+.monster_img:focus {
+    outline: 3.5px #FF6666 dashed;
 }
 .monsterId {
     width: 100%;
@@ -230,6 +234,10 @@ select {
     color: var(--text_monsterid_color);
     font-weight: bold;
     font-size: 1em;
+}
+.monsterId a {
+    text-decoration: none;
+    color: var(--text_monsterid_color);
 }
 
 .charge_num_div {
@@ -252,15 +260,36 @@ select {
     margin: 10px 0;
 }
 
-.tooltip-inner {
-    max-width: 500px;
+.popover {
+    background-color: var(--tooltip_color);
+    max-width: 450px;
+    min-width: 450px;
+    border: 1px rgba(255, 255, 255, 0.4) solid;
+}
+@media (max-width:450px) {
+    .popover {
+        background-color: var(--tooltip_color);
+        max-width: 300px;
+        min-width: 300px;
+        border: 1px rgba(255, 255, 255, 0.4) solid;
+    }
+}
+.popover-body {
+    width: 100%;
+    max-height: 250px;
     font-size: 1.4em;
     word-wrap: break-word;
     text-align: left;
-    background-color: var(--tooltip_color);
     color: var(--text_tooltip_color);
+    border-radius: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
-.tooltip-inner hr {
+.popover .arrow:before, .popover .arrow:after {
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+}
+.popover hr {
     margin: 3px 0;
     border: 1px solid #eeeeee;
 }
@@ -272,17 +301,19 @@ select {
     color: var(--text_name_tooltip_color);
     font-weight: bold;
     text-align: left;
-    white-space: nowrap;
+    white-space: pre-wrap;
 }
 .skill_name_refine {
     color: var(--text_refine_tooltip_color);
     font-weight: bold;
     text-align: left;
+    white-space: pre-wrap;
 }
 .skill_name_recall {
     color: var(--text_recall_tooltip_color);
     font-weight: bold;
     text-align: left;
+    white-space: pre-wrap;
 }
 .skill_combine {
     color: var(--text_name_tooltip_color);
@@ -291,12 +322,14 @@ select {
 }
 .skill_description {
     margin-bottom: 10px;
-    min-width: 300px;
+    width: 100%;
 }
 .skill_charge {
     color: var(--text_charge_tooltip_color);
+    font-size: 0.8em;
     font-weight: bold;
-    text-align: right;
+    text-align: center;
+    white-space: nowrap;
 }
 .skill_combine img {
     width: 50px;
