@@ -550,7 +550,6 @@ function startFilter()
                         {
                             combine_str = ''
                             skill.combine.member.forEach(function(x, index, arr) {
-                                console.log(combine_str)
                                 combine_str += "<img src=\'../tos_tool_data/img/monster/"+x+".png\'\>" + (index !== arr.length-1 ? " + " : "");
                             });
                             
@@ -561,6 +560,20 @@ function startFilter()
                             sk_str += "</div>";
                             sk_str += "<div class='row'>";
                             sk_str += "   <div class='skill_tooltip skill_combine col-sm-12'>"+combine_str+"</div>";
+                            sk_str += "</div>";
+                        }
+                        if('transform' in skill)
+                        {
+                            transform_str = ''
+                            transform_str += "<img src=\'../tos_tool_data/img/monster/"+x.id+".png\'\>";
+                            
+                            transform_str += " → <img src=\'../tos_tool_data/img/monster/"+skill.transform+".png\'\>";
+                            
+                            sk_str += "<div class='row'>";
+                            sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
+                            sk_str += "</div>";
+                            sk_str += "<div class='row'>";
+                            sk_str += "   <div class='skill_tooltip skill_transform col-sm-12'>"+transform_str+"</div>";
                             sk_str += "</div>";
                         }
                         
@@ -651,6 +664,37 @@ function startFilter()
                         sk_str += "<div class='skill_tooltip skill_charge col-3 col-sm-3 mb-1'>"+skill.charge+"&nbsp;"+skill.num+"</div>";
                     }
                     sk_str += "</div>";
+                    
+                    if('combine' in skill)
+                    {
+                        combine_str = ''
+                        skill.combine.member.forEach(function(x, index, arr) {
+                            combine_str += "<img src=\'../tos_tool_data/img/monster/"+x+".png\'\>" + (index !== arr.length-1 ? " + " : "");
+                        });
+                        
+                        combine_str += " → <img src=\'../tos_tool_data/img/monster/"+skill.combine.out+".png\'\>";
+                        
+                        sk_str += "<div class='row'>";
+                        sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
+                        sk_str += "</div>";
+                        sk_str += "<div class='row'>";
+                        sk_str += "   <div class='skill_tooltip skill_combine col-sm-12'>"+combine_str+"</div>";
+                        sk_str += "</div>";
+                    }
+                    if('transform' in skill)
+                    {
+                        transform_str = ''
+                        transform_str += "<img src=\'../tos_tool_data/img/monster/"+x.id+".png\'\>";
+                        
+                        transform_str += " → <img src=\'../tos_tool_data/img/monster/"+skill.transform+".png\'\>";
+                        
+                        sk_str += "<div class='row'>";
+                        sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";
+                        sk_str += "</div>";
+                        sk_str += "<div class='row'>";
+                        sk_str += "   <div class='skill_tooltip skill_transform col-sm-12'>"+transform_str+"</div>";
+                        sk_str += "</div>";
+                    }
                     
                     sk_str += "<div class='row'>";
                     sk_str += "   <div class='skill_tooltip col-sm-12'><hr></div>";

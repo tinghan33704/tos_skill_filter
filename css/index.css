@@ -315,7 +315,7 @@ select {
     text-align: left;
     white-space: pre-wrap;
 }
-.skill_combine {
+.skill_combine, .skill_transform {
     color: var(--text_name_tooltip_color);
     font-weight: bold;
     min-width: 300px;
@@ -331,7 +331,7 @@ select {
     text-align: center;
     white-space: nowrap;
 }
-.skill_combine img {
+.skill_combine img, .skill_transform img {
     width: 50px;
     height: 50px;
 }
