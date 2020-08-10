@@ -350,6 +350,7 @@ select {
     right: 1rem;
     bottom: 1rem;
     display: none;
+    z-index: 1;
 }
 .toTop::before, .toTop::after {
     width: 25px;
@@ -389,6 +390,7 @@ select {
     left: 1rem;
     bottom: 1rem;
     display: inline-block;
+    z-index: 1;
 }
 .changeTheme:focus {
     outline: none;
@@ -402,4 +404,44 @@ select {
     border: 1px solid var(--button_keyword_color_input_unable);
     background-color: var(--button_keyword_color_input_unable);
     border-radius: 5px;
+}
+
+
+.toggle-navbar {
+    cursor: pointer;
+}
+
+.side_navigation {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(52, 58, 64, 0.93);
+    overflow-x: hidden;
+    padding-top: 20px;
+    transition: 0.5s;
+    z-index: 1;
+}
+
+.side_navigation a {
+    padding: 8px 8px 8px 30px;
+    text-decoration: none;
+    width: 100%;
+    font-size: 1.44em;
+    color: #d6d6d6;
+    display: inline-block;
+    white-space: nowrap;
+    overflow-x: hidden;
+    transition: 0.3s;
+}
+
+.side_navigation a:hover {
+    background-color: #666666;
+}
+
+@media (max-width:450px) {
+    .side_navigation {
+        padding-top: 15px;
+    }
 }

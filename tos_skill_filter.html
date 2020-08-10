@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.08.04 22:14 -->
+<!-- Last modified : 2020.08.10 23:23 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="蒼曜(tinghan33704)">
     <link rel="stylesheet" href="../tos_tool_data/css/bootstrap.min.css">
     <link rel="stylesheet" href="../tos_tool_data/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/index.css">
@@ -16,11 +17,23 @@
 </head>
     
 <body>
-    <div class="container-fluid sticky-top bg-dark py-1">
+    <div class="side_navigation">
+        <a href="#">主動技搜尋器</a>
+        <a target="_blank" href="https://tinghan33704.github.io/tos_team_skill_filter/tos_team_skill_filter.html">隊伍技搜尋器</a>
+        <a target="_blank" href="https://tinghan33704.github.io/tos_craft_filter/tos_craft_filter.html">龍刻搜尋器</a>
+    </div>
+    <div class="container-fluid sticky-top bg-dark py-1" id="top-bar">
         <div class="row">
             <div class="col-12 col-lg-4" id="tool_title">
-                <a class="navbar-brand" id="navtitle" href="#">神魔之塔主動技搜尋器</a>
-                <a class="navbar-brand" target="_blank" href="https://forum.gamer.com.tw/Co.php?bsn=23805&sn=3619702"><i class="fa fa-question-circle"></i></a>
+                <div class="row">
+                    <div class="col-2 col-lg-2" id="tool_title" onclick="toggleSideNavigation()">
+                        <div class="navbar-brand toggle-navbar"><i class="fa fa-bars"></i></div>
+                    </div>
+                    <div class="col-10 col-lg-10" id="tool_title">
+                        <a class="navbar-brand" id="navtitle" href="#">神魔之塔主動技搜尋器</a>
+                        <a class="navbar-brand" target="_blank" href="https://forum.gamer.com.tw/Co.php?bsn=23805&sn=3619702"><i class="fa fa-question-circle"></i></a>
+                    </div>
+                </div>
             </div>
             <div class="col-12 col-lg-8">
                 <div class="row">

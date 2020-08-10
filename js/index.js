@@ -74,6 +74,10 @@ $(document).ready(function(){
     if(location.search) readUrl();
 });
 
+$(window).resize(function(){
+    $('.side_navigation').css({top: (parseInt($('#top-bar').css('height'))-20)+'px'});
+});
+
 function init()
 {
     $(".row.result-row").hide();
@@ -93,6 +97,8 @@ function init()
     { 
         changeTheme();
     });
+    
+    $('.side_navigation').css({top: (parseInt($('#top-bar').css('height'))-20)+'px'});
     
     var i = 0;
     $(".filter-row").html(function()
@@ -1045,6 +1051,11 @@ function changeTheme()
         document.documentElement.style.setProperty(x, 'var('+x+'_'+theme+')');
     });
     
+}
+
+function toggleSideNavigation() {
+    const sideNav = document.getElementsByClassName("side_navigation")[0];
+    sideNav.style.width = sideNav.style.width == "250px" ? "0px" : "250px";
 }
 
 function errorAlert(index)
