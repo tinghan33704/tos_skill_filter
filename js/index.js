@@ -288,6 +288,8 @@ function startFilter()
         
         for(var x of monster_data)
         {
+            if(!x.star || x.star <= 0) continue;
+            
             if(attr_intersect)
             {
                 if(!(attr_set.has(x.attribute))) continue;
