@@ -234,11 +234,13 @@ function startFilter()
             }
         });
         
-        if(keyword_search == false && skill_select == false)
+        /*
+        if(skill_select == false)
         {
             errorAlert(2);
             return ;
         }
+        */
         
         var attr_set = new Set();
         var attr_intersect = false;
@@ -299,51 +301,71 @@ function startFilter()
                 if(!star_set.has(x.star)) continue;
             }
             
-            var skill_num_array = [];
-            for(var ch = 0; ch < x.skill.length; ch ++)
-            {
-                if(charge_intersect)
+            if(skill_select) {
+                var skill_num_array = [];
+                for(var ch = 0; ch < x.skill.length; ch ++)
                 {
-                    var non = true;
-                    if(charge_set.has(x.skill[ch].charge)) non = false;
-                    if(non) continue;
-                }
-                
-                if(or_filter)
-                {
-                    var check = false;
-                    for(var k of skill_set)
+                    if(charge_intersect)
                     {
-                        if(x.skill[ch].tag.includes(k))
-                        {
-                            check = true;
-                            break;
-                        }
+                        var non = true;
+                        if(charge_set.has(x.skill[ch].charge)) non = false;
+                        if(non) continue;
                     }
                     
-                    if(!check) continue;
-                }
-                else
-                {
-                    var check = true;
-                    for(var k of skill_set)
+                    if(or_filter)
                     {
-                        if(!x.skill[ch].tag.includes(k))
+                        var check = false;
+                        for(var k of skill_set)
                         {
-                            check = false;
-                            break;
+                            if(x.skill[ch].tag.includes(k))
+                            {
+                                check = true;
+                                break;
+                            }
                         }
+                        
+                        if(!check) continue;
+                    }
+                    else
+                    {
+                        var check = true;
+                        for(var k of skill_set)
+                        {
+                            if(!x.skill[ch].tag.includes(k))
+                            {
+                                check = false;
+                                break;
+                            }
+                        }
+                        
+                        if(!check) continue;
                     }
                     
-                    if(!check) continue;
+                    var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
+                    
+                    skill_num_array.push(ch);
+                    filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
                 }
-                
-                var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
-                
-                skill_num_array.push(ch);
-                filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
+                if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
             }
-            if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
+            else {
+                var skill_num_array = [];
+                for(var ch = 0; ch < x.skill.length; ch ++)
+                {
+                    if(charge_intersect)
+                    {
+                        var non = true;
+                        if(charge_set.has(x.skill[ch].charge) && x.skill[ch].num > 0) non = false;
+                        if(non) continue;
+                    }
+                    
+                    var charge = ('reduce' in x.skill[ch])?x.skill[ch].num-x.skill[ch].reduce:x.skill[ch].num;
+                    
+                    skill_num_array.push(ch);
+                    filter_charge_set.add({'id': x.id, 'num': ch, 'charge': charge});
+                }
+                if(skill_num_array.length > 0) filter_set.add({'id': x.id, 'nums': skill_num_array});
+            }
         }
     }
     else        // keyword search mode
