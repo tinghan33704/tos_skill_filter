@@ -357,7 +357,7 @@ function startFilter()
                     if(charge_intersect)
                     {
                         var non = true;
-                        if(charge_set.has(x.skill[ch].charge) && x.skill[ch].num > 0) non = false;
+                        if(charge_set.has(x.skill[ch].charge) && x.skill[ch].name.length > 0) non = false;
                         if(non) continue;
                     }
                     
@@ -453,6 +453,8 @@ function startFilter()
         
         for(var x of monster_data)
         {
+            if(!x.star || x.star <= 0) continue;
+            
             if(attr_intersect)
             {
                 if(!(attr_set.has(x.attribute))) continue;
@@ -566,7 +568,7 @@ function startFilter()
                         {
                             sk_str += "<div class='skill_tooltip skill_charge col-3 col-sm-3 mb-1'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
                         }
-                        else if(skill.num == -1)
+                        else if(skill.num <= 0)
                         {
                             sk_str += "<div class='skill_tooltip skill_charge col-3 col-sm-3 mb-1'>"+skill.charge+"&nbsp;"+"-</div>";
                         }
@@ -685,7 +687,7 @@ function startFilter()
                     {
                         sk_str += "<div class='skill_tooltip skill_charge col-3 col-sm-3 mb-1'>"+skill.charge+"&nbsp;"+skill.num+" → "+(skill.num-skill.reduce)+"</div>";
                     }
-                    else if(skill.num == -1)
+                    else if(skill.num <= 0)
                     {
                         sk_str += "<div class='skill_tooltip skill_charge col-3 col-sm-3 mb-1'>"+skill.charge+"&nbsp;"+"-</div>";
                     }
