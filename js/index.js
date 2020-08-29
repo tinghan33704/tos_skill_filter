@@ -615,7 +615,6 @@ function startFilter()
                         sk_str += "<div class='row'>";
                         sk_str += "   <div class='skill_tooltip skill_description col-sm-12'>"+skill.description+"</div>";
                         sk_str += "</div>";
-                        
                         skill_cnt ++;
                     }
                     
@@ -629,7 +628,7 @@ function startFilter()
                     */
                     
                     str += "<div class=\"col-3 col-md-2 col-lg-1 result\">"+
-                                    "<img class=\"monster_img\" src=\"../tos_tool_data/img/monster/"+x.id+".png\" onerror=\"this.src='../tos_tool_data/img/monster/noname_"+attr_zh_to_en[monster_attr]+".png'\" tabindex="+x.id+" data-toggle=\"popover\" data-title=\"\" data-content=\""+sk_str+"\"></img>"+
+                                    "<img class=\"monster_img\" src=\"../tos_tool_data/img/monster/"+x.id+".png\" onerror=\"this.src='../tos_tool_data/img/monster/noname_"+attr_zh_to_en[monster_attr]+".png'\" tabindex="+x.id.toString().replace('?', '')+" data-toggle=\"popover\" data-title=\"\" data-content=\""+sk_str+"\"></img>"+
                                 "<div class=\"monsterId\"><a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+paddingZeros(x.id, 3)+"</a></div>"+
                             "</div>";
                 });
@@ -745,7 +744,7 @@ function startFilter()
                     */
                     
                     str += "<div class=\"col-3 col-md-2 col-lg-1 result\">"+
-                                    "<img class=\"monster_img\" src=\"../tos_tool_data/img/monster/"+x.id+".png\" onerror=\"this.src='../tos_tool_data/img/monster/noname_"+attr_zh_to_en[monster_attr]+".png'\" tabindex="+x.id+" data-toggle=\"popover\" data-title=\"\" data-content=\""+sk_str+"\"></img>"+
+                                    "<img class=\"monster_img\" src=\"../tos_tool_data/img/monster/"+x.id+".png\" onerror=\"this.src='../tos_tool_data/img/monster/noname_"+attr_zh_to_en[monster_attr]+".png'\" tabindex="+x.id.toString().replace('?', '')+" data-toggle=\"popover\" data-title=\"\" data-content=\""+sk_str+"\"></img>"+
                                 "<div class=\"monsterId\"><a href=\"https://tos.fandom.com/zh/wiki/"+x.id+"\" target=\"_blank\">"+paddingZeros(x.id, 3)+"</a></div>"+
                             "</div>";
                 });
