@@ -9,7 +9,7 @@ const skill_type_string = [
 ['符石強化', '大幅轉版', '固定轉版', '還原版面', '移除符石', '禁珠', '改變掉落機率', '強制掉落', '改變消除方式', '增加符石'],
 ['減傷', '意志', '敵方減攻', '迴避', '回血', '我方傷害吸收', '敵方傷害吸收'],
 ['破防', '直傷', '破防直傷', '屬性剋制改變', '排珠', '延長轉珠時間'],
-['增傷', '界王拳', '攻擊轉屬', '增回', '攻擊力吸收', '共鳴'],
+['增傷', '界王拳', '攻擊轉屬', '增回', '我方攻擊力吸收', '共鳴'],
 ['對人類增傷', '對獸類增傷', '對妖精類增傷', '對龍類增傷', '對神族增傷', '對魔族增傷', '對機械族增傷'],
 ['增加Combo', '增加Ex.Combo', '延遲', '減CD', '回復EP', '附加消除', '龍脈儀蓄能', '行動值提升', '隨時關閉', '變身', '合體'],
 ['無法行動', '敵方轉屬', '凍結敵方', '點燃敵方', '石化敵方', '電擊敵方', '寄生敵方', '敵方中毒', '魅惑敵方', '暈擊敵方'],
@@ -33,11 +33,13 @@ const white_str = "rgb(255, 255, 255)";
 const black_str = "rgb(0, 0, 0)";
 
 var filter_set = new Set();
+var option_obj = {};
 var or_filter = true;
 var sort_by = 'id';
 var keyword_search = false;
 var input_maxlength = 50;
 var theme = 'normal';
+const option_text = ['單回合', '跨回合', '常駐'];
 
 const skill_num = skill_type_string.length;
 const attr_num = attr_type_string.length;
@@ -70,6 +72,7 @@ $(document).ready(function(){
     $("#reset_charge").on("click", resetCharge);
     $("#reset_keyword").on("click", resetKeyword);
     $("#keyword-switch").on("click", keywordSwitch);
+    $('#optionPanel').on('hide.bs.modal', recordOption)
     
     if(location.search) readUrl();
 });
@@ -93,6 +96,19 @@ function init()
     }).scroll();
     
     
+    $('#option-btn').click(function()
+    {
+        let hasSelectedSkill = false;
+        $(".filter-row .filter").each(function(){
+            if($(this).prop('checked'))
+            {
+                hasSelectedSkill = true;
+                return false;
+            }
+        });
+        if(hasSelectedSkill) openOptionPanel();
+        else errorAlert(2);
+    });
     $('#changeTheme-btn').click(function()
     { 
         changeTheme();
@@ -211,6 +227,61 @@ function keywordSwitch()
     }
 }
 
+function openOptionPanel()
+{
+    $('#optionPanel').modal('show');
+    renderOptionPanel();
+}
+
+function renderOptionPanel() {
+    let hasSelectedSkill = false;
+    $(".filter-row .filter").each(function(){
+        if($(this).prop('checked'))
+        {
+            if(!(Object.keys(option_obj).includes($(this).next("label").text())))
+            {
+                option_obj[$(this).next("label").text()] = Array(option_text.length).fill(false);
+            }
+            hasSelectedSkill = true;
+        }
+        else 
+        {
+            if($(this).next("label").text() in option_obj)
+            {
+                delete option_obj[$(this).next("label").text()];
+            }
+        }
+    });
+    
+    let render_str = "";
+    let option_id = 0;
+    skill_type_string.forEach(function(row) {
+        row.forEach(function(skill) {
+            if(Object.keys(option_obj).includes(skill))
+            {
+                render_str += "<div class='row option-row'>";
+                render_str += "     <div class='col-4 option-text'>"+skill+"</div>";
+                option_text.forEach(function(text, j){
+                    render_str += "     <div class='col-2 btn-shell'><input type='checkbox' class='filter' id='option-"+(option_id*option_text.length+j)+"' "+(option_obj[skill][j] ? 'checked': '')+"><label class='p-1 w-100 text-center option-btn' for='option-"+(option_id*option_text.length+j)+"'>"+text+"</label></div>";
+                })
+                render_str += "</div>";
+                option_id ++;
+            }
+        })
+    })
+    
+    $(".modal-body").html(render_str)
+}
+
+function recordOption() {
+    $(".option-row").each(function(){
+        let option_text = $(this).find('.option-text').html();
+        $(this).children('.btn-shell').each(function(i) {
+            option_obj[option_text][i] = $(this).find('.filter').prop('checked');
+        })
+    });
+}
+
 function startFilter()
 {
     changeUrl();
@@ -314,29 +385,110 @@ function startFilter()
                         if(non) continue;
                     }
                     
-                    if(or_filter)
+                    if(or_filter)       // OR
                     {
                         var check = false;
                         for(var k of skill_set)
                         {
-                            if(x.skill[ch].tag.includes(k))
-                            {
-                                check = true;
-                                break;
+                            var tag_check = false;
+                            for(var t of x.skill[ch].tag) {
+                                if(Array.isArray(t))
+                                {
+                                    if(t[0] == k) {
+                                        if(k in option_obj)
+                                        {
+                                            if( (t[1] == 1 && option_obj[k][0]) ||
+                                                (t[1] > 1  && option_obj[k][1]) ||
+                                                (t[1] == -1 && option_obj[k][2]) ||
+                                                (!option_obj[k][0] && !option_obj[k][1] && !option_obj[k][2])
+                                            ) 
+                                            {
+                                                tag_check = true;
+                                            }
+                                        }
+                                        else tag_check = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if(t == k) {
+                                        if(k in option_obj)
+                                        {
+                                            if( option_obj[k][0] ||
+                                                (!option_obj[k][0] && !option_obj[k][1] && !option_obj[k][2])
+                                            ) 
+                                            {
+                                                tag_check = true;
+                                            }
+                                        }
+                                        else tag_check = true;
+                                    }
+                                }
+                                
+                                if(tag_check)
+                                {
+                                    check = true;
+                                    break;
+                                }
                             }
                         }
                         
                         if(!check) continue;
                     }
-                    else
+                    else       // AND
                     {
                         var check = true;
                         for(var k of skill_set)
                         {
-                            if(!x.skill[ch].tag.includes(k))
+                            var tag_check = false;
+                            for(var t of x.skill[ch].tag) {
+                                if(Array.isArray(t))
+                                {
+                                    if(t[0] == k) {
+                                        if(k in option_obj)
+                                        {
+                                            if( (t[1] == 1 && option_obj[k][0]) ||
+                                                (t[1] > 1  && option_obj[k][1]) ||
+                                                (t[1] == -1 && option_obj[k][2]) ||
+                                                (!option_obj[k][0] && !option_obj[k][1] && !option_obj[k][2])
+                                            ) 
+                                            {
+                                                tag_check = true;
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            tag_check = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if(t == k) {
+                                        if(k in option_obj)
+                                        {
+                                            if( option_obj[k][0] ||
+                                                (!option_obj[k][0] && !option_obj[k][1] && !option_obj[k][2])
+                                            ) 
+                                            {
+                                                tag_check = true;
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            tag_check = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                                
+                            if(!tag_check)
                             {
                                 check = false;
-                                break;
                             }
                         }
                         
@@ -764,7 +916,22 @@ function startFilter()
         if(!keyword_search)
         {
             skill_set.forEach(function(element){
-                tag_html += '<div class="tag_wrapper"><div class="skill_tag" title="'+element+'">'+element+'</div></div>';
+                if(option_obj[element]) {
+                    
+                    if(option_obj[element].every(e => e === false) || option_obj[element].every(e => e === true)) {
+                        tag_html += '<div class="tag_wrapper"><div class="skill_tag" title="'+element+'">'+element+'</div></div>';
+                    }
+                    else {
+                        option_obj[element].forEach((options, i) => {
+                            if(options) {
+                                tag_html += '<div class="tag_wrapper"><div class="skill_tag" title="'+element+' ('+option_text[i]+')'+'">'+element+' <font style="color: #CCCCFF; font-size: 0.8em;">('+option_text[i]+')</font>'+'</div></div>';
+                            }
+                        })
+                    }
+                }
+                else {
+                    tag_html += '<div class="tag_wrapper"><div class="skill_tag" title="'+element+'">'+element+'</div></div>';
+                }
             });
         }
         attr_set.forEach(function(element){
@@ -1090,7 +1257,7 @@ function errorAlert(index)
             alert("[Error Code "+paddingZeros(index, 2)+"] 請檢查網址是否正確");
         break;
         case 2:
-            alert("[Error Code "+paddingZeros(index, 2)+"] 請先選擇功能或輸入技能關鍵字");
+            alert("[Error Code "+paddingZeros(index, 2)+"] 請先選擇功能");
         break;
         case 3:
             alert("[Error Code "+paddingZeros(index, 2)+"] 請輸入技能關鍵字");

@@ -94,7 +94,7 @@ body {
 .filter[type=checkbox] {
     display: none;
 }
-.filter[type=checkbox]:checked + label.filter-btn {
+.filter[type=checkbox]:checked + label.filter-btn, .filter[type=checkbox]:checked + label.option-btn {
     background-color: var(--button_filter_color_checked); 
     color: var(--button_text_color_checked); 
     font-weight: bold;
@@ -151,7 +151,7 @@ select {
 .btn-shell {
     padding: 3px;
 }
-.filter-btn, .attr-btn, .race-btn, .star-btn, .charge-btn, .keyword-btn {
+.filter-btn, .attr-btn, .race-btn, .star-btn, .charge-btn, .keyword-btn, .option-btn {
     font-size: 1.2em;
     font-weight: normal;
     color: var(--text_color);
@@ -336,6 +336,43 @@ select {
     height: 50px;
 }
 
+/* adjust for modal */
+
+.container-fluid {
+    padding-right: 15px !important;
+    margin-right: 0px !important;
+}
+.modal-open {
+    overflow: hidden;
+}
+#optionPanel .modal-dialog {
+    width: 80% !important;
+    max-width: 80% !important;
+}
+#optionPanel .modal-content {
+    background-color: var(--background_color);
+}
+#optionPanel .row {
+    padding: 0 15px;
+}
+
+.option-text {
+    font-size: 1.2em;
+    font-weight: normal;
+    color: var(--text_color);
+    text-align: center;
+    border: 1px solid transparent;
+    padding: 5px 0;
+}
+.filter[type=checkbox]:checked + label.option-btn {
+    background-color: var(--button_filter_color_checked); 
+    color: var(--button_text_color_checked); 
+    font-weight: bold;
+}
+    
+
+/* ---------------- */
+
 .toTop {
     width: 3rem;
     height: 3rem;
@@ -374,6 +411,28 @@ select {
 
 
 
+
+.option {
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 20%;
+    opacity: 0.6;
+    background: #000;
+    color: white;
+    cursor: pointer;
+    position:fixed;
+    font-size: 1.8rem;
+    left: 1rem;
+    bottom: 5rem;
+    display: inline-block;
+    z-index: 1;
+}
+.option:focus {
+    outline: none;
+}
 .changeTheme {
     width: 3rem;
     height: 3rem;

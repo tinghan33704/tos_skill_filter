@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2020.08.29 22:13 -->
+<!-- Last modified : 2020.11.08 00:56 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -22,6 +22,19 @@
         <a target="_blank" href="https://tinghan33704.github.io/tos_team_skill_filter/tos_team_skill_filter.html">隊伍技搜尋器</a>
         <a target="_blank" href="https://tinghan33704.github.io/tos_craft_filter/tos_craft_filter.html">龍刻搜尋器</a>
     </div>
+    
+    <div id="optionPanel" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body"></div>
+        </div>
+
+      </div>
+    </div>
+    
     <div class="container-fluid sticky-top bg-dark py-1" id="top-bar">
         <div class="row">
             <div class="col-12 col-lg-4" id="tool_title">
@@ -97,9 +110,9 @@
             </div>
         </div>
         <div class="row keyword-row"></div>
+        
         <div class="row">
             <div class="col-12">
-                <hr>
                 <h3>召喚獸屬性</h3>
             </div>
             <div class="col-12 btn-shell">
@@ -167,6 +180,9 @@
         </div>
         <div class="row my-5"></div>
     </div>
+    <button type="button" id="option-btn" class="option">
+        <i class="fa fa-filter"></i>
+    </button>
     <button type="button" id="changeTheme-btn" class="changeTheme">
         <i class="fa fa-adjust"></i>
     </button>
