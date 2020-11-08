@@ -260,10 +260,11 @@ function renderOptionPanel() {
             if(Object.keys(option_obj).includes(skill))
             {
                 render_str += "<div class='row option-row'>";
-                render_str += "     <div class='col-4 option-text'>"+skill+"</div>";
+                render_str += "     <div class='col-12 col-md-12 col-lg-4 option-text'>"+skill+"</div>";
                 option_text.forEach(function(text, j){
-                    render_str += "     <div class='col-2 btn-shell'><input type='checkbox' class='filter' id='option-"+(option_id*option_text.length+j)+"' "+(option_obj[skill][j] ? 'checked': '')+"><label class='p-1 w-100 text-center option-btn' for='option-"+(option_id*option_text.length+j)+"'>"+text+"</label></div>";
+                    render_str += "     <div class='col-12 col-md-4 col-lg-2 btn-shell'><input type='checkbox' class='filter' id='option-"+(option_id*option_text.length+j)+"' "+(option_obj[skill][j] ? 'checked': '')+"><label class='p-1 w-100 text-center option-btn' for='option-"+(option_id*option_text.length+j)+"'>"+text+"</label></div>";
                 })
+                render_str += "<hr>";
                 render_str += "</div>";
                 option_id ++;
             }

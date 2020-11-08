@@ -348,12 +348,13 @@ select {
 #optionPanel .modal-dialog {
     width: 80% !important;
     max-width: 80% !important;
+    margin: 20px auto;
 }
 #optionPanel .modal-content {
     background-color: var(--background_color);
 }
 #optionPanel .row {
-    padding: 0 15px;
+    padding: 5px 15px 0px 15px;
 }
 
 .option-text {
