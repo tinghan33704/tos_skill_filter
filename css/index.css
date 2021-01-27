@@ -370,6 +370,12 @@ select {
     color: var(--button_text_color_checked); 
     font-weight: bold;
 }
+
+.copyright {
+    color: #9f9f9f;
+    text-align: center;
+    margin-bottom: 7px;
+}
     
 
 /* ---------------- */

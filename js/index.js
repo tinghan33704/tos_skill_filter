@@ -191,6 +191,11 @@ function init()
     
     or_filter = true;
     keyword_search = false;
+
+    $(".copyright").html(function() {
+        let year = new Date().getFullYear();
+        return "Copyright © 2019-" + year + " 蒼曜"
+    });
 }
 
 function keywordSwitch()
