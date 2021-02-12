@@ -374,7 +374,7 @@ function startFilter()
             }
             else
             {
-                str = "<div class='col-sm-12' style=\"text-align: center; color: #888888;\"><h1>查無結果</h1></div>";
+                str = `<div class='col-sm-12' style="text-align: center; color: #888888;"><h1>查無結果</h1></div>`;
             }
             return str;
         }
@@ -484,7 +484,7 @@ function startFilter()
                 if(option_obj[skill]) {
                     if( option_obj[skill].every(e => e === false) || 
                         option_obj[skill].every(e => e === true)) {
-                        tag_html += renderTags(skill_set, 'skill');
+                        tag_html += renderTags([skill], 'skill');
                     }
                     else {
                         $.each(option_obj[skill], (option_index, option) => {
@@ -499,7 +499,7 @@ function startFilter()
                         })
                     }
                 }
-                else tag_html += renderTags(skill_set, 'skill');
+                else tag_html += renderTags([skill], 'skill');
             })
         }
         
