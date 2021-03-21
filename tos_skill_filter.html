@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2021.02.26 21:00 -->
+<!-- Last modified : 2021.03.21 03:48 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -110,9 +110,31 @@
             </div>
         </div>
         <div class="row keyword-row"></div>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+				<div class="row tag-collapse-div" data-toggle="collapse" data-target=".tag-collapse" aria-expanded="false">
+					<div class="col-11">
+						<h3>召喚獸標籤</h3>
+					</div>
+					<div class="col-1">
+						<i class="fa fa-caret-down collapse-close" style="font-size: 2.4em;"></i>
+						<i class="fa fa-caret-up collapse-open" style="font-size: 2.4em;"></i>
+					</div>
+				</div>
+            </div>
+            <div class="col-12 btn-shell">
+                <button class="btn btn-primary btn-block top-btn reset" id="reset_tag">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;&nbsp;重置
+                </button>
+            </div>
+        </div>
+        <div class="row tag-row collapse tag-collapse"></div>
         
         <div class="row">
             <div class="col-12">
+                <hr>
                 <h3>召喚獸屬性</h3>
             </div>
             <div class="col-12 btn-shell">

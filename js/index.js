@@ -3,6 +3,7 @@ const tool_id = 'active_skill';
 let filter_set = new Set();
 let option_obj = {};
 let or_filter = true;
+let keyword_search = false;
 let sort_by = 'id';
 let sort_by_method = [['id', '依編號排序'], ['charge', '依 CD/EP 排序'], ['attribute', '依屬性排序'], ['race', '依種族排序']];
 let theme = 'normal';
@@ -78,6 +79,7 @@ function startFilter()
     let race_set = new Set();
     let star_set = new Set();
     let charge_set = new Set();
+    let tag_set = new Set();
     
     let filter_charge_set = new Set();
     
@@ -86,6 +88,7 @@ function startFilter()
     let isRaceSelected = false;
     let isStarSelected = false;
     let isChargeSelected = false;
+    let isTagSelected = false;
     
     if(keyword_search == false)
     {
@@ -96,13 +99,28 @@ function startFilter()
         [race_set, isRaceSelected] = getSelectedButton('race');
         [star_set, isStarSelected] = getSelectedButton('star', true);
         [charge_set, isChargeSelected] = getSelectedButton('charge');
-        
+        [tag_set, isTagSelected] = getSelectedButton('tag');
+		
         $.each(monster_data, (index, monster) => {
 
             if( (!monster.star || monster.star <= 0) ||
                 (isAttrSelected && !attr_set.has(monster.attribute)) || 
                 (isRaceSelected && !race_set.has(monster.race)) || 
                 (isStarSelected && !star_set.has(monster.star))) return;
+				
+			if(isTagSelected) {
+				let hasTag = false;
+				
+				$.each(monster.monsterTag, (tag_index, tag) => {
+					if(tag_set.has(tag)) {
+						hasTag = true;
+						return;
+					}
+				})
+				
+				if((tag_set.has('自家') && !monster.crossOver) || (tag_set.has('合作') && monster.crossOver)) hasTag = true;
+				if(!hasTag) return;
+			}
             
             if(isSkillSelected) {
                 let skill_num_array = [];
@@ -257,12 +275,27 @@ function startFilter()
         [race_set, isRaceSelected] = getSelectedButton('race');
         [star_set, isStarSelected] = getSelectedButton('star', true);
         [charge_set, isChargeSelected] = getSelectedButton('charge');
+        [tag_set, isTagSelected] = getSelectedButton('tag');
         
         $.each(monster_data, (index, monster) => {
             if( (!monster.star || monster.star <= 0) ||
                 (isAttrSelected && !attr_set.has(monster.attribute)) || 
                 (isRaceSelected && !race_set.has(monster.race)) || 
                 (isStarSelected && !star_set.has(monster.star))) return;
+				
+			if(isTagSelected) {
+				let hasTag = false;
+				
+				$.each(monster.monsterTag, (tag_index, tag) => {
+					if(tag_set.has(tag)) {
+						hasTag = true;
+						return;
+					}
+				})
+				
+				if((tag_set.has('自家') && !monster.crossOver) || (tag_set.has('合作') && monster.crossOver)) hasTag = true;
+				if(!hasTag) return;
+			}
             
             let skill_num_array = [];
             $.each(monster.skill, (skill_index, monster_skill) => {
@@ -318,9 +351,9 @@ function startFilter()
     $("#result-row").html(() => {
         if(sort_by == 'id')
         {
-            monster_array.sort((a, b) => { 
+            /*monster_array.sort((a, b) => { 
                 return a.id - b.id;
-            });
+            });*/
             
             let str = "";
             
@@ -503,6 +536,7 @@ function startFilter()
             })
         }
         
+        tag_html += renderTags(tag_set, 'tag');
         tag_html += renderTags(attr_set, 'genre', '屬性');
         tag_html += renderTags(race_set, 'genre');
         tag_html += renderTags(star_set, 'genre', ' ★');
@@ -620,81 +654,4 @@ function sortByChange()
     
     sort_by = sort_by_method[sort_by_next_index][0]
     $("#sort_by_result").text(sort_by_method[sort_by_next_index][1])
-}
-
-function changeUrl()
-{
-    let search_str = `${!keyword_search ? `search=${encode(".filter-row", skill_num)}` : `keyword=${escape(textSanitizer($('#keyword-input').val()))}`}`
-    let attr_str = `attr=${encode(".attr-row", attr_num)}`
-    let race_str = `race=${encode(".race-row", race_num)}`
-    let star_str = `star=${encode(".star-row", star_num)}`
-    let charge_str = `chrg=${encode(".charge-row", charge_num)}`
-    let or_str = `or=${or_filter ? `1` : `0`}`
-    
-    window.history.pushState(null, null, `?${search_str}&${attr_str}&${race_str}&${star_str}&${charge_str}&${or_str}`);
-}
-
-function readUrl()
-{   
-    let code_array = location.search.split("&").map(x => x.split("=")[1]);
-    let code_name_array = location.search.split("?")[1].split("&").map(x => x.split("=")[0]);
-    
-    if(code_array.length != 6)
-    {
-        errorAlert(1);
-        return;
-    }
-    
-    let code_name_1 = ["search", "attr", "race", "star", "chrg", "or"];
-    let code_name_2 = ["keyword", "attr", "race", "star", "chrg", "or"];
-    
-    let isCodeNameFit = true;
-    $.each(code_name_array, (index, code) => {
-        if( code_name_array[index] !== code_name_1[index] && 
-            code_name_array[index] !== code_name_2[index] )
-        {
-            isCodeNameFit = false;
-            return false;
-        }
-    })
-    
-    if(!isCodeNameFit) {
-        errorAlert(1);
-        return;
-    }
-    
-    
-    if(code_name_array[0] === code_name_1[0])
-    {
-        let skill_code = decode(code_array[0]);
-        setButtonFromUrl(".filter-row", skill_code, clearFilterButtonRow('filter'));
-    }
-    else
-    {
-        let skill_keyword = code_array[0];
-        setInputFromUrl(".keyword-input", unescape(skill_keyword));
-        
-        $("#keyword-switch").click();
-        keywordSwitch();
-    }
-    
-    let attr_code = decode(code_array[1]);
-    setButtonFromUrl(".attr-row", attr_code, clearFilterButtonRow('attr'));
-    
-    let race_code = decode(code_array[2]);
-    setButtonFromUrl(".race-row", race_code, clearFilterButtonRow('race'));
-    
-    let star_code = decode(code_array[3]);
-    setButtonFromUrl(".star-row", star_code, clearFilterButtonRow('star'));
-    
-    let chrg_code = decode(code_array[4]);
-    setButtonFromUrl(".charge-row", chrg_code, clearFilterButtonRow('charge'));
-    
-    let and_or_code = code_array[5];
-    and_or_code[0] == "0" && andOrChange();
-    
-    
-    startFilter();
-    
-    window.history.pushState(null, null, location.pathname);    // clear search parameters
 }
