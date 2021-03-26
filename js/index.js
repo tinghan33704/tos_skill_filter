@@ -363,8 +363,10 @@ function startFilter()
                     
                     let sk_str = "";
                     
+					sk_str += renderMonsterInfo(monster);
+					
                     $.each(monster.nums, (num_index, skill_number) => {
-                        sk_str += renderMonsterInfo(monster, skill_number);
+                        sk_str += renderSkillInfo(monster, skill_number);
                     })
                     
                     str += renderMonsterImage(monster, sk_str);
@@ -400,7 +402,9 @@ function startFilter()
                     
                     let sk_str = "";
                     
-                    sk_str += renderMonsterInfo(monster, monster.num);
+					sk_str += renderMonsterInfo(monster);
+                    
+                    sk_str += renderSkillInfo(monster, monster.num);
                     
                     str += renderMonsterImage(monster, sk_str);
                 });
@@ -438,9 +442,11 @@ function startFilter()
                     if(attr.length != 0) {
                         $.each(attr, (monster_index, monster) => {
                             let sk_str = "";
+                    
+							sk_str += renderMonsterInfo(monster);
                         
                             $.each(monster.nums, (num_index, skill_number) => {
-                                sk_str += renderMonsterInfo(monster, skill_number);
+                                sk_str += renderSkillInfo(monster, skill_number);
                             })
                             
                             str += renderMonsterImage(monster, sk_str);
@@ -483,8 +489,10 @@ function startFilter()
                         $.each(race, (monster_index, monster) => {
                             let sk_str = "";
                     
+							sk_str += renderMonsterInfo(monster);
+							
                             $.each(monster.nums, (num_index, skill_number) => {
-                                sk_str += renderMonsterInfo(monster, skill_number);
+                                sk_str += renderSkillInfo(monster, skill_number);
                             })
                             
                             str += renderMonsterImage(monster, sk_str);
@@ -547,16 +555,37 @@ function startFilter()
     
     
     $('[data-toggle=popover]').popover({
-      container: 'body',
-      html: true,
-      trigger: 'focus',
-      placement: 'bottom'
+		container: 'body',
+		html: true,
+		sanitize: false,
+		trigger: 'focus',
+		placement: 'bottom',
     });
     
     jumpTo("result_title");
 }
 
-function renderMonsterInfo(monster, skill_number) {
+function renderMonsterInfo(monster) {
+	const monster_info = monster_data.find((element) => {
+		return element.id == monster.id;
+	});
+	
+    let sk_str = '';
+	
+	sk_str += `<div class='row'>`
+
+	sk_str += `<div class='col-1 col-sm-1'><img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[monster_info.attribute]}.png' width='25px'/></div>`;
+
+	sk_str += `<div class='col-1 col-sm-1'><img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[monster_info.race]}.png' width='25px'/></div>`;
+
+	sk_str += `<div class='skill_tooltip monster_name monster_name_${attr_zh_to_en[monster_info.attribute]} col-10 col-sm-10 mb-1'>${monster_info.name}</div>`;
+	
+	sk_str += `<hr></div>`
+	
+	return sk_str;
+}
+
+function renderSkillInfo(monster, skill_number) {
     const skill = monster_data.find((element) => {
         return element.id == monster.id;
     }).skill[skill_number];
