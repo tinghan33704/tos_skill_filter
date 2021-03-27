@@ -574,9 +574,9 @@ function renderMonsterInfo(monster) {
 	
 	sk_str += `<div class='row'>`
 
-	sk_str += `<div class='col-1 col-sm-1'><img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[monster_info.attribute]}.png' width='25px'/></div>`;
+	sk_str += `<div class='col-6 col-sm-1 monster_attr'><img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[monster_info.attribute]}.png' width='25px'/></div>`;
 
-	sk_str += `<div class='col-1 col-sm-1'><img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[monster_info.race]}.png' width='25px'/></div>`;
+	sk_str += `<div class='col-6 col-sm-1 monster_race'><img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[monster_info.race]}.png' width='25px'/></div>`;
 
 	sk_str += `<div class='skill_tooltip monster_name monster_name_${attr_zh_to_en[monster_info.attribute]} col-10 col-sm-10 mb-1'>${monster_info.name}</div>`;
 	
