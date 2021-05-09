@@ -663,13 +663,18 @@ function renderSkillInfo(monster, skill_number) {
 }
 
 function renderMonsterImage(monster, tooltip_content) {
-    const monster_attr = monster_data.find((element) => {
+    const monster_obj = monster_data.find((element) => {
         return element.id == monster.id;
-    }).attribute;
+    });
+    const monster_attr = monster_obj.attribute;
+    const hasSpecialImage = 'specialImage' in monster_obj && monster_obj.specialImage;
     
     return `
         <div class='col-3 col-md-2 col-lg-1 result'>
-            <img class='monster_img' src='../tos_tool_data/img/monster/${monster.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' tabindex=${monster.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+            <img class='monster_img' src='../tos_tool_data/img/monster/${monster.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}_sp.png"` : null} onblur=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}.png"` : null} tabindex=${monster.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+			<!-- special image preload -->
+			<img style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster.id}_sp.png` : ''}>
+			<!-- -->
             <div class='monsterId'>
                 <a href='https://tos.fandom.com/zh/wiki/${monster.id}' target='_blank'>${paddingZeros(monster.id, 3)}</a>
             </div>
