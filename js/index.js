@@ -531,7 +531,7 @@ function startFilter()
                         $.each(option_obj[skill], (option_index, option) => {
                             if(option) {
                                 tag_html += `
-                                    <div class="tag_wrapper">
+                                    <div class="col-12 col-sm-3 tag_wrapper">
                                         <div class="skill_tag" title="${skill} (${option_text[option_index]})">${skill} <font style="color: #CCCCFF; font-size: 0.8em;">(${option_text[option_index]})</font>
                                         </div>
                                     </div>
@@ -586,9 +586,11 @@ function renderMonsterInfo(monster) {
 }
 
 function renderSkillInfo(monster, skill_number) {
-    const skill = monster_data.find((element) => {
+    const monster_obj = monster_data.find((element) => {
         return element.id == monster.id;
-    }).skill[skill_number];
+    });
+    const skill = monster_obj.skill[skill_number];
+    const monster_attr = monster_obj.attribute;
     
     let sk_str = '';
     
@@ -636,9 +638,9 @@ function renderSkillInfo(monster, skill_number) {
     if('transform' in skill)
     {
         let transform_str = ''
-        transform_str += `<img src='../tos_tool_data/img/monster/${monster.id}.png'\>`;
+        transform_str += `<img src='../tos_tool_data/img/monster/${monster.id}.png' \>`;
         
-        transform_str += ` → <img src='../tos_tool_data/img/monster/${skill.transform}.png'\>`;
+        transform_str += ` → <img src='../tos_tool_data/img/monster/${skill.transform}.png' \>`;
         
         sk_str += `
             <div class='row'>
