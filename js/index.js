@@ -657,11 +657,62 @@ function renderSkillInfo(monster, skill_number) {
             <div class='skill_tooltip col-sm-12'><hr></div>
         </div>
         <div class='row'>
-            <div class='skill_tooltip skill_description col-sm-12'>${skill.description}</div>
+            <div class='skill_tooltip skill_description col-sm-12'>${descriptionTranslator(monster.id, skill.description)}</div>
         </div>
     `;  
 
     return sk_str;
+}
+
+function descriptionTranslator(monster_id, description) {
+	return description.replace(/<board\s*(\d*)>(.*?)<\/board>/g, `<span class='fixed_board_label' onmouseover='showFixedBoard(${monster_id}, $1)' ontouchstart='showFixedBoard(${monster_id}, $1)'>$2</span>`)
+}
+
+function showFixedBoard(id, subid) {
+	const monster_obj = monster_data.find((element) => {
+        return element.id == id;
+    });
+	const board_data = monster_obj.board[subid ? subid-1 : 0]
+	renderFixedBoard(board_data)
+}
+
+function renderFixedBoard(data) {
+	let board = ''
+	for(let row = 0; row < 5; row++) {
+		board += `<tr class='rune_tr'>`
+		for(let col = 0; col < 6; col++) {
+			const isNone = data[row * 6 + col][0] === '-'
+			const runeType = data[row * 6 + col][0]
+			const raceMark = data[row * 6 + col][1]
+			const isEnchanted = runeType === runeType.toUpperCase()
+			const rune_img = `../tos_tool_data/img/rune/rune_${isNone ? 'none' : runeType.toLowerCase()}${(!isNone && isEnchanted) ? '_enc' : ''}.png`
+			
+			if(raceMark) {
+				const race_img = `../tos_tool_data/img/rune/race_${raceMark}.png`
+				board += `<td class='rune_td'><img class='rune_img' src=${rune_img} /><img class='race_img' src=${race_img} /></td>`
+			}
+			else {
+				board += `<td class='rune_td'><img class='rune_img' src=${rune_img} /></td>`
+			}
+			
+		}
+		board += '</tr>'
+	}
+	
+	$("#fixedBoard").html(`<table class='board_table'>${board}</table>`)
+	
+	$(document).on('mousemove', '.fixed_board_label', (e) => {
+		$("#fixedBoard").css({
+			left: e.pageX + 20,
+			top: e.pageY - 100
+		});
+	}).on('touchstart', '.fixed_board_label', (e) => {
+		var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+		$("#fixedBoard").css({
+			left: touch.pageX + 20,
+			top: touch.pageY - 100
+		});
+	})
 }
 
 function renderMonsterImage(monster, tooltip_content) {
