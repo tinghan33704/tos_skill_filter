@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2021.08.10 21:47 -->
+<!-- Last modified : 2021.08.16 20:40 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -36,6 +36,17 @@
       </div>
     </div>
     
+    <div id="uidPanel" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body"></div>
+        </div>
+      </div>
+    </div>
+	
     <div class="container-fluid sticky-top bg-dark py-1" id="top-bar">
         <div class="row">
             <div class="col-12 col-lg-4" id="tool_title">
@@ -196,8 +207,18 @@
                 <hr>
             </div>
             <div class="col-12" id="result_title">
-                <h2>搜尋結果</h2>
+                <h2>
+					搜尋結果
+					<span class="uid-tag" id="uid-tag"></span>
+					<div style="width: 150px; float: right;">
+						<button class="btn btn-secondary btn-block use-inventory" id="use-inventory">
+							全部結果
+						</button>
+					</div>
+				</h2>
+				
             </div>
+			
             <div class="col-12 search_tag d-flex flex-wrap">
                 
             </div>
@@ -210,6 +231,9 @@
         <div class="row my-5"></div>
         <div class="copyright"></div>
     </div>
+    <button type="button" id="inventory-btn" class="inventory">
+        <i class="fa fa-archive"></i>
+    </button>
     <button type="button" id="option-btn" class="option">
         <i class="fa fa-filter"></i>
     </button>

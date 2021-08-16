@@ -7,6 +7,10 @@ let keyword_search = false;
 let sort_by = 'id';
 let sort_by_method = [['id', '依編號排序'], ['charge', '依 CD/EP 排序'], ['attribute', '依屬性排序'], ['race', '依種族排序']];
 let theme = 'normal';
+let searchResult = [];
+let searchResultCharge = [];
+let playerData = {uid: '', card: []}
+let useInventory = false;
 
 $(document).ready(function() {
     init();
@@ -58,16 +62,111 @@ function renderOptionPanel() {
         })
     })
     
-    $(".modal-body").html(render_str)
+    $("#optionPanel .modal-body").html(render_str)
 }
 
 function recordOption() {
-    $(".option-row").each(function(){
+    $("#optionPanel .option-row").each(function(){
         let option_text = $(this).find('.option-text').html();
         $(this).children('.btn-shell').each(function(i) {
             option_obj[option_text][i] = $(this).find('.filter').prop('checked');
         })
     });
+}
+
+function openUidInputPanel()
+{
+    $('#uidPanel').modal('show');
+    renderUidInputPanel();
+}
+
+function renderUidInputPanel()
+{
+    let render_str = "";
+	render_str += `
+	<div class='row uid-row'>
+		<div class='col-6 col-md-6 col-lg-6 uid-nav uid-nav-active' id='loadInventoryNav' onclick='switchGetInventory("load")'>匯入背包</div>
+		<div class='col-6 col-md-6 col-lg-6 uid-nav' id='updateInventoryNav' onclick='switchGetInventory("update")'>更新背包</div>
+		<div class='col-12 my-2'></div>
+		
+		<div class='col-12 col-md-12 col-lg-12 uid-tab' id='loadInventoryTab' style='display: block;'>
+			<div class='col-12 col-md-12 col-lg-12 btn-shell'>
+				<input type='text' class='form-control uid-input' id='load-uid-input' placeholder='輸入 UID' maxlength=${uid_maxlength} onkeypress='return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))'>
+			</div>
+			<div class='col-12 col-md-12 col-lg-12 btn-shell'>
+				<div>
+					<button class='btn btn-success btn-block uid-btn' id='load-confirm-uid' onclick='getPlayerInventory("load")'>
+						確定
+					</button>
+				</div>
+				<div>
+					<button class='btn btn-success btn-block uid-btn' id='load-save-inventory' onclick='savePlayerInventory("load")'>
+						儲存背包
+					</button>
+				</div>
+			</div>
+			<div class='col-12 col-md-12 col-lg-12 uid-status' id='load-uid-status'></div>
+		</div>
+		
+		<div class='col-12 col-md-12 col-lg-12 uid-tab' id='updateInventoryTab' style='display: none;'>
+			<div class='col-12 col-md-12 col-lg-12 btn-shell'>
+				<input type='text' class='form-control uid-input' id='update-uid-input' placeholder='輸入 UID' maxlength=${uid_maxlength} onkeypress='return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))'>
+			</div>
+			<div class='col-12 col-md-12 col-lg-12 btn-shell'>
+				<input type='text' class='form-control uid-input' id='update-veri-input' placeholder='輸入驗證碼' maxlength=${veri_maxlength} onkeypress='return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))'>
+			</div>
+			<div class='col-12 col-md-12 col-lg-12 btn-shell'>
+				<div>
+					<button class='btn btn-success btn-block uid-btn' id='update-confirm-uid' onclick='getPlayerInventory("update")'>
+						確定
+					</button>
+				</div>
+				<div>
+					<button class='btn btn-success btn-block uid-btn' id='update-save-inventory' onclick='savePlayerInventory("update")'>
+						儲存背包
+					</button>
+				</div>
+			</div>
+			<div class='col-12 col-md-12 col-lg-12 uid-status' id='update-uid-status'></div>
+		</div>
+	</div>
+	`
+
+    $("#uidPanel .modal-body").html(render_str)
+	$('#load-confirm-uid').css({'display': 'block'})
+	$('#load-save-inventory').css({'display': 'none'})
+	$('#update-confirm-uid').css({'display': 'block'})
+	$('#update-save-inventory').css({'display': 'none'})
+}
+
+function switchGetInventory(state)
+{
+	if(state === 'load') {
+		$("#loadInventoryNav").addClass('uid-nav-active')
+		$("#updateInventoryNav").removeClass('uid-nav-active')
+		
+		$("#loadInventoryTab").css({'display': 'block'})
+		$("#updateInventoryTab").css({'display': 'none'})
+	}
+	else {
+		$("#loadInventoryNav").removeClass('uid-nav-active')
+		$("#updateInventoryNav").addClass('uid-nav-active')
+		
+		$("#loadInventoryTab").css({'display': 'none'})
+		$("#updateInventoryTab").css({'display': 'block'})
+	}
+	
+	$('#load-uid-input').val('')
+	$('#update-uid-input').val('')
+	$('#update-veri-input').val('')
+	$('#load-confirm-uid').css({'display': 'block'})
+	$('#load-save-inventory').css({'display': 'none'})
+	$('#update-confirm-uid').css({'display': 'block'})
+	$('#update-save-inventory').css({'display': 'none'})
+	$('#load-uid-status').html('')
+	$('#update-uid-status').html('')
+	$('#load-uid-input').attr('disabled', false)
+	$('#update-uid-input').attr('disabled', false)
 }
 
 function startFilter()
@@ -102,6 +201,8 @@ function startFilter()
         [tag_set, isTagSelected] = getSelectedButton('tag');
 		
         $.each(monster_data, (index, monster) => {
+			
+			// if(useInventory && !playerData.card.includes(monster.id)) return;
 
             if( (!monster.star || monster.star <= 0) ||
                 (isAttrSelected && !attr_set.has(monster.attribute)) || 
@@ -278,6 +379,9 @@ function startFilter()
         [tag_set, isTagSelected] = getSelectedButton('tag');
         
         $.each(monster_data, (index, monster) => {
+			
+			// if(useInventory && !playerData.card.includes(monster.id)) return;
+			
             if( (!monster.star || monster.star <= 0) ||
                 (isAttrSelected && !attr_set.has(monster.attribute)) || 
                 (isRaceSelected && !race_set.has(monster.race)) || 
@@ -344,170 +448,10 @@ function startFilter()
     
     $(".row.result-row").show();
     
-    let monster_array = [...filter_set];
-    let monster_charge_array = [...filter_charge_set];
+	searchResult = [...filter_set];
+    searchResultCharge = [...filter_charge_set];
     
-    
-    $("#result-row").html(() => {
-        if(sort_by == 'id')
-        {
-            /*monster_array.sort((a, b) => { 
-                return a.id - b.id;
-            });*/
-            
-            let str = "";
-            
-            if(monster_array.length != 0)
-            {
-                $.each(monster_array, (index, monster) => {
-                    
-                    let sk_str = "";
-                    
-					sk_str += renderMonsterInfo(monster);
-					
-                    $.each(monster.nums, (num_index, skill_number) => {
-                        sk_str += renderSkillInfo(monster, skill_number);
-                    })
-                    
-                    str += renderMonsterImage(monster, sk_str);
-                });
-            }
-            else
-            {
-                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
-            }
-            return str;
-        }
-        else if(sort_by == 'charge')
-        {
-            monster_charge_array.sort((a, b) => { 
-                return a.charge - b.charge;
-            });
-            
-            let str = "";
-            let now_cd = 0;
-            
-            if(monster_charge_array.length != 0)
-            {
-                $.each(monster_charge_array, (index, monster) => {
-                    
-                    if(monster.charge != now_cd && monster.charge > 0)
-                    {
-                        now_cd = monster.charge;
-                        str += `
-                            <div class='col-sm-12'><hr class='charge_num_hr'></div>
-                            <div class='col-sm-12 charge_num_div'>&nbsp;${now_cd}</div>
-                        `;
-                    }
-                    
-                    let sk_str = "";
-                    
-					sk_str += renderMonsterInfo(monster);
-                    
-                    sk_str += renderSkillInfo(monster, monster.num);
-                    
-                    str += renderMonsterImage(monster, sk_str);
-                });
-            }
-            else
-            {
-                str = `<div class='col-sm-12' style="text-align: center; color: #888888;"><h1>查無結果</h1></div>`;
-            }
-            return str;
-        }
-        else if(sort_by == 'attribute')
-        {
-            let attr_obj = {}
-            $.each(attr_type_string, (attr_index, attr_str) => {
-                attr_obj[attr_str] = [];
-            })
-            
-            $.each(monster_array, (monster_index, monster) => {
-                attr_obj[monster.attr].push(monster);
-            })
-            
-            let str = "";
-            
-            if(monster_array.length != 0)
-            {
-                $.each(attr_obj, (attr_index, attr) => {
-                    str += `
-                        <div class='col-sm-12'><hr class='charge_num_hr'></div>
-                        <div class='col-sm-12 charge_num_div' style='color: ${attr_color[attr_index]};'>
-                            <img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[attr_index]}.png' style='max-width: 40px;'\>
-                            &nbsp;${attr_index}
-                        </div>
-                    `;
-                    
-                    if(attr.length != 0) {
-                        $.each(attr, (monster_index, monster) => {
-                            let sk_str = "";
-                    
-							sk_str += renderMonsterInfo(monster);
-                        
-                            $.each(monster.nums, (num_index, skill_number) => {
-                                sk_str += renderSkillInfo(monster, skill_number);
-                            })
-                            
-                            str += renderMonsterImage(monster, sk_str);
-                        });
-                    }
-                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
-                });
-            }
-            else
-            {
-                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
-            }
-            return str;
-        }
-        else if(sort_by == 'race')
-        {
-            let race_obj = {}
-            $.each(race_type_string, (race_index, race_str) => {
-                race_obj[race_str] = [];
-            })
-            
-            $.each(monster_array, (monster_index, monster) => {
-                race_obj[monster.race].push(monster);
-            })
-            
-            let str = "";
-            
-            if(monster_array.length != 0)
-            {
-                $.each(race_obj, (race_index, race) => {
-                    str += `
-                        <div class='col-sm-12'><hr class='charge_num_hr'></div>
-                        <div class='col-sm-12 charge_num_div'>
-                            <img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[race_index]}.png' style='max-width: 40px;'\>
-                            &nbsp;${race_index}
-                        </div>
-                    `;
-                    
-                    if(race.length != 0) {
-                        $.each(race, (monster_index, monster) => {
-                            let sk_str = "";
-                    
-							sk_str += renderMonsterInfo(monster);
-							
-                            $.each(monster.nums, (num_index, skill_number) => {
-                                sk_str += renderSkillInfo(monster, skill_number);
-                            })
-                            
-                            str += renderMonsterImage(monster, sk_str);
-                        });
-                    }
-                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
-                });
-            }
-            else
-            {
-                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
-            }
-            return str;
-        }
-    });
+	renderResult();
     
     $('.result').tooltip({ 
         boundary: 'scrollParent', 
@@ -552,8 +496,172 @@ function startFilter()
         
         return tag_html;
     });
-    
-    
+	
+    jumpTo("result_title");
+}
+
+function renderResult() {
+	$("#result-row").html(() => {
+        if(sort_by == 'id')
+        {
+            /*searchResult.sort((a, b) => { 
+                return a.id - b.id;
+            });*/
+            
+            let str = "";
+            
+            if(searchResult.length != 0)
+            {
+                $.each(searchResult, (index, monster) => {
+                    
+                    let sk_str = "";
+                    
+					sk_str += renderMonsterInfo(monster);
+					
+                    $.each(monster.nums, (num_index, skill_number) => {
+                        sk_str += renderSkillInfo(monster, skill_number);
+                    })
+                    
+                    str += renderMonsterImage(monster, sk_str);
+                });
+            }
+            else
+            {
+                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
+            }
+            return str;
+        }
+        else if(sort_by == 'charge')
+        {
+            searchResultCharge.sort((a, b) => { 
+                return a.charge - b.charge;
+            });
+            
+            let str = "";
+            let now_cd = 0;
+            
+            if(searchResultCharge.length != 0)
+            {
+                $.each(searchResultCharge, (index, monster) => {
+                    
+                    if(monster.charge != now_cd && monster.charge > 0)
+                    {
+                        now_cd = monster.charge;
+                        str += `
+                            <div class='col-sm-12'><hr class='charge_num_hr'></div>
+                            <div class='col-sm-12 charge_num_div'>&nbsp;${now_cd}</div>
+                        `;
+                    }
+                    
+                    let sk_str = "";
+                    
+					sk_str += renderMonsterInfo(monster);
+                    
+                    sk_str += renderSkillInfo(monster, monster.num);
+                    
+                    str += renderMonsterImage(monster, sk_str);
+                });
+            }
+            else
+            {
+                str = `<div class='col-sm-12' style="text-align: center; color: #888888;"><h1>查無結果</h1></div>`;
+            }
+            return str;
+        }
+        else if(sort_by == 'attribute')
+        {
+            let attr_obj = {}
+            $.each(attr_type_string, (attr_index, attr_str) => {
+                attr_obj[attr_str] = [];
+            })
+            
+            $.each(searchResult, (monster_index, monster) => {
+                attr_obj[monster.attr].push(monster);
+            })
+            
+            let str = "";
+            
+            if(searchResult.length != 0)
+            {
+                $.each(attr_obj, (attr_index, attr) => {
+                    str += `
+                        <div class='col-sm-12'><hr class='charge_num_hr'></div>
+                        <div class='col-sm-12 charge_num_div' style='color: ${attr_color[attr_index]};'>
+                            <img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[attr_index]}.png' style='max-width: 40px;'\>
+                            &nbsp;${attr_index}
+                        </div>
+                    `;
+                    
+                    if(attr.length != 0) {
+                        $.each(attr, (monster_index, monster) => {
+                            let sk_str = "";
+                    
+							sk_str += renderMonsterInfo(monster);
+                        
+                            $.each(monster.nums, (num_index, skill_number) => {
+                                sk_str += renderSkillInfo(monster, skill_number);
+                            })
+                            
+                            str += renderMonsterImage(monster, sk_str);
+                        });
+                    }
+                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
+                });
+            }
+            else
+            {
+                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
+            }
+            return str;
+        }
+        else if(sort_by == 'race')
+        {
+            let race_obj = {}
+            $.each(race_type_string, (race_index, race_str) => {
+                race_obj[race_str] = [];
+            })
+            
+            $.each(searchResult, (monster_index, monster) => {
+                race_obj[monster.race].push(monster);
+            })
+            
+            let str = "";
+            
+            if(searchResult.length != 0)
+            {
+                $.each(race_obj, (race_index, race) => {
+                    str += `
+                        <div class='col-sm-12'><hr class='charge_num_hr'></div>
+                        <div class='col-sm-12 charge_num_div'>
+                            <img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[race_index]}.png' style='max-width: 40px;'\>
+                            &nbsp;${race_index}
+                        </div>
+                    `;
+                    
+                    if(race.length != 0) {
+                        $.each(race, (monster_index, monster) => {
+                            let sk_str = "";
+                    
+							sk_str += renderMonsterInfo(monster);
+							
+                            $.each(monster.nums, (num_index, skill_number) => {
+                                sk_str += renderSkillInfo(monster, skill_number);
+                            })
+                            
+                            str += renderMonsterImage(monster, sk_str);
+                        });
+                    }
+                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
+                });
+            }
+            else
+            {
+                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
+            }
+            return str;
+        }
+    });
+	
     $('[data-toggle=popover]').popover({
 		container: 'body',
 		html: true,
@@ -562,7 +670,7 @@ function startFilter()
 		placement: 'bottom',
     });
     
-    jumpTo("result_title");
+	$("#uid-tag").text(`UID: ${playerData.uid}`)
 }
 
 function renderMonsterInfo(monster) {
@@ -721,14 +829,15 @@ function renderMonsterImage(monster, tooltip_content) {
     });
     const monster_attr = monster_obj.attribute;
     const hasSpecialImage = 'specialImage' in monster_obj && monster_obj.specialImage;
-    
+    const notInInventory = useInventory && !playerData.card.includes(monster.id)
+	
     return `
         <div class='col-3 col-md-2 col-lg-1 result'>
-            <img class='monster_img' src='../tos_tool_data/img/monster/${monster.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}_sp.png"` : null} onblur=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}.png"` : null} tabindex=${monster.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+            <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${monster.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}_sp.png"` : null} onblur=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}.png"` : null} tabindex=${monster.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
 			<!-- special image preload -->
-			<img style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster.id}_sp.png` : ''}>
+			<img class='monster_img${notInInventory ? '_gray' : ''}' style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster.id}_sp.png` : ''}>
 			<!-- -->
-            <div class='monsterId'>
+            <div class='monsterId${notInInventory ? '_gray' : ''}'>
                 <a href='https://tos.fandom.com/zh/wiki/${monster.id}' target='_blank'>${paddingZeros(monster.id, 3)}</a>
             </div>
         </div>
@@ -741,4 +850,8 @@ function sortByChange()
     
     sort_by = sort_by_method[sort_by_next_index][0]
     $("#sort_by_result").text(sort_by_method[sort_by_next_index][1])
+	
+	renderResult()
+	
+    jumpTo("result_title");
 }
