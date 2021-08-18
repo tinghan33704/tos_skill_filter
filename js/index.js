@@ -780,18 +780,22 @@ function showFixedBoard(id, subid) {
 	const monster_obj = monster_data.find((element) => {
         return element.id == id;
     });
-	const board_data = monster_obj.board[subid ? subid-1 : 0]
-	renderFixedBoard(board_data)
+	const board_id = subid ? subid-1 : 0
+	const board_data = $.isPlainObject(monster_obj.board[board_id]) ? monster_obj.board[board_id].board : monster_obj.board[board_id]
+	
+	renderFixedBoard(board_data, monster_obj.board[board_id]?.row, monster_obj.board[board_id]?.column)
 }
 
-function renderFixedBoard(data) {
+function renderFixedBoard(data, row, column) {
 	let board = ''
-	for(let row = 0; row < 5; row++) {
+	const rowCount = row ?? 5
+	const columnCount = column ?? 6
+	for(let row = 0; row < rowCount; row++) {
 		board += `<tr class='rune_tr'>`
-		for(let col = 0; col < 6; col++) {
-			const isNone = data[row * 6 + col][0] === '-'
-			const runeType = data[row * 6 + col][0]
-			const raceMark = data[row * 6 + col][1]
+		for(let col = 0; col < columnCount; col++) {
+			const isNone = data[row * columnCount + col][0] === '-'
+			const runeType = data[row * columnCount + col][0]
+			const raceMark = data[row * columnCount + col][1]
 			const isEnchanted = runeType === runeType.toUpperCase()
 			const rune_img = `../tos_tool_data/img/rune/rune_${isNone ? 'none' : runeType.toLowerCase()}${(!isNone && isEnchanted) ? '_enc' : ''}.png`
 			
