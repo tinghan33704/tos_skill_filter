@@ -12,6 +12,8 @@ let searchResultCharge = [];
 let playerData = {uid: '', card: []}
 let useInventory = false;
 
+console.log('out of init')
+
 $(document).ready(function() {
 	console.log('init')
     init();
