@@ -5,7 +5,7 @@ let option_obj = {};
 let or_filter = true;
 let keyword_search = false;
 let sort_by = 'id';
-let sort_by_method = [['id', '依編號排序'], ['charge', '依 CD/EP 排序'], ['attribute', '依屬性排序'], ['race', '依種族排序']];
+let sort_by_method = [['id', '依編號排序'], ['charge', '依 CD/EP 排序'], ['attribute', '依屬性排序'], ['race', '依種族排序'], ['skill', '依功能排序']];
 let theme = 'normal';
 let searchResult = [];
 let searchResultCharge = [];
@@ -507,7 +507,6 @@ function renderResult() {
             /*searchResult.sort((a, b) => { 
                 return a.id - b.id;
             });*/
-            
             let str = "";
             
             if(searchResult.length != 0)
@@ -640,6 +639,66 @@ function renderResult() {
                     
                     if(race.length != 0) {
                         $.each(race, (monster_index, monster) => {
+                            let sk_str = "";
+                    
+							sk_str += renderMonsterInfo(monster);
+							
+                            $.each(monster.nums, (num_index, skill_number) => {
+                                sk_str += renderSkillInfo(monster, skill_number);
+                            })
+                            
+                            str += renderMonsterImage(monster, sk_str);
+                        });
+                    }
+                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
+                });
+            }
+            else
+            {
+                str = `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h1>查無結果</h1></div>`;
+            }
+            return str;
+        }
+        else if(sort_by == 'skill')
+        {
+            let skill_obj = {}
+            $.each(skill_type_string, (skill_group_index, skill_group) => {
+				$.each(skill_group, (skill_index, skill_str) => {
+					skill_obj[skill_str] = []
+				})
+            })
+			
+            $.each(searchResult, (monster_index, monster) => {
+				const skill_tags_array = monster_data.find(m => monster.id === m.id).skill.map(s => s.tag)
+				$.each(monster.nums, (skill_index, skill) => {
+					$.each(skill_tags_array[skill], (tag_index, tag) => {
+						const tag_str = $.isArray(tag) ? tag[0] : tag
+						console.log(monster, tag_str)
+						const isMonsterExist = skill_obj[tag_str].some(m => monster.id === m.id)
+						
+						if(isMonsterExist) {
+							skill_obj[tag_str].find(m => monster.id === m.id)?.nums.push(skill)
+						} else {
+							skill_obj[tag_str].push({...monster, nums:[skill]})
+						}
+					})
+				})
+            })
+            
+            let str = "";
+            
+            if(searchResult.length != 0)
+            {
+                $.each(skill_obj, (skill_index, skill) => {
+                    str += `
+                        <div class='col-sm-12'><hr class='charge_num_hr'></div>
+                        <div class='col-sm-12 charge_num_div'>
+                            ${skill_index}
+                        </div>
+                    `;
+                    
+                    if(skill.length != 0) {
+                        $.each(skill, (monster_index, monster) => {
                             let sk_str = "";
                     
 							sk_str += renderMonsterInfo(monster);
