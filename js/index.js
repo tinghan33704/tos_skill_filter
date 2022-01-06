@@ -832,12 +832,12 @@ function renderSkillInfo(monster, skill_number) {
 }
 
 function descriptionTranslator(monster_id, description) {
-	return description.replace(/<board\s*(\d*)>(.*?)<\/board>/g, `<span class='fixed_board_label' onmouseover='showFixedBoard(${monster_id}, $1)' ontouchstart='showFixedBoard(${monster_id}, $1)'>$2</span>`)
+	return description.replace(/<board\s*(\d*)>(.*?)<\/board>/g, `<span class='fixed_board_label' onmouseover='showFixedBoard(${monster_id}, $1)' ontouchstart='showFixedBoard(${monster_id}, $1)'>$2</span>`).replace(/<anno>(.*?)<\/anno>/g, `<font class='annotation_tag'>$1</font>`).replace(/【階段 (\d*)】/g, `<font class='multiple_effect_tag'>【階段 $1】</font>`).replace(/效果(\d+)：/g, `<font class='multiple_effect_tag'>效果$1：</font>`)
 }
 
 function showFixedBoard(id, subid) {
 	const monster_obj = monster_data.find((element) => {
-        return element.id == id;
+        return element.id === id;
     });
 	const board_id = subid ? subid-1 : 0
 	const board_data = $.isPlainObject(monster_obj.board[board_id]) ? monster_obj.board[board_id].board : monster_obj.board[board_id]
