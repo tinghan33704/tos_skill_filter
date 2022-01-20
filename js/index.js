@@ -832,7 +832,7 @@ function renderSkillInfo(monster, skill_number) {
 }
 
 function descriptionTranslator(monster_id, description) {
-	return description.replace(/<board\s*(\d*)>(.*?)<\/board>/g, `<span class='fixed_board_label' onmouseover='showFixedBoard(${monster_id}, $1)' ontouchstart='showFixedBoard(${monster_id}, $1)'>$2</span>`).replace(/<anno>(.*?)<\/anno>/g, `<font class='annotation_tag'>$1</font>`).replace(/【階段 (\d*)】/g, `<font class='multiple_effect_tag'>【階段 $1】</font>`).replace(/效果(\d+)：/g, `<font class='multiple_effect_tag'>效果$1：</font>`)
+	return description.replace(/<board\s*(\d*)>(.*?)<\/board>/g, `<span class='fixed_board_label' onmouseover='showFixedBoard(${monster_id}, $1)' ontouchstart='showFixedBoard(${monster_id}, $1)'>$2</span>`).replace(/<anno>(.*?)<\/anno>/g, `<font class='annotation_tag'>$1</font>`).replace(/【階段 (\d*)】/g, `<font class='multiple_effect_tag'>【階段 $1】</font>`).replace(/效果(\d+)：/g, `<font class='multiple_effect_tag'>效果$1：</font>`).replace(/【連攜魔導式】/g, `<span class='desc_note_label' onmouseover='renderDescriptionNote(0)' ontouchstart='renderDescriptionNote(0)'>【連攜魔導式】</span>`)
 }
 
 function showFixedBoard(id, subid) {
@@ -882,6 +882,29 @@ function renderFixedBoard(data, row, column) {
 		$("#fixedBoard").css({
 			left: touch.pageX + 20,
 			top: touch.pageY - 100
+		});
+	})
+}
+
+function renderDescriptionNote(desc_index) {
+	switch(desc_index) {
+		case 0:
+			$("#descriptionNote").html('場上有【連攜魔導式】技能生效時<br>⓵【連攜魔導式】類別技能<br>⇒ 不能發動<br>⓶ 改為可發動另一技能：<br>延長當前【連攜魔導式】 1 回合效果<br>⇒ 最多可延長至 6 回合')
+		break;
+		default:
+			$("#descriptionNote").html('');
+	}
+	
+	$(document).on('mousemove', '.desc_note_label', (e) => {
+		$("#descriptionNote").css({
+			left: e.pageX + 20,
+			top: e.pageY
+		});
+	}).on('touchstart', '.desc_note_label', (e) => {
+		var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+		$("#descriptionNote").css({
+			left: touch.pageX + 20,
+			top: touch.pageY
 		});
 	})
 }
