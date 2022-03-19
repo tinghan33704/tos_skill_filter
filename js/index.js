@@ -12,6 +12,33 @@ let searchResultCharge = [];
 let playerData = {uid: '', card: []}
 let useInventory = false;
 
+let easterEggFlag = false;
+
+let easterEggData = {
+	"id": 595636351,
+	"name": "蒼曜",
+	"attribute": "木",
+	"race": "人類",
+	"star": 8,
+	"monsterTag": [],
+	"crossOver": false,
+	"skill": [
+		{
+			"name": "毫無反應，就是個工程師",
+			"type": "normal",
+			"charge": "CD",
+			"num": 1,
+			"description": "I. 發動技能時<br>⇒ 「安安你好，我是作者」<br>⇒ 「不用去翻背包或圖鑑了，這不是卡片只是張名片」<br>II. 每週隨機時機<br>⇒ 更新資料庫<br><br>效果持續至退坑為止",
+			"tag": []
+		},
+	],
+	"team_skill": [],
+	"maxLevel": 99,
+	"maxSkill": 99,
+	"maxRefine": 0,
+	"version": ""
+}
+
 $(document).ready(function() {
     init();
     
@@ -188,6 +215,8 @@ function startFilter()
     let isStarSelected = false;
     let isChargeSelected = false;
     let isTagSelected = false;
+	
+	easterEggFlag = false;
     
     if(keyword_search == false)
     {
@@ -371,6 +400,9 @@ function startFilter()
     
         let keyword_set = checkKeyword();
         if(!keyword_set) return;
+		
+		// easter egg :)
+		if(keyword_set.size === 1 && [...keyword_set][0] === '蒼曜') easterEggFlag = true;
         
         [attr_set, isAttrSelected] = getSelectedButton('attr');
         [race_set, isRaceSelected] = getSelectedButton('race');
@@ -450,7 +482,7 @@ function startFilter()
     
 	searchResult = [...filter_set];
     searchResultCharge = [...filter_charge_set];
-    
+	
 	renderResult();
     
     $('.result').tooltip({ 
@@ -500,7 +532,40 @@ function startFilter()
     jumpTo("result_title");
 }
 
+function renderEasterEggResult() {
+	const monster = {'id': easterEggData.id, 'attr': easterEggData.attribute, 'race': easterEggData.race, 'nums': [0]};
+	
+	$("#result-row").html(() => {
+		let str = "";
+		let sk_str = "";
+				
+		sk_str += renderMonsterInfo(monster, easterEggData);
+		
+		$.each(monster.nums, (num_index, skill_number) => {
+			sk_str += renderSkillInfo(monster, skill_number, easterEggData);
+		})
+		
+		str += renderMonsterImage(monster, sk_str, easterEggData, true);
+		return str;
+	});
+	
+    $('[data-toggle=popover]').popover({
+		container: 'body',
+		html: true,
+		sanitize: false,
+		trigger: 'focus',
+		placement: 'bottom',
+    });
+    
+	$("#uid-tag").text(`UID: ${playerData.uid}`)
+}
+
 function renderResult() {
+	if(easterEggFlag) {
+		renderEasterEggResult();
+		return;
+	}
+	
 	$("#result-row").html(() => {
         if(sort_by == 'id')
         {
@@ -732,8 +797,8 @@ function renderResult() {
 	$("#uid-tag").text(`UID: ${playerData.uid}`)
 }
 
-function renderMonsterInfo(monster) {
-	const monster_info = monster_data.find((element) => {
+function renderMonsterInfo(monster, monsterObj) {
+	const monster_info = monsterObj || monster_data.find((element) => {
 		return element.id == monster.id;
 	});
 	
@@ -752,8 +817,8 @@ function renderMonsterInfo(monster) {
 	return sk_str;
 }
 
-function renderSkillInfo(monster, skill_number) {
-    const monster_obj = monster_data.find((element) => {
+function renderSkillInfo(monster, skill_number, monsterObj) {
+    const monster_obj = monsterObj || monster_data.find((element) => {
         return element.id == monster.id;
     });
     const skill = monster_obj.skill[skill_number];
@@ -909,8 +974,8 @@ function renderDescriptionNote(desc_index) {
 	})
 }
 
-function renderMonsterImage(monster, tooltip_content) {
-    const monster_obj = monster_data.find((element) => {
+function renderMonsterImage(monster, tooltip_content, monsterObj, eggLink = false) {
+    const monster_obj = monsterObj || monster_data.find((element) => {
         return element.id == monster.id;
     });
     const monster_attr = monster_obj.attribute;
@@ -919,12 +984,12 @@ function renderMonsterImage(monster, tooltip_content) {
 	
     return `
         <div class='col-3 col-md-2 col-lg-1 result'>
-            <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${monster.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}_sp.png"` : null} onblur=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster.id}.png"` : null} tabindex=${monster.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+            <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${monster_obj.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}_sp.png"` : null} onblur=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}.png"` : null} tabindex=${monster_obj.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
 			<!-- special image preload -->
-			<img class='monster_img${notInInventory ? '_gray' : ''}' style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster.id}_sp.png` : ''}>
+			<img class='monster_img${notInInventory ? '_gray' : ''}' style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster_obj.id}_sp.png` : ''}>
 			<!-- -->
             <div class='monsterId${notInInventory ? '_gray' : ''}'>
-                <a href='https://tos.fandom.com/zh/wiki/${monster.id}' target='_blank'>${paddingZeros(monster.id, 3)}</a>
+                <a href='${eggLink ? `https://home.gamer.com.tw/homeindex.php?owner=tinghan33704` : `https://tos.fandom.com/zh/wiki/${monster_obj.id}`}' target='_blank'>${paddingZeros(monster_obj.id, 3)}</a>
             </div>
         </div>
     `;
