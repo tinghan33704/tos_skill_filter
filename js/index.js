@@ -738,7 +738,6 @@ function renderResult() {
 				$.each(monster.nums, (skill_index, skill) => {
 					$.each(skill_tags_array[skill], (tag_index, tag) => {
 						const tag_str = $.isArray(tag) ? tag[0] : tag
-						console.log(monster, tag_str)
 						const isMonsterExist = skill_obj[tag_str].some(m => monster.id === m.id)
 						
 						if(isMonsterExist) {
@@ -980,7 +979,7 @@ function renderMonsterImage(monster, tooltip_content, monsterObj, eggLink = fals
     });
     const monster_attr = monster_obj.attribute;
     const hasSpecialImage = 'specialImage' in monster_obj && monster_obj.specialImage;
-	const hasImageChange = monster.nums.length === 1 ? monster_obj.skill[monster.nums[0]].imageChange : null;
+	const hasImageChange = 'num' in monster ? monster_obj.skill[monster.num]?.imageChange : monster?.nums?.length === 1 ? monster_obj.skill[monster.nums[0]]?.imageChange ?? null : null;
     const notInInventory = useInventory && !playerData.card.includes(monster.id)
 	
     return `
