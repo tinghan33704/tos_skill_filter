@@ -980,11 +980,12 @@ function renderMonsterImage(monster, tooltip_content, monsterObj, eggLink = fals
     });
     const monster_attr = monster_obj.attribute;
     const hasSpecialImage = 'specialImage' in monster_obj && monster_obj.specialImage;
+	const hasImageChange = monster.nums.length === 1 ? monster_obj.skill[monster.nums[0]].imageChange : null;
     const notInInventory = useInventory && !playerData.card.includes(monster.id)
 	
     return `
         <div class='col-3 col-md-2 col-lg-1 result'>
-            <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${monster_obj.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}_sp.png"` : null} onblur=${hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}.png"` : null} tabindex=${monster_obj.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+            <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${hasImageChange ? hasImageChange[0] : monster_obj.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasImageChange ? `this.src="../tos_tool_data/img/monster/${hasImageChange[1]}.png"` : hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}_sp.png"` : null} onblur=${hasImageChange ? `this.src="../tos_tool_data/img/monster/${hasImageChange[0]}.png"` : hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}.png"` : null} tabindex=${monster_obj.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
 			<!-- special image preload -->
 			<img class='monster_img${notInInventory ? '_gray' : ''}' style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster_obj.id}_sp.png` : ''}>
 			<!-- -->
