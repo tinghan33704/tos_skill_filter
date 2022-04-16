@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Last modified : 2022.01.25 00:14 -->
+<!-- Last modified : 2022.04.08 17:37 -->
 <head>
     <title>神魔之塔主動技搜尋器</title>
     <meta charset="utf-8">
@@ -63,23 +63,23 @@
             </div>
             <div class="col-12 col-lg-8">
                 <div class="row">
-                    <div class="col-12 col-sm-3 mb-1">
+                    <div class="col-12 col-sm-3 top-btn-shell">
                         <button type="button" class="btn btn-primary btn-block top-btn reset" id="reset_all">
                             <i class="fa fa-undo"></i>
                             &nbsp;全部重置
                         </button>
                     </div>
-                    <div class="col-12 col-sm-3 mb-1">
+                    <div class="col-12 col-sm-3 top-btn-shell">
                         <button type="button" class="btn btn-block top-btn sort_by" id="sort_by_result">
                             依編號排序
                         </button>
                     </div>
-                    <div class="col-12 col-sm-3 mb-1">
+                    <div class="col-12 col-sm-3 top-btn-shell">
                         <button type="button" class="btn btn-warning btn-block top-btn and_or_mode" id="and_or_filter">
                             OR 搜尋
                         </button>
                     </div>
-                    <div class="col-12 col-sm-3 mb-1">
+                    <div class="col-12 col-sm-3 top-btn-shell">
                         <button type="button" class="btn btn-success btn-block top-btn start-btn" id="start_filter">
                             <i class="fa fa-play-circle"></i>
                             &nbsp;&nbsp;搜尋
@@ -210,16 +210,14 @@
             <div class="col-12" id="result_title">
                 <h2>
 					<div class="row">
-					<div class="col-sm-3">搜尋結果</div>
-					<div class="col-sm-6">
+					<div class="col-lg-3 col-md-12 col-sm-12 mx-auto">搜尋結果</div>
+					<div class="col-lg-6 col-md-12 col-sm-12">
 						<div class="uid-tag" id="uid-tag"></div>
 					</div>
-					<div class="col-sm-3">
-						<div>
-							<button class="btn btn-secondary btn-block use-inventory" id="use-inventory">
-								全部結果
-							</button>
-						</div>
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						<button class="btn btn-secondary btn-block use-inventory" id="use-inventory">
+							全部結果
+						</button>
 					</div>
 					</div>
 				</h2>

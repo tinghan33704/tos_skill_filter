@@ -651,7 +651,7 @@ function renderResult() {
                     str += `
                         <div class='col-sm-12'><hr class='charge_num_hr'></div>
                         <div class='col-sm-12 charge_num_div' style='color: ${attr_color[attr_index]};'>
-                            <img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[attr_index]}.png' style='max-width: 40px;'\>
+                            <img src='../tos_tool_data/img/monster/icon_${attr_zh_to_en[attr_index]}.png' style='max-width: 30px;'\>
                             &nbsp;${attr_index}
                         </div>
                     `;
@@ -669,7 +669,7 @@ function renderResult() {
                             str += renderMonsterImage(monster, sk_str);
                         });
                     }
-                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
+                    else str += `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
                 });
             }
             else
@@ -697,7 +697,7 @@ function renderResult() {
                     str += `
                         <div class='col-sm-12'><hr class='charge_num_hr'></div>
                         <div class='col-sm-12 charge_num_div'>
-                            <img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[race_index]}.png' style='max-width: 40px;'\>
+                            <img src='../tos_tool_data/img/monster/icon_${race_zh_to_en[race_index]}.png' style='max-width: 30px;'\>
                             &nbsp;${race_index}
                         </div>
                     `;
@@ -715,7 +715,7 @@ function renderResult() {
                             str += renderMonsterImage(monster, sk_str);
                         });
                     }
-                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
+                    else str += `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
                 });
             }
             else
@@ -774,7 +774,7 @@ function renderResult() {
                             str += renderMonsterImage(monster, sk_str);
                         });
                     }
-                    else str += `<div class='col-12' style='text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
+                    else str += `<div class='col-12' style='padding-top: 20px; text-align: center; color: #888888;'><h2>查無結果</h2></div>`;
                 });
             }
             else
