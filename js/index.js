@@ -738,6 +738,9 @@ function renderResult() {
 				$.each(monster.nums, (skill_index, skill) => {
 					$.each(skill_tags_array[skill], (tag_index, tag) => {
 						const tag_str = $.isArray(tag) ? tag[0] : tag
+						
+						if(!skill_obj?.[tag_str]) return;
+						
 						const isMonsterExist = skill_obj[tag_str].some(m => monster.id === m.id)
 						
 						if(isMonsterExist) {
