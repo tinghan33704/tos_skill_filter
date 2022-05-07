@@ -3,7 +3,6 @@ const tool_id = 'active_skill';
 let filter_set = new Set();
 let option_obj = {};
 let or_filter = true;
-let keyword_search = false;
 let sort_by = 'id';
 let sort_by_method = [['id', '依編號排序'], ['charge', '依 CD/EP 排序'], ['attribute', '依屬性排序'], ['race', '依種族排序'], ['skill', '依功能排序']];
 let theme = 'normal';
@@ -218,265 +217,220 @@ function startFilter()
 	
 	easterEggFlag = false;
     
-    if(keyword_search == false)
-    {
-        filter_set.clear();
-    
-        [skill_set, isSkillSelected] = getSelectedButton('filter');
-        [attr_set, isAttrSelected] = getSelectedButton('attr');
-        [race_set, isRaceSelected] = getSelectedButton('race');
-        [star_set, isStarSelected] = getSelectedButton('star', true);
-        [charge_set, isChargeSelected] = getSelectedButton('charge');
-        [tag_set, isTagSelected] = getSelectedButton('tag');
+    filter_set.clear();
 		
-        $.each(monster_data, (index, monster) => {
-			
-			// if(useInventory && !playerData.card.includes(monster.id)) return;
+	[skill_set, isSkillSelected] = getSelectedButton('filter');
+	[attr_set, isAttrSelected] = getSelectedButton('attr');
+	[race_set, isRaceSelected] = getSelectedButton('race');
+	[star_set, isStarSelected] = getSelectedButton('star', true);
+	[charge_set, isChargeSelected] = getSelectedButton('charge');
+	[tag_set, isTagSelected] = getSelectedButton('tag');
+	
+	let keyword_set = checkKeyword();
+	
+	// easter egg :)
+	if(keyword_set.size === 1 && [...keyword_set][0] === '蒼曜') easterEggFlag = true;
+	
+	$.each(monster_data, (index, monster) => {
+		
+		// if(useInventory && !playerData.card.includes(monster.id)) return;
 
-            if( (!monster.star || monster.star <= 0) ||
-                (isAttrSelected && !attr_set.has(monster.attribute)) || 
-                (isRaceSelected && !race_set.has(monster.race)) || 
-                (isStarSelected && !star_set.has(monster.star))) return;
-				
-			if(isTagSelected) {
-				let hasTag = false;
-				
-				$.each(monster.monsterTag, (tag_index, tag) => {
-					if(tag_set.has(tag)) {
-						hasTag = true;
-						return;
-					}
-				})
-				
-				if((tag_set.has('自家') && !monster.crossOver) || (tag_set.has('合作') && monster.crossOver)) hasTag = true;
-				if(!hasTag) return;
-			}
-            
-            if(isSkillSelected) {
-                let skill_num_array = [];
-                
-                $.each(monster.skill, (skill_index, monster_skill) => {
-                    if(isChargeSelected && !charge_set.has(monster_skill.charge)) return;
-                    
-                    if(or_filter)       // OR
-                    {
-                        let isSkillMatch = false;
-                        
-                        $.each([...skill_set], (skill_set_index, selected_feat) => {
-                            let isTagChecked = false;
-                            
-                            $.each(monster_skill.tag, (tag_index, tag) => {
-                                if($.isArray(tag))      // Tag with round mark
-                                {
-                                    if(tag[0] == selected_feat) {
-                                        if(selected_feat in option_obj)
-                                        {
-                                            if( (tag[1] == 1 && option_obj[selected_feat][0]) ||
-                                                (tag[1] > 1  && option_obj[selected_feat][1]) ||
-                                                (tag[1] == -1 && option_obj[selected_feat][2]) ||
-                                                (!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
-                                            ) 
-                                            {
-                                                isTagChecked = true;
-                                            }
-                                        }
-                                        else isTagChecked = true;
-                                    }
-                                }
-                                else      // Tag without round mark
-                                {
-                                    if(tag == selected_feat) {
-                                        if(selected_feat in option_obj)
-                                        {
-                                            if( option_obj[selected_feat][0] ||
-                                                (!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
-                                            ) 
-                                            {
-                                                isTagChecked = true;
-                                            }
-                                        }
-                                        else isTagChecked = true;
-                                    }
-                                }
-                                
-                                if(isTagChecked)
-                                {
-                                    isSkillMatch = true;
-                                    return false;
-                                }
-                            })
-                        })
-                        
-                        if(!isSkillMatch) return;
-                    }
-                    else       // AND
-                    {
-                        let isSkillMatch = true;
-                        
-                        $.each([...skill_set], (skill_set_index, selected_feat) => {
-                            let isTagChecked = false;
-                            $.each(monster_skill.tag, (tag_index, tag) => {
-                                if($.isArray(tag))
-                                {
-                                    if(tag[0] == selected_feat) {
-                                        if(selected_feat in option_obj)
-                                        {
-                                            if( (tag[1] == 1 && option_obj[selected_feat][0]) ||
-                                                (tag[1] > 1  && option_obj[selected_feat][1]) ||
-                                                (tag[1] == -1 && option_obj[selected_feat][2]) ||
-                                                (!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
-                                            ) 
-                                            {
-                                                isTagChecked = true;
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            isTagChecked = true;
-                                            return false;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if(tag == selected_feat) {
-                                        if(selected_feat in option_obj)
-                                        {
-                                            if( option_obj[selected_feat][0] ||
-                                                (!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
-                                            ) 
-                                            {
-                                                isTagChecked = true;
-                                                return false;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            isTagChecked = true;
-                                            return false;
-                                        }
-                                    }
-                                }
-                            })
-                                
-                            if(!isTagChecked)
-                            {
-                                isSkillMatch = false;
-                            }
-                        })
-                        
-                        if(!isSkillMatch) return;
-                    }
-                    
-                    let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
-                    
-                    skill_num_array.push(skill_index);
-                    filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
-                    
-                })
-                
-                if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
-            }
-            else {
-                let skill_num_array = [];
-                
-                $.each(monster.skill, (skill_index, monster_skill) => {
-                    if(isChargeSelected && (!charge_set.has(monster_skill.charge) || monster_skill.name.length <= 0)) return;
-                    
-                    let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
-                    
-                    skill_num_array.push(skill_index);
-                    filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
-                })
-                
-                if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
-            }
-        })
-    }
-    else        // keyword search mode
-    {
-        filter_set.clear();
-    
-        let keyword_set = checkKeyword();
-        if(!keyword_set) return;
+		if( (!monster.star || monster.star <= 0) ||
+			(isAttrSelected && !attr_set.has(monster.attribute)) || 
+			(isRaceSelected && !race_set.has(monster.race)) || 
+			(isStarSelected && !star_set.has(monster.star))) return;
+			
+		if(isTagSelected) {
+			let hasTag = false;
+			
+			$.each(monster.monsterTag, (tag_index, tag) => {
+				if(tag_set.has(tag)) {
+					hasTag = true;
+					return;
+				}
+			})
+			
+			if((tag_set.has('自家') && !monster.crossOver) || (tag_set.has('合作') && monster.crossOver)) hasTag = true;
+			if(!hasTag) return;
+		}
 		
-		// easter egg :)
-		if(keyword_set.size === 1 && [...keyword_set][0] === '蒼曜') easterEggFlag = true;
-        
-        [attr_set, isAttrSelected] = getSelectedButton('attr');
-        [race_set, isRaceSelected] = getSelectedButton('race');
-        [star_set, isStarSelected] = getSelectedButton('star', true);
-        [charge_set, isChargeSelected] = getSelectedButton('charge');
-        [tag_set, isTagSelected] = getSelectedButton('tag');
-        
-        $.each(monster_data, (index, monster) => {
+		if(isSkillSelected || keyword_set) {
+			let skill_num_array = [];
 			
-			// if(useInventory && !playerData.card.includes(monster.id)) return;
-			
-            if( (!monster.star || monster.star <= 0) ||
-                (isAttrSelected && !attr_set.has(monster.attribute)) || 
-                (isRaceSelected && !race_set.has(monster.race)) || 
-                (isStarSelected && !star_set.has(monster.star))) return;
+			$.each(monster.skill, (skill_index, monster_skill) => {
+				if(isChargeSelected && !charge_set.has(monster_skill.charge)) return;
 				
-			if(isTagSelected) {
-				let hasTag = false;
-				
-				$.each(monster.monsterTag, (tag_index, tag) => {
-					if(tag_set.has(tag)) {
-						hasTag = true;
-						return;
+				if(or_filter)       // OR
+				{
+					// Check for skill tags
+					let isSkillMatch = false;
+					
+					$.each([...skill_set], (skill_set_index, selected_feat) => {
+						let isTagChecked = false;
+						
+						$.each(monster_skill.tag, (tag_index, tag) => {
+							if($.isArray(tag))      // Tag with round mark
+							{
+								if(tag[0] == selected_feat) {
+									if(selected_feat in option_obj)
+									{
+										if( (tag[1] == 1 && option_obj[selected_feat][0]) ||
+											(tag[1] > 1  && option_obj[selected_feat][1]) ||
+											(tag[1] == -1 && option_obj[selected_feat][2]) ||
+											(!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
+										) 
+										{
+											isTagChecked = true;
+										}
+									}
+									else isTagChecked = true;
+								}
+							}
+							else      // Tag without round mark
+							{
+								if(tag == selected_feat) {
+									if(selected_feat in option_obj)
+									{
+										if( option_obj[selected_feat][0] ||
+											(!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
+										) 
+										{
+											isTagChecked = true;
+										}
+									}
+									else isTagChecked = true;
+								}
+							}
+							
+							if(isTagChecked)
+							{
+								isSkillMatch = true;
+								return false;
+							}
+						})
+					})
+					
+					if(!isSkillMatch && keyword_set.size == 0) return;
+					
+					// Check for keywords
+					
+					if(!isSkillMatch && keyword_set.size > 0) {
+						let isKeywordChecked = false;
+						const skill_desc = textSanitizer(monster_skill.description);
+						
+						$.each([...keyword_set], (keyword_index, keyword) => {
+							if(skill_desc.includes(keyword))
+							{
+								isKeywordChecked = true;
+								return false;
+							}
+						})
+						
+						if(!isKeywordChecked) return;
 					}
-				})
+					
+				}
+				else       // AND
+				{
+					// Check for skill tags
+					let isSkillMatch = true;
+					
+					$.each([...skill_set], (skill_set_index, selected_feat) => {
+						let isTagChecked = false;
+						$.each(monster_skill.tag, (tag_index, tag) => {
+							if($.isArray(tag))
+							{
+								if(tag[0] == selected_feat) {
+									if(selected_feat in option_obj)
+									{
+										if( (tag[1] == 1 && option_obj[selected_feat][0]) ||
+											(tag[1] > 1  && option_obj[selected_feat][1]) ||
+											(tag[1] == -1 && option_obj[selected_feat][2]) ||
+											(!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
+										) 
+										{
+											isTagChecked = true;
+											return false;
+										}
+									}
+									else
+									{
+										isTagChecked = true;
+										return false;
+									}
+								}
+							}
+							else
+							{
+								if(tag == selected_feat) {
+									if(selected_feat in option_obj)
+									{
+										if( option_obj[selected_feat][0] ||
+											(!option_obj[selected_feat][0] && !option_obj[selected_feat][1] && !option_obj[selected_feat][2])
+										) 
+										{
+											isTagChecked = true;
+											return false;
+										}
+									}
+									else
+									{
+										isTagChecked = true;
+										return false;
+									}
+								}
+							}
+						})
+							
+						if(!isTagChecked)
+						{
+							isSkillMatch = false;
+						}
+					})
+					
+					if(!isSkillMatch) return;
+					
+					// Check for keywords
+					if(keyword_set.size > 0) {
+						let isKeywordChecked = true;
+						let skill_desc = textSanitizer(monster_skill.description);
+						
+						$.each([...keyword_set], (keyword_index, keyword) => {
+							if(!skill_desc.includes(keyword))
+							{
+								isKeywordChecked = false;
+								return false;
+							}
+						})
+						
+						if(!isKeywordChecked) return;
+					}
+				}
 				
-				if((tag_set.has('自家') && !monster.crossOver) || (tag_set.has('合作') && monster.crossOver)) hasTag = true;
-				if(!hasTag) return;
-			}
-            
-            let skill_num_array = [];
-            $.each(monster.skill, (skill_index, monster_skill) => {
-                if(isChargeSelected && !charge_set.has(monster_skill.charge)) return;
-                
-                if(or_filter)
-                {
-                    let isKeywordChecked = false;
-                    let skill_desc = textSanitizer(monster_skill.description);
-                    
-                    $.each([...keyword_set], (keyword_index, keyword) => {
-                        if(skill_desc.includes(keyword))
-                        {
-                            isKeywordChecked = true;
-                            return false;
-                        }
-                    })
-                    
-                    if(!isKeywordChecked) return;
-                }
-                else
-                {
-                    let isKeywordChecked = true;
-                    let skill_desc = textSanitizer(monster_skill.description);
-                    
-                    $.each([...keyword_set], (keyword_index, keyword) => {
-                        if(!skill_desc.includes(keyword))
-                        {
-                            isKeywordChecked = false;
-                            return false;
-                        }
-                    })
-                    
-                    if(!isKeywordChecked) return;
-                }
-                
-                let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
-                    
-                skill_num_array.push(skill_index);
-                filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
-            })
-            
-            if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
-        })
-    }
+				let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
+				
+				skill_num_array.push(skill_index);
+				filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
+				
+			})
+			
+			if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
+		}
+		else {
+			let skill_num_array = [];
+			
+			$.each(monster.skill, (skill_index, monster_skill) => {
+				if(isChargeSelected && (!charge_set.has(monster_skill.charge) || monster_skill.name.length <= 0)) return;
+				
+				let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
+				
+				skill_num_array.push(skill_index);
+				filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
+			})
+			
+			if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
+		}
+	})
     
     $(".row.result-row").show();
     
@@ -494,33 +448,31 @@ function startFilter()
     $(".search_tag").html(() => {
         let tag_html = "";
         
-        if(!keyword_search)
-        {
-            $.each([...skill_set], (skill_index, skill) => {
+        $.each([...skill_set], (skill_index, skill) => {
                 
-                if(option_obj[skill]) {
-                    if( option_obj[skill].every(e => e === false) || 
-                        option_obj[skill].every(e => e === true)) {
-                        tag_html += renderTags([skill], 'skill');
-                    }
-                    else {
-                        $.each(option_obj[skill], (option_index, option) => {
-                            if(option) {
-                                tag_html += `
-                                    <div class="col-12 col-sm-3 tag_wrapper">
-                                        <div class="skill_tag" title="${skill} (${option_text[option_index]})">${skill} <font style="color: #CCCCFF; font-size: 0.8em;">(${option_text[option_index]})</font>
-                                        </div>
-                                    </div>
-                                `;
-                            }
-                        })
-                    }
-                }
-                else tag_html += renderTags([skill], 'skill');
-            })
-        }
+			if(option_obj[skill]) {
+				if( option_obj[skill].every(e => e === false) || 
+					option_obj[skill].every(e => e === true)) {
+					tag_html += renderTags([skill], 'skill');
+				}
+				else {
+					$.each(option_obj[skill], (option_index, option) => {
+						if(option) {
+							tag_html += `
+								<div class="col-12 col-sm-3 tag_wrapper">
+									<div class="skill_tag" title="${skill} (${option_text[option_index]})">${skill} <font style="color: #CCCCFF; font-size: 0.8em;">(${option_text[option_index]})</font>
+									</div>
+								</div>
+							`;
+						}
+					})
+				}
+			}
+			else tag_html += renderTags([skill], 'skill');
+		})
         
         tag_html += renderTags(tag_set, 'tag');
+        tag_html += renderTags(keyword_set, 'keyword');
         tag_html += renderTags(attr_set, 'genre', '屬性');
         tag_html += renderTags(race_set, 'genre');
         tag_html += renderTags(star_set, 'genre', ' ★');
