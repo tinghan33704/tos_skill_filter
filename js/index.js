@@ -254,7 +254,7 @@ function startFilter()
 			if(!hasTag) return;
 		}
 		
-		if(isSkillSelected || keyword_set) {
+		if(isSkillSelected || keyword_set.size > 0) {
 			let skill_num_array = [];
 			
 			$.each(monster.skill, (skill_index, monster_skill) => {
