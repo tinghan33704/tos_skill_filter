@@ -229,7 +229,7 @@ function startFilter()
 	let keyword_set = checkKeyword();
 	
 	// easter egg :)
-	if(keyword_set.size === 1 && [...keyword_set][0] === '蒼曜') easterEggFlag = true;
+	if(!isSkillSelected && !isAttrSelected && !isRaceSelected && !isStarSelected && !isChargeSelected && !isTagSelected && keyword_set.size === 1 && [...keyword_set][0] === '蒼曜') easterEggFlag = true;
 	
 	$.each(monster_data, (index, monster) => {
 		
