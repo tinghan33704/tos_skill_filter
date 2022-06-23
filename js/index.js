@@ -31,7 +31,7 @@ let easterEggData = {
 			"tag": []
 		},
 	],
-	"team_skill": [],
+	"teamSkill": [],
 	"maxLevel": 99,
 	"maxSkill": 99,
 	"maxRefine": 0,
