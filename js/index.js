@@ -1,6 +1,7 @@
 const tool_id = 'active_skill';
 
 let filter_set = new Set();
+let filter_combine_set = new Set();
 let option_obj = {};
 let or_filter = true;
 let sort_by = 'id';
@@ -205,6 +206,7 @@ function startFilter()
     let star_set = new Set();
     let charge_set = new Set();
     let tag_set = new Set();
+    let genre_set = new Set();
     
     let filter_charge_set = new Set();
     
@@ -214,10 +216,12 @@ function startFilter()
     let isStarSelected = false;
     let isChargeSelected = false;
     let isTagSelected = false;
+    let isGenreSelected = false;
 	
 	easterEggFlag = false;
     
     filter_set.clear();
+    filter_combine_set.clear();
 		
 	[skill_set, isSkillSelected] = getSelectedButton('filter');
 	[attr_set, isAttrSelected] = getSelectedButton('attr');
@@ -225,6 +229,7 @@ function startFilter()
 	[star_set, isStarSelected] = getSelectedButton('star', true);
 	[charge_set, isChargeSelected] = getSelectedButton('charge');
 	[tag_set, isTagSelected] = getSelectedButton('tag');
+	[genre_set, isGenreSelected] = getSelectedButton('genre');
 	
 	let keyword_set = checkKeyword();
 	
@@ -256,8 +261,9 @@ function startFilter()
 		
 		if(isSkillSelected || keyword_set.size > 0) {
 			let skill_num_array = [];
+			let skill_num_array_combine = [];
 			
-			$.each(monster.skill, (skill_index, monster_skill) => {
+			$.each([...monster.skill], (skill_index, monster_skill) => {
 				if(isChargeSelected && !charge_set.has(monster_skill.charge)) return;
 				
 				if(or_filter)       // OR
@@ -409,32 +415,40 @@ function startFilter()
 				
 				let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
 				
-				skill_num_array.push(skill_index);
-				filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
+				if(monster_skill.type === 'combine') skill_num_array_combine.push(skill_index);
+				else skill_num_array.push(skill_index);
 				
+				filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
 			})
 			
-			if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
+			if((!isGenreSelected || genre_set.has(genre_type_string[0])) && skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
+			
+			if((!isGenreSelected || genre_set.has(genre_type_string[1])) && skill_num_array_combine.length > 0) filter_combine_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array_combine, 'type': 'combine'});
 		}
 		else {
 			let skill_num_array = [];
+			let skill_num_array_combine = [];
 			
 			$.each(monster.skill, (skill_index, monster_skill) => {
 				if(isChargeSelected && (!charge_set.has(monster_skill.charge) || monster_skill.name.length <= 0)) return;
 				
 				let charge = ('reduce' in monster_skill) ? monster_skill.num - monster_skill.reduce : monster_skill.num;
 				
-				skill_num_array.push(skill_index);
+				if(monster_skill.type === 'combine') skill_num_array_combine.push(skill_index);
+				else skill_num_array.push(skill_index);
+				
 				filter_charge_set.add({'id': monster.id, 'num': skill_index, 'charge': charge});
 			})
 			
-			if(skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
+			if((!isGenreSelected || genre_set.has(genre_type_string[0])) && skill_num_array.length > 0) filter_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array});
+			
+			if((!isGenreSelected || genre_set.has(genre_type_string[1])) && skill_num_array_combine.length > 0) filter_combine_set.add({'id': monster.id, 'attr': monster.attribute, 'race': monster.race, 'nums': skill_num_array_combine, 'type': 'combine'});
 		}
 	})
     
     $(".row.result-row").show();
     
-	searchResult = [...filter_set];
+	searchResult = [...filter_set, ...filter_combine_set];
     searchResultCharge = [...filter_charge_set];
 	
 	renderResult();
@@ -477,6 +491,7 @@ function startFilter()
         tag_html += renderTags(race_set, 'genre');
         tag_html += renderTags(star_set, 'genre', ' ★');
         tag_html += renderTags(charge_set, 'genre');
+        tag_html += renderTags(genre_set, 'genre');
         
         return tag_html;
     });
@@ -537,6 +552,9 @@ function renderResult() {
                     $.each(monster.nums, (num_index, skill_number) => {
                         sk_str += renderSkillInfo(monster, skill_number);
                     })
+					
+					// for combine skill, create a new row
+					if(index !== 0  && !('type' in searchResult[index-1]) && monster?.type === 'combine') str += '<hr class="result_combine_hr">'
                     
                     str += renderMonsterImage(monster, sk_str);
                 });
@@ -607,7 +625,7 @@ function renderResult() {
                             &nbsp;${attr_index}
                         </div>
                     `;
-                    
+					
                     if(attr.length != 0) {
                         $.each(attr, (monster_index, monster) => {
                             let sk_str = "";
@@ -617,6 +635,9 @@ function renderResult() {
                             $.each(monster.nums, (num_index, skill_number) => {
                                 sk_str += renderSkillInfo(monster, skill_number);
                             })
+							
+							// for combine skill, create a new row
+							if(monster_index !== 0  && !('type' in attr[monster_index-1]) && monster?.type === 'combine') str += '<hr class="result_combine_hr">'
                             
                             str += renderMonsterImage(monster, sk_str);
                         });
@@ -663,6 +684,9 @@ function renderResult() {
                             $.each(monster.nums, (num_index, skill_number) => {
                                 sk_str += renderSkillInfo(monster, skill_number);
                             })
+							
+							// for combine skill, create a new row
+							if(monster_index !== 0  && !('type' in race[monster_index-1]) && monster?.type === 'combine') str += '<hr class="result_combine_hr">'
                             
                             str += renderMonsterImage(monster, sk_str);
                         });
@@ -693,10 +717,10 @@ function renderResult() {
 						
 						if(!skill_obj?.[tag_str]) return;
 						
-						const isMonsterExist = skill_obj[tag_str].some(m => monster.id === m.id)
-						
+						const isMonsterExist = monster?.type === 'combine' ? skill_obj[tag_str].some(m => monster.id === m.id && m?.type === 'combine') : skill_obj[tag_str].some(m => monster.id === m.id)
 						if(isMonsterExist) {
-							skill_obj[tag_str].find(m => monster.id === m.id)?.nums.push(skill)
+							if(monster?.type === 'combine') skill_obj[tag_str].find(m => monster.id === m.id && m?.type === 'combine')?.nums.push(skill)
+							else skill_obj[tag_str].find(m => monster.id === m.id)?.nums.push(skill)
 						} else {
 							skill_obj[tag_str].push({...monster, nums:[skill]})
 						}
@@ -725,6 +749,9 @@ function renderResult() {
                             $.each(monster.nums, (num_index, skill_number) => {
                                 sk_str += renderSkillInfo(monster, skill_number);
                             })
+					
+							// for combine skill, create a new row
+							if(monster_index !== 0  && !('type' in skill[monster_index-1]) && monster?.type === 'combine') str += '<hr class="result_combine_hr">'
                             
                             str += renderMonsterImage(monster, sk_str);
                         });
@@ -792,6 +819,9 @@ function renderSkillInfo(monster, skill_number, monsterObj) {
         case 'recall':
             sk_str += `<div class='skill_tooltip skill_name_recall col-9 col-sm-9 mb-1'><img src='../tos_tool_data/img/monster/recall.png' />&nbsp;`;
         break;
+        case 'combine':
+            sk_str += `<div class='skill_tooltip skill_name_combine col-9 col-sm-9 mb-1'><img src='../tos_tool_data/img/monster/combine.png' />&nbsp;`;
+        break;
         default:
             sk_str += `<div class='skill_tooltip skill_name col-9 col-sm-9 mb-1'>`;
     }
@@ -834,6 +864,24 @@ function renderSkillInfo(monster, skill_number, monsterObj) {
             </div>
             <div class='row'>
                 <div class='skill_tooltip skill_transform col-sm-12'>${transform_str}</div>
+            </div>
+        `;
+    }
+	
+	
+    if(skill.type === 'combine')
+    {
+        let combine_str = ''
+        $.each(skill.member, (combine_index, member) => {
+            combine_str += `<img src='../tos_tool_data/img/monster/${member}.png'\> ${combine_index !== skill.member.length-1 ? ` + ` : ``}`;
+        })
+        
+        sk_str += `
+            <div class='row'>
+                <div class='skill_tooltip col-sm-12'><hr></div>
+            </div>
+            <div class='row'>
+                <div class='skill_tooltip skill_combine col-sm-12'>${combine_str}</div>
             </div>
         `;
     }
@@ -936,10 +984,12 @@ function renderMonsterImage(monster, tooltip_content, monsterObj, eggLink = fals
     const hasSpecialImage = 'specialImage' in monster_obj && monster_obj.specialImage;
 	const hasImageChange = 'num' in monster ? monster_obj.skill[monster.num]?.imageChange : monster?.nums?.length === 1 ? monster_obj.skill[monster.nums[0]]?.imageChange ?? null : null;
     const notInInventory = useInventory && !playerData.card.includes(monster.id)
+	const isCombineSkill = monster_obj.skill[monster?.nums?.[0]]?.type === 'combine' || monster_obj.skill[monster?.num]?.type === 'combine';
 	
     return `
         <div class='col-3 col-md-2 col-lg-1 result'>
             <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${hasImageChange ? hasImageChange[0] : monster_obj.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasImageChange ? `this.src="../tos_tool_data/img/monster/${hasImageChange[1]}.png"` : hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}_sp.png"` : null} onblur=${hasImageChange ? `this.src="../tos_tool_data/img/monster/${hasImageChange[0]}.png"` : hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}.png"` : null} tabindex=${monster_obj.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+			${isCombineSkill ? `<img class='monster_img_combine_icon${notInInventory ? '_gray' : ''}' src="../tos_tool_data/img/monster/combine.png" />` : ``}
 			<!-- special image preload -->
 			<img class='monster_img${notInInventory ? '_gray' : ''}' style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster_obj.id}_sp.png` : ''}>
 			<!-- -->
