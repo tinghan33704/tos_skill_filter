@@ -41,7 +41,7 @@ let easterEggData = {
 
 $(document).ready(function() {
     init();
-    
+	
     location.search && readUrl();
 });
 
@@ -986,9 +986,17 @@ function renderMonsterImage(monster, tooltip_content, monsterObj, eggLink = fals
     const notInInventory = useInventory && !playerData.card.includes(monster.id)
 	const isCombineSkill = monster_obj.skill[monster?.nums?.[0]]?.type === 'combine' || monster_obj.skill[monster?.num]?.type === 'combine';
 	
+	const digimonShinka = [10244, 10245, 10246, 10248, 10249, 10250].includes(monster.id) && checkKeyword().has('進化')
+	const digimonChouShinka = [10244, 10245, 10246, 10248, 10249, 10250].includes(monster.id) && checkKeyword().has('超進化')
+	
+	const src_path = digimonChouShinka ? `../tos_tool_data/img/monster/${monster_obj.id}_sp2.png` : digimonShinka ? `../tos_tool_data/img/monster/${monster_obj.id}_sp1.png` : `../tos_tool_data/img/monster/${hasImageChange ? hasImageChange[0] : monster_obj.id}.png`
+	const error_path = `../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png`
+	const focus_path = hasImageChange ? `../tos_tool_data/img/monster/${hasImageChange[1]}.png` : hasSpecialImage ? `../tos_tool_data/img/monster/${monster_obj.id}_sp.png` : src_path
+	const blur_path = hasImageChange ? `../tos_tool_data/img/monster/${hasImageChange[0]}.png` : src_path
+	
     return `
         <div class='col-3 col-md-2 col-lg-1 result'>
-            <img class='monster_img${notInInventory ? '_gray' : ''}' src='../tos_tool_data/img/monster/${hasImageChange ? hasImageChange[0] : monster_obj.id}.png' onerror='this.src="../tos_tool_data/img/monster/noname_${attr_zh_to_en[monster_attr]}.png"' onfocus=${hasImageChange ? `this.src="../tos_tool_data/img/monster/${hasImageChange[1]}.png"` : hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}_sp.png"` : null} onblur=${hasImageChange ? `this.src="../tos_tool_data/img/monster/${hasImageChange[0]}.png"` : hasSpecialImage ? `this.src="../tos_tool_data/img/monster/${monster_obj.id}.png"` : null} tabindex=${monster_obj.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
+            <img class='monster_img${notInInventory ? '_gray' : ''}' src='${src_path}' onerror='this.src="${error_path}"' onfocus='this.src="${focus_path}"' onblur='this.src="${blur_path}"' tabindex=${monster_obj.id.toString().replace('?', '')} data-toggle='popover' data-title='' data-content="${tooltip_content}"></img>
 			${isCombineSkill ? `<img class='monster_img_combine_icon${notInInventory ? '_gray' : ''}' src="../tos_tool_data/img/monster/combine.png" />` : ``}
 			<!-- special image preload -->
 			<img class='monster_img${notInInventory ? '_gray' : ''}' style="display: none;" src=${hasSpecialImage ? `../tos_tool_data/img/monster/${monster_obj.id}_sp.png` : ''}>
