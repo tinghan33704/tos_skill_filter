@@ -498,7 +498,6 @@ function startFilter()
 	
 	// Saitama easter egg :)
 	setGlassBreak()
-	setBlueCircles()
 	
     jumpTo("result_title");
 }
