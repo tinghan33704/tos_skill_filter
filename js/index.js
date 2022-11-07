@@ -17,7 +17,7 @@ let easterEggFlag = false;
 let easterEggData = {
 	"id": 595636351,
 	"name": "蒼曜",
-	"attribute": "木",
+	"attribute": "光",
 	"race": "人類",
 	"star": 8,
 	"monsterTag": [],
